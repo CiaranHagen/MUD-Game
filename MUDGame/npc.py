@@ -26,7 +26,7 @@ class Npc:
 
     def save(self):
         try:
-            f = open("/home/ciaran/.game/npcs/"+ self.name + ".txt", "wb")
+            f = open("../npcs/"+ self.name + ".txt", "wb")
         except FileNotFoundError:
             print('NPC file not found. Unable to save progress.')
             print()
@@ -36,7 +36,7 @@ class Npc:
         return
 
 #------------------------------------------------------------------------------
-    
+
 class Mob(Npc):
     def __init__(self):
         Npc.__init__(self)
@@ -47,7 +47,7 @@ class Mob(Npc):
 
     def save(self):
         try:
-            f = open("/home/ciaran/.game/npcs/mob_"+ self.name + ".txt", "wb")
+            f = open("../npcs/mob_"+ self.name + ".txt", "wb")
         except FileNotFoundError:
             print('NPC file not found. Unable to save progress.')
             print()
@@ -55,7 +55,7 @@ class Mob(Npc):
         Pickler(f).dump(self)
         f.close()
         return
-        
+
 
 
 #------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ def newMob():
     roomCoord = random.choice(os.listdir('/home/ciaran/.game/rooms/'))[4,]
     mob.location = (int(roomCoord[0, len(roomCoord)%2 - 1]), int(roomCoord[len(roomCoord)%2, ]))
     mob.level = random(5)
-    
+
     mob.save()
     return loadNpc(name)
 
@@ -104,7 +104,7 @@ def loadNpcs():
             return
 
         npcL.append(Unpickler(f).load())
-        
+
         f.close()
     return npcL
 

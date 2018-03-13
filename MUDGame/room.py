@@ -12,7 +12,7 @@ class Room:
 
     def save(self):
         try:
-            f = open("/home/ciaran/.game/rooms/room"+ str(self.location[0]) + '_' + str(self.location[1]) + ".txt", "wb")
+            f = open("../rooms/room"+ str(self.location[0]) + '_' + str(self.location[1]) + ".txt", "wb")
         except FileNotFoundError:
             print('Room file not found. Unable to save room.')
             print()
@@ -35,7 +35,7 @@ def loadRooms():
     returns a list of all room objects
     '''
     roomL = []
-    for fIterator in os.listdir("/home/ciaran/.game/rooms/"):
+    for fIterator in os.listdir("../rooms/"):
         roomL.append(fIterator[:-4]) # Unpickler(f).load())
     return roomL
 
@@ -45,7 +45,7 @@ def loadRoom(name):
     returns the room object
     '''
     try:
-        f = open("/home/ciaran/.game/rooms/"+ name + ".txt", "rb")
+        f = open("../rooms/"+ name + ".txt", "rb")
     except FileNotFoundError:
         print('Room file not found. Unable to load object.')
         print()

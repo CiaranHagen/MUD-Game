@@ -11,11 +11,11 @@ class Character:
         self.location = (0,0)
         self.level = 0
         return
-    
+
     def addItem(self, itemName):
         self.inventory.append(itemName)
         return
-    
+
     def changeOnPerson(self, key, value):
         self.onPerson[key] = value
         return
@@ -37,7 +37,7 @@ class Character:
 
     def save(self):
         try:
-            f = open("/home/ciaran/.game/characters/"+ self.name + ".txt", "wb")
+            f = open("../characters/"+ self.name + ".txt", "wb")
         except FileNotFoundError:
             print('Character file not found. Unable to save progress.')
             print()
@@ -61,7 +61,7 @@ def loadCharacter(name):
     returns the character object
     '''
     try:
-        f = open("/home/ciaran/.game/characters/"+ name + ".txt", "rb")
+        f = open("../characters/"+ name + ".txt", "rb")
     except FileNotFoundError:
         print("Character file not found. Unable to load progress. \n")
         print("Please enter a valid character name.")
@@ -69,12 +69,3 @@ def loadCharacter(name):
     player = Unpickler(f).load()
     f.close()
     return player
-
-
-    
-
-
-        
-            
-        
-        

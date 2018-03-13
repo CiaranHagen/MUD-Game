@@ -6,7 +6,7 @@ class Player:
     def __init__(self):
         self.username = input("Please enter your desired username: ")
         self.setPw()
-    
+
     def setPw(self):
         pw = input("Please enter a password: ")
         pwCheck = input("Please enter the password again: ")
@@ -19,7 +19,7 @@ class Player:
 
     def save(self):
         try:
-            f = open("/home/ciaran/.game/players/"+ self.username + ".txt", "wb")
+            f = open("../players/"+ self.username + ".txt", "wb")
         except FileNotFoundError:
             print('Player file not found. Unable to save progress.')
             print()
@@ -35,17 +35,17 @@ def login():
     if authenticate == False:
         username = input("Username: ")
         usernameL = []
-        for fIterator in os.listdir("/home/ciaran/.game/players/"):
+        for fIterator in os.listdir("../players/"):
             usernameL.append(fIterator[:-4])
 
-        if username in usernameL:   
+        if username in usernameL:
             player = loadPlayer(username)
             password = ""
-            passwd = player.passwd 
+            passwd = player.passwd
             while password != passwd:
                 password = input("Password: ")
                 if password == passwd:
-                    authenticate = True 
+                    authenticate = True
                     return loadPlayer(username)
                 else:
                     print("Wrong password. Please try again.")
@@ -55,7 +55,7 @@ def login():
             login()
     else:
         print("You are already logged in...")
-    
+
 
 def newPlayer():
     player = Player()
@@ -71,7 +71,7 @@ def loadPlayer(username):
     returns the character object
     '''
     try:
-        f = open("/home/ciaran/.game/players/"+ username + ".txt", "rb")
+        f = open("../players/"+ username + ".txt", "rb")
     except FileNotFoundError:
         print('Player file not found. Unable to load progress.')
         print()
@@ -79,5 +79,3 @@ def loadPlayer(username):
     player = Unpickler(f).load()
     f.close()
     return player
-
-    
