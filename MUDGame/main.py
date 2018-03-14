@@ -1,4 +1,4 @@
-import character, room, npc, player
+import character, room, npc, player, attack
 
 def onstart():
     newPlayer = input("Register (r) or log in (l).")
@@ -45,40 +45,51 @@ cRoom = loadCRoom()
 
 
 while True:
-    inputter = input("> ")
-    command = ""
-    splitIn = inputter.split(" ")
-    command = splitIn[0]
+    try:
+        inputter = input("> ")
+        command = ""
+        splitIn = inputter.split(" ")
+        command = splitIn[0]
     
-    #========= Go [direction] ==========# 
-    if command == "go":
-        if splitIn[1] in cRoom.possibleDirections:
-            character.move(splitIn[1])
-            cRoom.save()
-            cRoom = loadCRoom()        
-        else:
-            print("You cannot go there.")
-    #========= Look [object] ==========#
-    elif command == "look":
-        if splitIn[1] == "":
-            print(cRoom.description)
-        else:
-            print(cRoom.stuffDescription[splitIn[1]])
-    #========= Quit Sequence ==========#
-    elif command == "quit":
-        sureMaker = input("Are you sure you want to quit? (y/n)")
-        if sureMaker == "y" or "Y":
-            print("Quitting game...")
-            cChar.save()
-            cRoom.save()
-            break
-        else:
-            print("Returning to the game...")
-
-    #========= Attack ==========#
-
-
-
+        #========= Go [direction] ==========# 
+        if command == "go":
+            if splitIn[1] in cRoom.possibleDirections:
+                character.move(splitIn[1])
+                cRoom.save()
+                cRoom = loadCRoom()        
+            else:
+                print("You cannot go there.")
+        #========= Look [object] ==========#
+        elif command == "look":
+            if splitIn[1] == "":
+                print(cRoom.description)
+            else:
+                print(cRoom.stuffDescription[splitIn[1]])
+        #========= Quit Sequence ==========#
+        elif command == "quit":
+            sureMaker = input("Are you sure you want to quit? (y/n)")
+            if sureMaker == "y" or "Y":
+                print("Quitting game...")
+                cChar.save()
+                cRoom.save()
+                break
+            else:
+                print("Returning to the game...")
+    
+        #========= Attack ==========#
+    
+        elif command == "attack":
+            
+            while (char.health >= 0) and (npc.health >= 0):
+                hit(cChar, attnpc)
+                if attnpc.health <= 0:
+                    print("You have died.")
+                    defender.location = (0,0)
+                    defender.health = 100
+    
+    except:
+        print("OOPS!!! Something went wrong!!!")    
+    
 
 
 

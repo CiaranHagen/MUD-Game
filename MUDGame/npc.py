@@ -1,13 +1,14 @@
-import os, random, string
+import os, string
 from pickle import Pickler
 from pickle import Unpickler
+import random
 
 class Npc:
     def __init__(self, name):
         self.race = ''
         self.name = name
         self.inventory = []
-        self.location = (0,0)
+        self.location = [0,0]
         self.level = 0
         return
 
@@ -38,8 +39,8 @@ class Npc:
 #------------------------------------------------------------------------------
 
 class Mob(Npc):
-    def __init__(self):
-        Npc.__init__(self)
+    def __init__(self, name):
+        Npc.__init__(self, name)
         return
 
     def attack():
@@ -64,18 +65,19 @@ def newMob():
     races = ['orc', 'dwarf', 'elf']
     name = ''
     race = random.choice(races)
-    letters = string.ascii_uppercase.split()
-    for i in random(3, 8):
-        name += random.choice(letters)
-    mob = Mob()
+    letters = string.ascii_uppercase
+    ranLen = 3 + random.randint(0, 6)
+    for i in range(0, ranLen):
+        name += letters[random.randint(0, 25)]
+    mob = Mob(name)
     mob.race = race
-    mob.name = name
-    roomCoord = random.choice(os.listdir('../data/rooms/'))[4,]
-    mob.location = (int(roomCoord[0, len(roomCoord)%2 - 1]), int(roomCoord[len(roomCoord)%2, ]))
-    mob.level = random(5)
-
+    roomCoord = random.choice(os.listdir('../data/rooms/'))[4:-4]
+    mob.location = [int(roomCoord[: len(roomCoord)//2]), int(roomCoord[(len(roomCoord)//2) + 1 :])]
+    mob.level = random.randint(0, 5)
     mob.save()
-    return loadNpc(name)
+    return loadNpc(name, "mob")
+
+#------------------------------------------------------------------------------
 
 def move(self, direction):
         exec('possibleDirections = ' + 'room' + str(self.location[0]) + '_' + str(self.location[1]) + '.possibleDirections')

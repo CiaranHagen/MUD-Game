@@ -8,7 +8,7 @@ class Character:
         self.inventory = []
         self.onPerson = {'sword':"default", 'shield':"default", 'armor':"default", 'bag':"default"}
         self.characterSkin = "default"
-        self.location = (0,0)
+        self.location = [0,0]
         self.level = 0
         return
 
