@@ -63,7 +63,7 @@ while True:
                 print("You cannot go there.")
         #========= Look [object] ==========#
         elif command == "look":
-            if splitIn[1] == "":
+            if len(splitIn) == 1:
                 print(cRoom.description)
             else:
                 print(cRoom.stuffDescription[splitIn[1]])
@@ -88,7 +88,7 @@ while True:
                 print("There is nothing here by that name...", npcL)
     
     except:
-        print("OOPS!!! Something went wrong!!!")    
+        print("OOPS!!! Either I or you made a mistake.")    
     
 
 
