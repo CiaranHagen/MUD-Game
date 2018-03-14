@@ -77,6 +77,13 @@ while True:
                 break
             else:
                 print("Returning to the game...")
+        
+        #========= help [with commands] =========#
+        if command == "help":
+            print("Possible commands are: go, look and quit")
+            #at some point there should rather exist a dictionary of commands where the loop
+            #checks if a command exists and then produces the outcome
+            #then a list of commands can be automatically compiled and it would look cleaner
     
         #========= Attack ==========#
     
