@@ -55,7 +55,7 @@ while True:
 
         #========= Go [direction] ==========#
         if command == "go":
-            if len(splitIn) > 1
+            if len(splitIn) > 1:
                 if splitIn[1] in cRoom.possibleDirections:
                     character.move(splitIn[1])
                     cRoom.save()
@@ -91,7 +91,7 @@ while True:
         #========= Attack ==========#
 
         elif command == "attack":
-            if len(splitIn) > 1
+            if len(splitIn) > 1:
                 if splitIn[1] in npcL:
                     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
                     attack.fight(cChar, splitIn[1])
