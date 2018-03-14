@@ -2,7 +2,6 @@ import character, room, npc, player, attack
 
 def onstart():
     newPlayer = input("Register (r) or log in (l).")
-
     if newPlayer == "r":
         currentPlayer = player.newPlayer()
         print("------------------------------------------")
@@ -68,7 +67,7 @@ while True:
 
         #========= Look [object] ==========#
         elif command == "look":
-            if splitIn[1] == "":
+            if len(splitIn) == 1:
                 print(cRoom.description)
             else:
                 print(cRoom.stuffDescription[splitIn[1]])
