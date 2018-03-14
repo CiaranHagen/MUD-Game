@@ -1,5 +1,5 @@
 import character, room, npc, player, attack, os
-
+#bla
 def onstart():
     newPlayer = input("Register (r) or log in (l).")
 
