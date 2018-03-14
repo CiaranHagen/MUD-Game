@@ -7,7 +7,7 @@ def onstart():
         currentPlayer = player.newPlayer()
         print("------------------------------------------")
         print("Character creation \n")
-    
+
         charactername = input("Character name: ")
         currentChar = character.newCharacter(charactername)
 
@@ -17,7 +17,7 @@ def onstart():
         newCharacter = input("Create new character (1) or use existsing character (2)? ")
         if newCharacter == "1":
             print("Character creation \n")
-    
+
             charactername = input("Character name: ")
             currentChar = character.newCharacter(charactername)
         else:
@@ -25,9 +25,9 @@ def onstart():
             currentChar = character.loadCharacter(charactername)
 
     roomL = room.loadRooms()
-    
+
     npcL = npc.loadNpcs()
-    
+
     return currentPlayer, currentChar, roomL, npcL
 
 def loadCRoom():
@@ -52,13 +52,13 @@ while True:
         command = ""
         splitIn = inputter.split(" ")
         command = splitIn[0]
-    
-        #========= Go [direction] ==========# 
+
+        #========= Go [direction] ==========#
         if command == "go":
             if splitIn[1] in cRoom.possibleDirections:
                 character.move(splitIn[1])
                 cRoom.save()
-                cRoom = loadCRoom()        
+                cRoom = loadCRoom()
             else:
                 print("You cannot go there.")
         #========= Look [object] ==========#
@@ -77,63 +77,22 @@ while True:
                 break
             else:
                 print("Returning to the game...")
-        
+
         #========= help [with commands] =========#
-        if command == "help":
-            print("Possible commands are: go, look and quit")
+        elif command == "help":
+            print("Possible commands are: go, look, attack and quit")
             #at some point there should rather exist a dictionary of commands where the loop
             #checks if a command exists and then produces the outcome
             #then a list of commands can be automatically compiled and it would look cleaner
-    
+
         #========= Attack ==========#
-    
+
         elif command == "attack":
             if splitIn[1] in npcL:
                 print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
                 attack.fight(cChar, splitIn[1])
             else:
                 print("There is nothing here by that name...", npcL)
-    
+
     except:
-        print("OOPS!!! Either I or you made a mistake.")    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        print("OOPS!!! Either I or you made a mistake.")
