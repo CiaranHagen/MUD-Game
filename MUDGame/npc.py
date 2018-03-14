@@ -98,16 +98,7 @@ def loadNpcs():
     '''
     npcL = []
     for fIterator in os.listdir("../data/npcs/"):
-        try:
-            f = open("../data/npcs/" + fIterator, "rb")
-        except FileNotFoundError:
-            print('Room folder for ' + fIterator + ' not found. Unable to load rooms.')
-            print()
-            return
-
-        npcL.append(Unpickler(f).load())
-
-        f.close()
+        npcL.append(fIterator[4:-4])
     return npcL
 
 def loadNpc(name, kind):

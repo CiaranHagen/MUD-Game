@@ -1,12 +1,13 @@
-import character, room, npc, player, attack
+import character, room, npc, player, attack, os
 
 def onstart():
     newPlayer = input("Register (r) or log in (l).")
+
     if newPlayer == "r":
         currentPlayer = player.newPlayer()
         print("------------------------------------------")
         print("Character creation \n")
-
+    
         charactername = input("Character name: ")
         currentChar = character.newCharacter(charactername)
 
@@ -16,7 +17,7 @@ def onstart():
         newCharacter = input("Create new character (1) or use existsing character (2)? ")
         if newCharacter == "1":
             print("Character creation \n")
-
+    
             charactername = input("Character name: ")
             currentChar = character.newCharacter(charactername)
         else:
@@ -24,9 +25,9 @@ def onstart():
             currentChar = character.loadCharacter(charactername)
 
     roomL = room.loadRooms()
-
+    
     npcL = npc.loadNpcs()
-
+    
     return currentPlayer, currentChar, roomL, npcL
 
 def loadCRoom():
@@ -38,7 +39,9 @@ def loadCRoom():
 
 
 cPlayer, cChar, roomL, npcL = onstart()
-
+print(npcL)
+for c in npcL:
+        npc.loadNpc(c, "mob")
 cRoom = loadCRoom()
 
 
@@ -49,25 +52,18 @@ while True:
         command = ""
         splitIn = inputter.split(" ")
         command = splitIn[0]
-
-        #========= Go [direction] ==========#
+    
+        #========= Go [direction] ==========# 
         if command == "go":
             if splitIn[1] in cRoom.possibleDirections:
                 character.move(splitIn[1])
                 cRoom.save()
-                cRoom = loadCRoom()
+                cRoom = loadCRoom()        
             else:
                 print("You cannot go there.")
-        #========= help [with commands] =========#
-        if command == "help":
-            print("Possible commands are: go, look and quit")
-            #at some point there should rather exist a dictionary of commands where the loop
-            #checks if a command exists and then produces the outcome
-            #then a list of commands can be automatically compiled and it would look cleaner
-
         #========= Look [object] ==========#
         elif command == "look":
-            if len(splitIn) == 1:
+            if splitIn[1] == "":
                 print(cRoom.description)
             else:
                 print(cRoom.stuffDescription[splitIn[1]])
@@ -81,6 +77,56 @@ while True:
                 break
             else:
                 print("Returning to the game...")
+    
+        #========= Attack ==========#
+    
+        elif command == "attack":
+            if splitIn[1] in npcL:
+                print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
+                attack.fight(cChar, splitIn[1])
+            else:
+                print("There is nothing here by that name...", npcL)
+    
     except:
-        print("OOOPS! Either you or I did a mistake ^^")
-    #========= Attack ==========#
+        print("OOPS!!! Something went wrong!!!")    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
