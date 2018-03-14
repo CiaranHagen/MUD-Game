@@ -70,7 +70,7 @@ def newMob():
     mob = Mob()
     mob.race = race
     mob.name = name
-    roomCoord = random.choice(os.listdir('/home/ciaran/.game/rooms/'))[4,]
+    roomCoord = random.choice(os.listdir('../rooms/'))[4,]
     mob.location = (int(roomCoord[0, len(roomCoord)%2 - 1]), int(roomCoord[len(roomCoord)%2, ]))
     mob.level = random(5)
 
@@ -95,9 +95,9 @@ def loadNpcs():
     returns aall npc objects
     '''
     npcL = []
-    for fIterator in os.listdir("/home/ciaran/.game/npcs/"):
+    for fIterator in os.listdir("../npcs/"):
         try:
-            f = open("/home/ciaran/.game/npcs/" + fIterator, "rb")
+            f = open("../npcs/" + fIterator, "rb")
         except FileNotFoundError:
             print('Room folder for ' + fIterator + ' not found. Unable to load rooms.')
             print()
@@ -114,7 +114,7 @@ def loadNpc(name, kind):
     returns the npc object
     '''
     try:
-        f = open("/home/ciaran/.game/npcs/" + kind + "_" + name + ".txt", "rb")
+        f = open("../npcs/" + kind + "_" + name + ".txt", "rb")
     except FileNotFoundError:
         print("NPC file not found. Unable to load progress. \n")
         print("Please enter a valid NPC name or kind.")
