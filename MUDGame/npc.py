@@ -26,7 +26,7 @@ class Npc:
 
     def save(self):
         try:
-            f = open("../npcs/"+ self.name + ".txt", "wb")
+            f = open("../data/npcs/"+ self.name + ".txt", "wb")
         except FileNotFoundError:
             print('NPC file not found. Unable to save progress.')
             print()
@@ -47,7 +47,7 @@ class Mob(Npc):
 
     def save(self):
         try:
-            f = open("../npcs/mob_"+ self.name + ".txt", "wb")
+            f = open("../data/npcs/mob_"+ self.name + ".txt", "wb")
         except FileNotFoundError:
             print('NPC file not found. Unable to save progress.')
             print()
@@ -70,7 +70,7 @@ def newMob():
     mob = Mob()
     mob.race = race
     mob.name = name
-    roomCoord = random.choice(os.listdir('../rooms/'))[4,]
+    roomCoord = random.choice(os.listdir('../data/rooms/'))[4,]
     mob.location = (int(roomCoord[0, len(roomCoord)%2 - 1]), int(roomCoord[len(roomCoord)%2, ]))
     mob.level = random(5)
 
@@ -92,12 +92,12 @@ def move(self, direction):
 
 def loadNpcs():
     '''
-    returns aall npc objects
+    returns all npc objects
     '''
     npcL = []
-    for fIterator in os.listdir("../npcs/"):
+    for fIterator in os.listdir("../data/npcs/"):
         try:
-            f = open("../npcs/" + fIterator, "rb")
+            f = open("../data/npcs/" + fIterator, "rb")
         except FileNotFoundError:
             print('Room folder for ' + fIterator + ' not found. Unable to load rooms.')
             print()
@@ -114,7 +114,7 @@ def loadNpc(name, kind):
     returns the npc object
     '''
     try:
-        f = open("../npcs/" + kind + "_" + name + ".txt", "rb")
+        f = open("../data/npcs/" + kind + "_" + name + ".txt", "rb")
     except FileNotFoundError:
         print("NPC file not found. Unable to load progress. \n")
         print("Please enter a valid NPC name or kind.")

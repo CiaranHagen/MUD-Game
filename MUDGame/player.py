@@ -19,7 +19,7 @@ class Player:
 
     def save(self):
         try:
-            f = open("../players/"+ self.username + ".txt", "wb")
+            f = open("../data/players/"+ self.username + ".txt", "wb")
         except FileNotFoundError:
             print('Player file not found. Unable to save progress.')
             print()
@@ -35,7 +35,7 @@ def login():
     if authenticate == False:
         username = input("Username: ")
         usernameL = []
-        for fIterator in os.listdir("../players/"):
+        for fIterator in os.listdir("../data/players/"):
             usernameL.append(fIterator[:-4])
 
         if username in usernameL:
@@ -71,7 +71,7 @@ def loadPlayer(username):
     returns the character object
     '''
     try:
-        f = open("../players/"+ username + ".txt", "rb")
+        f = open("../data/players/"+ username + ".txt", "rb")
     except FileNotFoundError:
         print('Player file not found. Unable to load progress.')
         print()

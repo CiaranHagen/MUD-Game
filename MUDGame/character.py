@@ -37,7 +37,7 @@ class Character:
 
     def save(self):
         try:
-            f = open("../characters/"+ self.name + ".txt", "wb")
+            f = open("../data/characters/"+ self.name + ".txt", "wb")
         except FileNotFoundError:
             print('Character file not found. Unable to save progress.')
             print()
@@ -61,7 +61,7 @@ def loadCharacter(name):
     returns the character object
     '''
     try:
-        f = open("../characters/"+ name + ".txt", "rb")
+        f = open("../data/characters/"+ name + ".txt", "rb")
     except FileNotFoundError:
         print("Character file not found. Unable to load progress. \n")
         print("Please enter a valid character name.")
