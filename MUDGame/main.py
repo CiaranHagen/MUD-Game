@@ -14,7 +14,7 @@ def onstart():
     else:
         currentPlayer = player.login()
         print ("------------------------------------------")
-        newCharacter = input("Create new character (1) or use existsing character (2)? ")
+        newCharacter = input("Create new character (1) or use existing character (2)? ") #or show list of characters?
         if newCharacter == "1":
             print("Character creation \n")
 
@@ -55,12 +55,15 @@ while True:
 
         #========= Go [direction] ==========#
         if command == "go":
-            if splitIn[1] in cRoom.possibleDirections:
-                character.move(splitIn[1])
-                cRoom.save()
-                cRoom = loadCRoom()
+            if len(splitIn) > 1
+                if splitIn[1] in cRoom.possibleDirections:
+                    character.move(splitIn[1])
+                    cRoom.save()
+                    cRoom = loadCRoom()
+                else:
+                    print("You cannot go there.")
             else:
-                print("You cannot go there.")
+                print("Where do you want to go? Add a cardinal direction behind 'go'!")
         #========= Look [object] ==========#
         elif command == "look":
             if len(splitIn) == 1:
@@ -88,11 +91,15 @@ while True:
         #========= Attack ==========#
 
         elif command == "attack":
-            if splitIn[1] in npcL:
-                print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
-                attack.fight(cChar, splitIn[1])
+            if len(splitIn) > 1
+                if splitIn[1] in npcL:
+                    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
+                    attack.fight(cChar, splitIn[1])
+                else:
+                    print("There is nothing here by that name...", npcL)
             else:
-                print("There is nothing here by that name...", npcL)
+                print("You shout, strike ... and land on the floor.")
+                print("Your bloody nose tells you that there was no enemy to attack..")
 
     except:
-        print("OOPS!!! Either I or you made a mistake.")
+        print("OOOPS!!! Either I or you made a mistake.")
