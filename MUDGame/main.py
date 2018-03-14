@@ -1,5 +1,9 @@
 import character, room, npc, player, attack, os
+<<<<<<< Updated upstream
 #bla
+=======
+#Hello this is a test...
+>>>>>>> Stashed changes
 def onstart():
     newPlayer = input("Register (r) or log in (l).")
 
