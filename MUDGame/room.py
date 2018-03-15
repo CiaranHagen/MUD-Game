@@ -5,9 +5,9 @@ from pickle import Unpickler
 class Room:
     def __init__(self, x, y):
         self.location = (x,y)
-        self.possibleDirections = []
+        self.possibleDirections = {}
         self.description = ''
-        self.stuffDescription = set()
+        self.stuffDescription = {}
         return
 
     def save(self):
@@ -25,6 +25,27 @@ class Room:
 
 def newRoom(x, y):
     room = Room(x, y)
+
+    print("Add directions to be reached from this room: (q to stop)")
+    while True:
+        direction = input("> ")
+        if direction == "q":
+            break
+        else:
+            lead = input("Whereto: ")
+            room.possibleDirections[direction] = lead
+
+    room.description = input("Description: ")
+    
+    print("Add objects to be looked at in this room: (q to stop)")
+    while True:
+        obj = input("> ")
+        if obj == "q":
+            break
+        else:
+            descr = input("Description: ")
+            room.possibleDirections[obj] = descr
+
     room.save()
     return loadRoom('room' + str(x) + '_' + str(y))
 
