@@ -44,7 +44,7 @@ def loadCRoom():
 
 
 cPlayer, cChar, roomL, npcL = onstart()
-
+print(npcL)
 for c in npcL:
         npc.loadNpc(c, "mob")
 cRoom = loadCRoom()
