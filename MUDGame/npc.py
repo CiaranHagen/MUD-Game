@@ -60,16 +60,27 @@ class Mob(Npc):
 
 
 #------------------------------------------------------------------------------
+def nameBuilder():
+    upperCase = string.ascii_uppercase
+    vowels = ['a','i','e','u','o','y']
+    consonants = ['sch', 'ch', 'st','th','ph', 'q', 'w', 'r', 't', 'p', 's', 'd',
+     'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm']
+    name = random.choice(upperCase)
+    for i in range(0, random.randint(2, 7)):
+        name += random.choice(vowels)
+        name += random.choice(consonants)
+    return name
 
+#------------------------------------------------------------------------------
 def newMob():
-    races = ['orc', 'dwarf', 'elf']
+    races = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfli', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
     name = ''
     race = random.choice(races)
-    letters = string.ascii_uppercase
-    ranLen = 3 + random.randint(0, 6)
-    for i in range(0, ranLen):
-        name += letters[random.randint(0, 25)]
-    mob = Mob(name)
+    #letters = string.ascii_uppercase
+    #ranLen = 3 + random.randint(0, 6)
+    #for i in range(0, ranLen):
+    #    name += letters[random.randint(0, 25)]
+    mob = Mob(nameBuilder())
     mob.race = race
     roomCoord = random.choice(os.listdir('../data/rooms/'))[4:-4]
     mob.location = [int(roomCoord[: len(roomCoord)//2]), int(roomCoord[(len(roomCoord)//2) + 1 :])]
