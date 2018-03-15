@@ -64,8 +64,12 @@ def loadCharacter(name):
         f = open("../data/characters/"+ name + ".txt", "rb")
     except FileNotFoundError:
         print("Character file not found. Unable to load progress. \n")
-        print("Please enter a valid character name.")
-        loadCharacter(name)
+        name = input("Please enter a valid character name (if you want to create a new character, type \"new\"): \n")
+        if name == "new":
+            return "new"
+        else:
+            return loadCharacter(name)
+        
     player = Unpickler(f).load()
     f.close()
     return player

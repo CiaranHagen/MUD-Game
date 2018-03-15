@@ -23,6 +23,11 @@ def onstart():
         else:
             charactername = charactername = input("What character do you want to load? ")
             currentChar = character.loadCharacter(charactername)
+            if currentChar == "new":
+                print("Character creation \n")
+
+                charactername = input("Character name: ")
+                currentChar = character.newCharacter(charactername)
 
     roomL = room.loadRooms()
 
