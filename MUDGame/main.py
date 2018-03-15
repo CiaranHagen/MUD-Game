@@ -58,7 +58,7 @@ while True:
         command = splitIn[0]
 
         #========= Go [direction] ==========#
-        if command == "go":
+        if command in ["go", "walk", "move", "jump", "hop", "teleport", "translate", "commute"]:
             if len(splitIn) > 1:
                 if splitIn[1] in cRoom.possibleDirections:
                     cChar.move(splitIn[1])
@@ -77,7 +77,7 @@ while True:
                 print("\n")
 
         #========= Look [object] ==========#
-        elif command == "look":
+        elif command in ["look", "watch", "observe", "see", "eye", "regard"]:
             if len(splitIn) == 1:
                 print(cRoom.description)
             else:
@@ -86,7 +86,7 @@ while True:
                 else:
                     print("There is no "+ splitIn[1] + " here.")
         #========= Quit Sequence ==========#
-        elif command == "quit":
+        elif command in ["quit", "leave", "abandon", "abort", "terminate"]:
             sureMaker = input("Are you sure you want to quit? (y/n)")
             if sureMaker == "y" or "Y":
                 print("Quitting game...")
@@ -97,7 +97,7 @@ while True:
                 print("Returning to the game...")
 
         #========= help [with commands] =========#
-        elif command == "help":
+        elif command in ["help", "halp", "", "eehm", "?", "??", "???"]:
             if len(splitIn) == 1:
                 print("Possible commands are: go, look, attack and quit")
             else:
@@ -109,7 +109,7 @@ while True:
 
         #========= Attack ==========#
 
-        elif command == "attack":
+        elif command in ["attack", "strike", "kill", "engage", "challenge"]:
             if len(splitIn) > 1:
                 if splitIn[1] in npcL:
                     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
