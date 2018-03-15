@@ -47,7 +47,7 @@ def onstart():
 
     if newPlayer == "r":
         currentPlayer = player.newPlayer()
-        print("------------------------------------------")
+        print("------------------------------------------".center(os.get_terminal_size().columns, "-"))
         print("Character creation \n")
 
         charactername = input("Character name: " + colors.fg.orange)
@@ -56,7 +56,7 @@ def onstart():
 
     else:
         currentPlayer = player.login()
-        print ("------------------------------------------")
+        print ("------------------------------------------".center(os.get_terminal_size().columns, "-"))
         newCharacter = input("Create new character (1) or use existing character (2)? " + colors.fg.orange) #or show list of characters?
         print(colors.reset , end = '')
         if newCharacter == "1":
@@ -91,12 +91,12 @@ def loadCRoom():
 
 os.system("clear")
 print(colors.fg.lightred)
-print("===================================================")
-print("                        __   __                    ")
-print("================ |\  /| |_\ /  _ ==================")
-print("================ | \/ | | \ \__/ ==================")
-print("                                                   ") 
-print("===================================================")
+print("===================================================".center(os.get_terminal_size().columns, "="))
+print("                        __   __                    ".center(os.get_terminal_size().columns, " "))
+print("================ |\  /| |_\ /  _ ==================".center(os.get_terminal_size().columns, "="))
+print("================ | \/ | | \ \__/ ==================".center(os.get_terminal_size().columns, "="))
+print("                                                   ".center(os.get_terminal_size().columns, " "))
+print("===================================================".center(os.get_terminal_size().columns, "="))
 print(colors.reset)
 cPlayer, cChar, roomL, npcL = onstart()
 for c in npcL:
@@ -106,7 +106,9 @@ cRoom = loadCRoom()
 helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>"}
 
 os.system("clear")
-print("\n               ----- Welcome " + cPlayer.username + "! -----\n")
+print()
+print(("               ----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " "))
+print()
 while True:
     try:
         inputter = input(colors.fg.red + "> " + colors.fg.orange)
@@ -124,7 +126,7 @@ while True:
                     cRoom = loadCRoom()
                     print("You go " + splitIn[1] + ".")
                 else:
-                    print("You cannot go there. Possible directions are: ", end = '')
+                    print("You cannot go " + splitIn[1] + ". Possible directions are: ", end = '')
                     for key in cRoom.possibleDirections:
                         print(key , end = ' ')
                     print("\n")
@@ -147,7 +149,7 @@ while True:
         elif command in ["quit", "leave", "abandon", "abort", "terminate"]:
             sureMaker = input("Are you sure you want to quit? (y/n)" + colors.fg.orange)
             print(colors.reset)
-            if sureMaker == "y" or "Y":
+            if sureMaker == ("y" or "Y"):
                 print("Quitting game...")
                 cChar.save()
                 cRoom.save()
@@ -160,8 +162,11 @@ while True:
             if len(splitIn) == 1:
                 print("Possible commands are: go, look, attack and quit")
             else:
-                print()
-                print(helpText[splitIn[1]] + "\n")
+                if splitIn[1] in helpText:
+                    print()
+                    print(helpText[splitIn[1]] + "\n")
+                else:
+                    print("There is no such command.")
             #at some point there should rather exist a dictionary of commands where the loop
             #checks if a command exists and then produces the outcome
             #then a list of commands can be automatically compiled and it would look cleaner

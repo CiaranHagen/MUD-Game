@@ -18,7 +18,7 @@ class Player:
         else:
             print("Passwords don't match. Please try again...")
             print()
-            setPw()
+            setPw(self)
 
     def save(self):
         try:
