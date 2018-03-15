@@ -73,8 +73,8 @@ while True:
             else:
                 print("Where do you want to go? Add a cardinal direction behind 'go'! Possible directions are: ", end = '')
                 for key in cRoom.possibleDirections:
-                        print(key , end = ' ')
-                    print("\n")
+                    print(key , end = ' ')
+                print("\n")
 
         #========= Look [object] ==========#
         elif command == "look":
