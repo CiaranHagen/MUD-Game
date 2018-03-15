@@ -62,11 +62,11 @@ class Mob(Npc):
 #------------------------------------------------------------------------------
 def nameBuilder():
     upperCase = string.ascii_uppercase
-    vowels = ['a','i','e','u','o','y']
+    vowels = ['a','i','e','u','o','y', 'oo', 'au']
     consonants = ['sch', 'ch', 'st','th','ph', 'q', 'w', 'r', 't', 'p', 's', 'd',
      'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm']
     name = random.choice(upperCase)
-    for i in range(0, random.randint(2, 7)):
+    for i in range(0, random.randint(1, 5)):
         name += random.choice(vowels)
         name += random.choice(consonants)
     return name
