@@ -74,13 +74,13 @@ def nameBuilder():
 #------------------------------------------------------------------------------
 def newMob():
     races = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfli', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
-    name = ''
+    name = nameBuilder()
     race = random.choice(races)
     #letters = string.ascii_uppercase
     #ranLen = 3 + random.randint(0, 6)
     #for i in range(0, ranLen):
     #    name += letters[random.randint(0, 25)]
-    mob = Mob(nameBuilder())
+    mob = Mob(name)
     mob.race = race
     roomCoord = random.choice(os.listdir('../data/rooms/'))[4:-4]
     mob.location = [int(roomCoord[: len(roomCoord)//2]), int(roomCoord[(len(roomCoord)//2) + 1 :])]
