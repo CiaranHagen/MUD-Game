@@ -69,8 +69,13 @@ while True:
                     print("You cannot go there. Possible directions are: ", end = '')
                     for key in cRoom.possibleDirections:
                         print(key , end = ' ')
+                    print("\n")
             else:
-                print("Where do you want to go? Add a cardinal direction behind 'go'!")
+                print("Where do you want to go? Add a cardinal direction behind 'go'! Possible directions are: ", end = '')
+                for key in cRoom.possibleDirections:
+                        print(key , end = ' ')
+                    print("\n")
+
         #========= Look [object] ==========#
         elif command == "look":
             if len(splitIn) == 1:
@@ -79,7 +84,7 @@ while True:
                 if splitIn[1] in cRoom.stuffDescription:
                     print(cRoom.stuffDescription[splitIn[1]])
                 else:
-                    print("This is not here.")
+                    print("There is no "+ splitIn[1] + " here.")
         #========= Quit Sequence ==========#
         elif command == "quit":
             sureMaker = input("Are you sure you want to quit? (y/n)")
