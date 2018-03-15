@@ -44,7 +44,6 @@ def loadCRoom():
 
 
 cPlayer, cChar, roomL, npcL = onstart()
-print(npcL)
 for c in npcL:
         npc.loadNpc(c, "mob")
 cRoom = loadCRoom()
@@ -62,11 +61,13 @@ while True:
         if command == "go":
             if len(splitIn) > 1:
                 if splitIn[1] in cRoom.possibleDirections:
-                    character.move(splitIn[1])
+                    cChar.move(splitIn[1])
                     cRoom.save()
                     cRoom = loadCRoom()
                 else:
-                    print("You cannot go there.")
+                    print("You cannot go there. Possible directions are: ", end = '')
+                    for key in cRoom.possibleDriections:
+                        print(key , end = ' ')
             else:
                 print("Where do you want to go? Add a cardinal direction behind 'go'!")
         #========= Look [object] ==========#
@@ -74,7 +75,10 @@ while True:
             if len(splitIn) == 1:
                 print(cRoom.description)
             else:
-                print(cRoom.stuffDescription[splitIn[1]])
+                if splitIn[1] in stuffDescription:
+                    print(cRoom.stuffDescription[splitIn[1]])
+                else:
+                    print("This is not here.")
         #========= Quit Sequence ==========#
         elif command == "quit":
             sureMaker = input("Are you sure you want to quit? (y/n)")

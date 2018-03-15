@@ -44,7 +44,7 @@ def newRoom(x, y):
             break
         else:
             descr = input("Description: ")
-            room.possibleDirections[obj] = descr
+            room.stuffDescription[obj] = descr
 
     room.save()
     return loadRoom('room' + str(x) + '_' + str(y))

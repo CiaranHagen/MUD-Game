@@ -23,8 +23,8 @@ class Character:
     def move(self, direction):
         cRoomName = 'room' + str(self.location[0]) + '_' + str(self.location[1])
         cRoom = room.loadRoom(cRoomName)
-        possibleDirections = cRoom.possibleDirections
-        if direction in possibleDirections:
+        if direction in cRoom.possibleDirections:
+            direction = cRoom.possibleDirections[direction]
             if direction == ('north' or 'n'):
                 self.location = (self.location[0], self.location[1] + 1)
             elif direction == ('south' or 's'):
