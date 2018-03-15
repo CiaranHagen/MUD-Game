@@ -64,6 +64,7 @@ while True:
                     cChar.move(splitIn[1])
                     cRoom.save()
                     cRoom = loadCRoom()
+                    print("You go " + splitIn[1] + ".")
                 else:
                     print("You cannot go there. Possible directions are: ", end = '')
                     for key in cRoom.possibleDirections:
