@@ -44,12 +44,12 @@ def loadCRoom():
 
 
 cPlayer, cChar, roomL, npcL = onstart()
-print(npcL)
+
 for c in npcL:
         npc.loadNpc(c, "mob")
 cRoom = loadCRoom()
 
-
+helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>"}
 
 while True:
     try:
@@ -88,7 +88,11 @@ while True:
 
         #========= help [with commands] =========#
         elif command == "help":
-            print("Possible commands are: go, look, attack and quit")
+            if len(splitIn) == 1:
+                print("Possible commands are: go, look, attack and quit")
+            else:
+                print()
+                print(helpText[splitIn[1]] + "\n")
             #at some point there should rather exist a dictionary of commands where the loop
             #checks if a command exists and then produces the outcome
             #then a list of commands can be automatically compiled and it would look cleaner
