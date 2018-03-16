@@ -53,6 +53,8 @@ def onstart():
         charactername = input("Character name: " + colors.fg.orange)
         print(colors.reset , end = '')
         currentChar = character.newCharacter(charactername)
+        print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
+        wait = input()
 
     else:
         currentPlayer = player.login()
@@ -65,6 +67,8 @@ def onstart():
             charactername = input("Character name: " + colors.fg.orange)
             print(colors.reset , end = '')
             currentChar = character.newCharacter(charactername)
+            print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
+            wait = input()
         else:
             charactername = charactername = input("What character do you want to load? " + colors.fg.orange)
             print(colors.reset , end = '')
@@ -75,7 +79,9 @@ def onstart():
                 charactername = input("Character name: " + colors.fg.orange)
                 print(colors.reset , end = '')
                 currentChar = character.newCharacter(charactername)
-
+                print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
+                wait = input()  
+    
     roomL = room.loadRooms()
 
     npcL = npc.loadNpcs()
@@ -92,7 +98,7 @@ def loadCRoom():
 os.system("clear")
 print(colors.fg.lightred)
 print("===================================================".center(os.get_terminal_size().columns, "="))
-print("                        __   __                    ".center(os.get_terminal_size().columns, " "))
+print("                 ,    , __   __                    ".center(os.get_terminal_size().columns, " "))
 print("================ |\  /| |_\ /  _ ==================".center(os.get_terminal_size().columns, "="))
 print("================ | \/ | | \ \__/ ==================".center(os.get_terminal_size().columns, "="))
 print("                                                   ".center(os.get_terminal_size().columns, " "))
@@ -107,8 +113,9 @@ helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "quit"
 
 os.system("clear")
 print()
-print(("               ----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " "))
-print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through".center(os.get_terminal_size().columns, " "))
+print(("----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " ")) 
+print()
+
 while True:
     try:
         inputter = input(colors.fg.red + "> " + colors.fg.orange)
