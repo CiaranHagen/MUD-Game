@@ -1,10 +1,10 @@
 import character, room, npc, player, attack, os
 
 class colors:
-    '''Colors class:reset all colors with colors.reset; two 
-    sub classes fg for foreground 
+    '''Colors class:reset all colors with colors.reset; two
+    sub classes fg for foreground
     and bg for background; use as colors.subclass.colorname.
-    i.e. colors.fg.red or colors.bg.greenalso, the generic bold, disable, 
+    i.e. colors.fg.red or colors.bg.greenalso, the generic bold, disable,
     underline, reverse, strike through,
     and invisible work with the main class i.e. colors.bold'''
     reset='\033[0m'
@@ -108,7 +108,7 @@ helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "quit"
 os.system("clear")
 print()
 print(("               ----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " "))
-print()
+print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through".center(os.get_terminal_size().columns, " "))
 while True:
     try:
         inputter = input(colors.fg.red + "> " + colors.fg.orange)

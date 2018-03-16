@@ -8,6 +8,7 @@ class Room:
         self.possibleDirections = {}
         self.description = ''
         self.stuffDescription = {}
+        self.inventory = {}
         return
 
     def save(self):
@@ -36,7 +37,7 @@ def newRoom(x, y):
             room.possibleDirections[direction] = lead
 
     room.description = input("Description: ")
-    
+
     print("Add objects to be looked at in this room: (q to stop)")
     while True:
         obj = input("> ")
@@ -45,6 +46,9 @@ def newRoom(x, y):
         else:
             descr = input("Description: ")
             room.stuffDescription[obj] = descr
+            qst = input("Add it to inventory? (y/n)")
+            if qst == "y":
+                room.inventory[obj] = descr
 
     room.save()
     return loadRoom('room' + str(x) + '_' + str(y))
