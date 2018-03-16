@@ -80,8 +80,8 @@ def onstart():
                 print(colors.reset , end = '')
                 currentChar = character.newCharacter(charactername)
                 print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
-                wait = input()  
-    
+                wait = input()
+
     roomL = room.loadRooms()
 
     npcL = npc.loadNpcs()
@@ -109,11 +109,11 @@ for c in npcL:
         npc.loadNpc(c, "mob")
 cRoom = loadCRoom()
 
-helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>"}
+helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "take" : "take <object>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>"}
 
 os.system("clear")
 print()
-print(("----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " ")) 
+print(("----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " "))
 print()
 
 while True:
@@ -150,8 +150,31 @@ while True:
             else:
                 if splitIn[1] in cRoom.stuffDescription:
                     print(cRoom.stuffDescription[splitIn[1]])
+                elif splitIn[1] in cRoom.inventory:
+                    print(cRoom.inventory[splitIn[1]])
+                elif splitIn[1] in cChar.inventory:
+                    print(cChar.inventory[splitIn[1]])
+                elif splitIn[1] == "inventory":
+                    if len(cChar.inventory) > 0:
+                        items = cChar.inventory
+                        for key in items:
+                            print(items[key])
+                    else:
+                        print("Your inventory is empty")
                 else:
                     print("There is no "+ splitIn[1] + " here.")
+        #========= take [object] ==========#
+        elif command in ["take", "grab", "borrow"]:
+            if len(splitIn) == 1:
+                print("You grab in to the void.. You own now.. nothing.")
+            else:
+                if splitIn[1] in cRoom.inventory:
+                    print(cRoom.inventory[splitIn[1]] + "\n You acquired " + splitIn[1])
+                    cChar.inventory[splitIn[1]] = cRoom.inventory[splitIn[1]]
+                    cRoom.inventory.pop(splitIn[1])
+
+                else:
+                    print("There is no such thing here weirdo.")
         #========= Quit Sequence ==========#
         elif command in ["quit", "leave", "abandon", "abort", "terminate"]:
             sureMaker = input("Are you sure you want to quit? (y/n)" + colors.fg.orange)
@@ -167,7 +190,7 @@ while True:
         #========= help [with commands] =========#
         elif command in ["help", "halp", "", "eehm", "?", "??", "???"]:
             if len(splitIn) == 1:
-                print("Possible commands are: go, look, attack and quit")
+                print("Possible commands are: go, look, take, attack and quit")
             else:
                 if splitIn[1] in helpText:
                     print()

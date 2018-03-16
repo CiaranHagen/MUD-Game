@@ -5,15 +5,15 @@ from pickle import Unpickler
 class Character:
     def __init__(self, name):
         self.name = name
-        self.inventory = []
+        self.inventory = {}
         self.onPerson = {'sword':"default", 'shield':"default", 'armor':"default", 'bag':"default"}
         self.characterSkin = "default"
         self.location = [0,0]
         self.level = 0
         return
 
-    def addItem(self, itemName):
-        self.inventory.append(itemName)
+    def addItem(self, item, descr):
+        self.inventory[item] = descr
         return
 
     def changeOnPerson(self, key, value):
@@ -69,7 +69,7 @@ def loadCharacter(name):
             return "new"
         else:
             return loadCharacter(name)
-        
+
     player = Unpickler(f).load()
     f.close()
     return player
