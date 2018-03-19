@@ -66,19 +66,19 @@ def onstart():
 
             charactername = input("Character name: " + colors.fg.orange)
             print(colors.reset , end = '')
-            currentChar = character.newCharacter(charactername)
+            currentChar = character.newCharacter(charactername, currentPlayer.username)
             print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
             wait = input()
         else:
             charactername = charactername = input("What character do you want to load? " + colors.fg.orange)
             print(colors.reset , end = '')
-            currentChar = character.loadCharacter(charactername)
+            currentChar = character.loadCharacter(charactername, currentPlayer.username)
             if currentChar == "new":
                 print("Character creation \n")
 
                 charactername = input("Character name: " + colors.fg.orange)
                 print(colors.reset , end = '')
-                currentChar = character.newCharacter(charactername)
+                currentChar = character.newCharacter(charactername, currentPlayer.username)
                 print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
                 wait = input()
 

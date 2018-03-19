@@ -9,9 +9,9 @@ class Player:
         self.setPw()
 
     def setPw(self):
-        pw = input("Please enter a password: " + colors.fg.orange)
+        pw = input("Please enter a password: " + colors.invisible)
         print(colors.reset , end = '')
-        pwCheck = input("Please enter the password again: " + colors.fg.orange)
+        pwCheck = input("Please enter the password again: " + colors.invisible)
         print(colors.reset , end = '')
         if pw == pwCheck:
             self.passwd = pw
@@ -47,7 +47,7 @@ def login():
             password = ""
             passwd = player.passwd
             while password != passwd:
-                password = input("Password: " + colors.fg.orange)
+                password = input("Password: " + colors.invisible)
                 print(colors.reset , end = '')
                 if password == passwd:
                     authenticate = True

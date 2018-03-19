@@ -10,6 +10,7 @@ class Character:
         self.characterSkin = "default"
         self.location = [0,0]
         self.level = 0
+        self.player = ''
         return
 
     def addItem(self, item, descr):
@@ -48,14 +49,15 @@ class Character:
 
 #-------------------------------------------------------------------------
 
-def newCharacter(name):
+def newCharacter(name, cPlayerName):
     character = Character(name)
+    character.player = cPlayerName
     character.save()
-    return loadCharacter(name)
+    return loadCharacter(name, cPlayerName)
 
 #-------------------------------------------------------------------------
 
-def loadCharacter(name):
+def loadCharacter(name, cPlayerName):
     '''
     takes the character name,
     returns the character object
@@ -68,8 +70,39 @@ def loadCharacter(name):
         if name == "new":
             return "new"
         else:
-            return loadCharacter(name)
+            return loadCharacter(name, cPlayerName)
 
-    player = Unpickler(f).load()
-    f.close()
-    return player
+    character = Unpickler(f).load()
+    if character.player == cPlayerName:
+        f.close()
+        return character
+    else:
+        print("Character does not belong to you. Please choose one of your own characters.")
+        f.close
+        name = input("Please enter a valid character name (if you want to create a new character, type \"new\"): \n")
+        if name == "new":
+            return "new"
+        else:
+            return loadCharacter(name, cPlayerName)
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
