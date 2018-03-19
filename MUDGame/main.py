@@ -1,4 +1,4 @@
-import character, room, npc, player, attack, os
+import character, room, npc, player, attack, os, operator
 
 class colors:
     '''Colors class:reset all colors with colors.reset; two
@@ -104,9 +104,12 @@ print("================ | \/ | | \ \__/ ==================".center(os.get_termin
 print("                                                   ".center(os.get_terminal_size().columns, " "))
 print("===================================================".center(os.get_terminal_size().columns, "="))
 print(colors.reset)
+
 cPlayer, cChar, roomL, npcL = onstart()
+
 for c in npcL:
         npc.loadNpc(c, "mob")
+
 cRoom = loadCRoom()
 
 helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "take" : "take <object>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>"}
@@ -122,9 +125,12 @@ while True:
         print(colors.reset , end = '')
         command = ""
         splitIn = inputter.split(" ")
+        for w in splitIn:
+            w = w.lower()
         command = splitIn[0]
 
         #========= Go [direction] ==========#
+
         if command in ["go", "walk", "move", "jump", "hop", "teleport", "translate", "commute"]:
             if len(splitIn) > 1:
                 if splitIn[1] in cRoom.possibleDirections:
@@ -144,6 +150,7 @@ while True:
                 print("\n")
 
         #========= Look [object] ==========#
+
         elif command in ["look", "watch", "observe", "see", "eye", "regard"]:
             if len(splitIn) == 1:
                 print(cRoom.description)
@@ -163,7 +170,9 @@ while True:
                         print("Your inventory is empty")
                 else:
                     print("There is no "+ splitIn[1] + " here.")
+
         #========= take [object] ==========#
+
         elif command in ["take", "grab", "borrow"]:
             if len(splitIn) == 1:
                 print("You grab in to the void.. You own now.. nothing.")
@@ -175,7 +184,91 @@ while True:
 
                 else:
                     print("There is no such thing here weirdo.")
+
+        #========= Map ==========#
+
+        elif command in ["map", "where", "picture"]:
+            os.system("clear")
+            mapL = []
+            for o in roomL:
+                oCoord = o[4:]    
+                x = oCoord.split("_")[0]
+                y = oCoord.split("_")[1]
+                mapL.append((int(x),int(y)))
+            bigY = max(mapL,key=operator.itemgetter(1))[1]
+            bigX = max(mapL,key=operator.itemgetter(0))[0]
+            litY = min(mapL,key=operator.itemgetter(1))[1]
+            litX = min(mapL,key=operator.itemgetter(0))[0]
+            drawL = []
+            for j in range(litY, bigY+1):
+                drawL.append([])
+                for i in range(litX, bigX+1):
+                    if (i,j) in mapL:
+                        drawL[j].append("O")
+                    else:
+                        drawL[j].append(" ")
+            dis = (bigX - litX - 2)//2
+            if dis < 2:
+                dis = 2
+            print()
+            print(dis*"=" + " MAP " + dis*"=")
+            print()
+            for j in range(bigY, litY-1, -1):
+                print(" ", end="")
+                for i in range(litX, bigX+1):
+                    if cRoom.location == (i,j):
+                        print(colors.fg.red, end='')
+                    else:
+                        print(colors.fg.cyan, end='')
+                    print(drawL[j][i], end='')
+                print("", end="\n")
+            print(colors.reset , end = '')
+            print()
+            print(dis*"=" + " MAP " + dis*"=")
+            print()        
+            
+        
+        #========= Admin part ==========#
+        
+        elif command == "admin":
+            uName = input("Admin username: " + colors.invisible)
+            print(colors.reset , end = '')
+            pwd = input("Admin Password: " + colors.invisible)
+            print(colors.reset , end = '')
+            if (uName == "42") and (pwd == "42"):
+                print("Username and Password correct. (\"quit\" to exit)")
+                while True:
+                    try:
+                        admIn = input(colors.fg.red + ">> " + colors.fg.pink)
+                        print(colors.reset , end = '')
+                        commAdmin = ""
+                        splitMin = admIn.split(" ")
+                        for w in splitMin:
+                            w = w.lower()
+                        commAdmin = splitMin[0]
+                        
+                        if commAdmin == "room":
+                            coord = input("Please enter the coordinates: ")
+                            room.newRoom(int(coord.split(' ')[0]), int(coord.split(' ')[1]))
+                            roomL = room.loadRooms()
+                        elif commAdmin == "mob":
+                            print("Creating new mob...")
+                            npc.newMob()
+                        elif commAdmin == "quit":
+                            print()
+                            print("Returning to game...")
+                            print()
+                            break
+                        else:
+                            print("Possible commands are \"room\", \"mob\" and \"quit\".")
+                    except:
+                        print("Weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee... Samfing diiidn't wörk.") 
+            else:
+                print("Username or password incorrect.")
+                        
+
         #========= Quit Sequence ==========#
+
         elif command in ["quit", "leave", "abandon", "abort", "terminate"]:
             sureMaker = input("Are you sure you want to quit? (y/n)" + colors.fg.orange)
             print(colors.reset)
@@ -188,6 +281,7 @@ while True:
                 print("Returning to the game...")
 
         #========= help [with commands] =========#
+
         elif command in ["help", "halp", "", "eehm", "?", "??", "???"]:
             if len(splitIn) == 1:
                 print("Possible commands are: go, look, take, attack and quit")
