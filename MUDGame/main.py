@@ -125,6 +125,8 @@ while True:
         print(colors.reset , end = '')
         command = ""
         splitIn = inputter.split(" ")
+        if len(splitIn) != 1:
+            splitIn[1:] = [' '.join(splitIn[1:])]
         for w in splitIn:
             w = w.lower()
         command = splitIn[0]
