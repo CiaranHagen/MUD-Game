@@ -1,4 +1,4 @@
-import character, room, npc, player, attack, os, operator
+import character, room, npc, player, attack, os, operator, random
 
 class colors:
     '''Colors class:reset all colors with colors.reset; two
@@ -140,6 +140,15 @@ while True:
                     cRoom.save()
                     cRoom = loadCRoom()
                     print("You go " + splitIn[1] + ".")
+                    
+                    # ------- Move mobs -------- #
+                    
+                    for c in npcL:
+                        mobber = npc.loadNpc(c, "mob")
+                        mobber.move()
+                    for c in npcL:
+                        npc.loadNpc(c, "mob")
+                     # -------------------------- #   
                 else:
                     print("You cannot go " + splitIn[1] + ". Possible directions are: ", end = '')
                     for key in cRoom.possibleDirections:
@@ -156,6 +165,11 @@ while True:
         elif command in ["look", "watch", "observe", "see", "eye", "regard"]:
             if len(splitIn) == 1:
                 print(cRoom.description)
+                print("Also present: ", end="")
+                for c in npcL:
+                    if (npc.loadNpc(c, "mob").location[0] == cRoom.location[0]) and (npc.loadNpc(c, "mob").location[1] == cRoom.location[1]):
+                        print(npc.loadNpc(c, "mob").name , end=" ")
+                print()
             else:
                 if splitIn[1] in cRoom.stuffDescription:
                     print(cRoom.stuffDescription[splitIn[1]])
@@ -234,11 +248,11 @@ while True:
                     
                     if drawL[j][i] == "O":       
                         if "south" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
-                            spaceLine += "|"
+                            spaceLine += "| "
                         else:
-                            spaceLine += " "
+                            spaceLine += "  "
                     else:
-                        spaceLine += " "
+                        spaceLine += "  "
 
                 print("", end="\n")
                 print(spaceLine)
@@ -320,12 +334,18 @@ while True:
             if len(splitIn) > 1:
                 if splitIn[1] in npcL:
                     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
-                    attack.fight(cChar, splitIn[1])
+                    loser = attack.fight(cChar, splitIn[1])
+                    if loser == "mob":
+                        newMob = npc.newMob()
+                        npcL = npc.loadNpcs()
+                        for c in npcL:
+                            npc.loadNpc(c, "mob")
                 else:
-                    print("There is nothing here by that name...", npcL)
+                    print("You let loose a war-cry, incoherently screaming random names. Anyone present looks at you in confusion. No-one here seems to go by that name.")
             else:
                 print("You shout, strike ... and land on the floor.")
                 print("Your bloody nose tells you that there was no enemy to attack..")
 
-    except:
+    except Exception as e: 
+        print(e)
         print("OOOPS!!! Either I or you made a mistake.")

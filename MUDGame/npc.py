@@ -1,4 +1,4 @@
-import os, string
+import os, string, room
 from pickle import Pickler
 from pickle import Unpickler
 import random
@@ -12,8 +12,11 @@ class Npc:
         self.level = 0
         return
 
-    def move(self, direction):
-        exec('possibleDirections = ' + 'room' + str(self.location[0]) + '_' + str(self.location[1]) + '.possibleDirections')
+    def move(self):
+        possibleDirections = []
+        for c in room.loadRoom('room' + str(self.location[0]) + '_' + str(self.location[1])).possibleDirections.values():
+            possibleDirections.append(c)
+        direction = random.choice(possibleDirections)
         if direction in possibleDirections:
             if direction == ('north' or 'n'):
                 self.location = (self.location[0], self.location[1] + 1)

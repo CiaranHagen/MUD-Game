@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, npc
 def hit(attacker, defender):
     ranDamage = random(11)
     Damage = ranDamage * attacker.weaponLevel - defender.armorLevel
@@ -13,14 +13,14 @@ def fight(char, npc):
             print("You are victorious!")
             subprocess.popen("rm ../data/npcs/mob_" + npc.name + ".txt").communicate()
             del npc
-            break
+            return "mob"
 
         hit(npc, char)
         if char.health <= 0:
             print("You have died.")
             defender.location = (0,0)
             defender.health = 100
-            break
+            return "char"
         
         
     
