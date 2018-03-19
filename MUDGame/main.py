@@ -52,7 +52,7 @@ def onstart():
 
         charactername = input("Character name: " + colors.fg.orange)
         print(colors.reset , end = '')
-        currentChar = character.newCharacter(charactername)
+        currentChar = character.newCharacter(charactername, currentPlayer.username)
         print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
         wait = input()
 
@@ -108,7 +108,7 @@ print(colors.reset)
 cPlayer, cChar, roomL, npcL = onstart()
 
 for c in npcL:
-        npc.loadNpc(c, "mob")
+    npc.loadNpc(c, "mob")
 
 cRoom = loadCRoom()
 
@@ -214,6 +214,7 @@ while True:
             print(dis*"=" + " MAP " + dis*"=")
             print()
             for j in range(bigY, litY-1, -1):
+                spaceLine = " "
                 print(" ", end="")
                 for i in range(litX, bigX+1):
                     if cRoom.location == (i,j):
@@ -221,9 +222,25 @@ while True:
                     else:
                         print(colors.fg.cyan, end='')
                     print(drawL[j][i], end='')
+                    if drawL[j][i] == "O":       
+                        if "east" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
+                            print(colors.fg.cyan + "-", end='')
+                        else:
+                            print(" ", end='')
+                    else:
+                        print(" ", end='')
+                    
+                    if drawL[j][i] == "O":       
+                        if "south" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
+                            spaceLine += "|"
+                        else:
+                            spaceLine += " "
+                    else:
+                        spaceLine += " "
+
                 print("", end="\n")
+                print(spaceLine)
             print(colors.reset , end = '')
-            print()
             print(dis*"=" + " MAP " + dis*"=")
             print()        
             
