@@ -88,6 +88,54 @@ def onstart():
 
     return currentPlayer, currentChar, roomL, npcL
 
+def mapper(litX, bigX, litY, bigY, mapL):
+    drawL = []
+    distX = (-1) * litX
+    distY = (-1) * litY 
+    for j in range(litY, bigY+1):
+        drawL.append([])
+        for i in range(litX, bigX+1):
+            if (i,j) in mapL:
+                drawL[j + distY].append("O")
+            else:
+                drawL[j + distY].append(" ")
+    dis = (bigX - litX - 2)//2
+    if dis < 2:
+        dis = 2
+    print()
+    print(dis*"=" + " MAP " + dis*"=")
+    print()
+    for j in range(bigY, litY-1, -1):
+        spaceLine = " "
+        print(" ", end="")
+        for i in range(litX, bigX+1):
+            if cRoom.location == (i,j):
+                print(colors.fg.red, end='')
+            else:
+                print(colors.fg.cyan, end='')
+            print(drawL[j + distY][i + distX], end='')
+            if (drawL[j + distY][i + distX] == "O") and ((i + distX) != (len(drawL[j+distY])-1)):       
+                if "east" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
+                    print(colors.fg.cyan + "--", end='')
+                else:
+                    print("  ", end='')
+            else:
+                print(" ", end='')
+            
+            if (drawL[j + distY][i + distX] == "O") and ((j + distY) != 0):       
+                if "south" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
+                    spaceLine += "|  "
+                else:
+                    spaceLine += "   "
+            else:
+                spaceLine += "  "
+
+        print("", end="\n")
+        print(spaceLine)
+    print(colors.reset , end = '')
+    print(dis*"=" + " MAP " + dis*"=")
+    print() 
+
 def loadCRoom():
     roomName = "room" + str(cChar.location[0]) + "_" + str(cChar.location[1])
     cRoom = room.loadRoom(roomName)
@@ -196,7 +244,7 @@ while True:
                 if splitIn[1] in cRoom.inventory:
                     print(cRoom.inventory[splitIn[1]] + "\n You acquired " + splitIn[1])
                     cChar.inventory[splitIn[1]] = cRoom.inventory[splitIn[1]]
-                    cRoom.inventory.pop(splitIn[1])
+                    # cRoom.inventory.pop(splitIn[1])
 
                 else:
                     print("There is no such thing here weirdo.")
@@ -211,55 +259,17 @@ while True:
                 x = oCoord.split("_")[0]
                 y = oCoord.split("_")[1]
                 mapL.append((int(x),int(y)))
-            bigY = max(mapL,key=operator.itemgetter(1))[1]
-            bigX = max(mapL,key=operator.itemgetter(0))[0]
-            litY = min(mapL,key=operator.itemgetter(1))[1]
-            litX = min(mapL,key=operator.itemgetter(0))[0]
-            drawL = []
-            for j in range(litY, bigY+1):
-                drawL.append([])
-                for i in range(litX, bigX+1):
-                    if (i,j) in mapL:
-                        drawL[j].append("O")
-                    else:
-                        drawL[j].append(" ")
-            dis = (bigX - litX - 2)//2
-            if dis < 2:
-                dis = 2
-            print()
-            print(dis*"=" + " MAP " + dis*"=")
-            print()
-            for j in range(bigY, litY-1, -1):
-                spaceLine = " "
-                print(" ", end="")
-                for i in range(litX, bigX+1):
-                    if cRoom.location == (i,j):
-                        print(colors.fg.red, end='')
-                    else:
-                        print(colors.fg.cyan, end='')
-                    print(drawL[j][i], end='')
-                    if drawL[j][i] == "O":       
-                        if "east" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
-                            print(colors.fg.cyan + "-", end='')
-                        else:
-                            print(" ", end='')
-                    else:
-                        print(" ", end='')
-                    
-                    if drawL[j][i] == "O":       
-                        if "south" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
-                            spaceLine += "| "
-                        else:
-                            spaceLine += "  "
-                    else:
-                        spaceLine += "  "
-
-                print("", end="\n")
-                print(spaceLine)
-            print(colors.reset , end = '')
-            print(dis*"=" + " MAP " + dis*"=")
-            print()        
-            
+            if cChar.achievements["map"] == True: 
+                bigY = max(mapL,key=operator.itemgetter(1))[1]
+                bigX = max(mapL,key=operator.itemgetter(0))[0]
+                litY = min(mapL,key=operator.itemgetter(1))[1]
+                litX = min(mapL,key=operator.itemgetter(0))[0]
+            else:
+                bigX = cChar.location[0] + 1
+                litX = cChar.location[0] - 1
+                bigY = cChar.location[1] + 1
+                litY = cChar.location[1] - 1
+            mapper(litX, bigX, litY, bigY, mapL)
         
         #========= Admin part ==========#
         

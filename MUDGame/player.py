@@ -34,6 +34,7 @@ class Player:
 #-------------------------------------------------------------------------
 
 def login():
+    print()
     authenticate = False
     if authenticate == False:
         username = input("Username: " + colors.fg.orange)
@@ -52,12 +53,14 @@ def login():
                 if password == passwd:
                     authenticate = True
                     return loadPlayer(username)
+                elif password == "q":
+                    return login()
                 else:
-                    print("Wrong password. Please try again.")
+                    print("Wrong password. Please try again. (q to abort)")
                     continue
         else:
             print("That user doesn't seem to exist. Please try again.")
-            login()
+            return login()
     else:
         print("You are already logged in...")
 

@@ -11,6 +11,7 @@ class Character:
         self.location = [0,0]
         self.level = 0
         self.player = ''
+        self.achievements = {"map":False}
         return
 
     def addItem(self, item, descr):
