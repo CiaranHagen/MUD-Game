@@ -379,7 +379,8 @@ while True:
                 print("You shout, strike ... and land on the floor.")
                 print("Your bloody nose tells you that there was no enemy to attack..")
         else:
-            print("What the hell are you trying to say? Need help?")
+            print(random.choice(["What the hell are you trying to say?", "STOP MUMBLING!", "Huh?", "Wut?"]), end='   ')
+            print("(Write \"help\" for help. (Why else...))")
     except Exception as e: 
         print(e)
         print("OOOPS!!! Either I or you made a mistake.")
