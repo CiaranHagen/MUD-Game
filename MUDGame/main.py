@@ -160,7 +160,7 @@ for c in npcL:
 
 cRoom = loadCRoom()
 
-helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "take" : "take <object>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>"}
+helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "take" : "take <object>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>", "map":"Prints a map of your surroundings. If you have the map achievement, it prints the whole world map."}
 
 os.system("clear")
 print()
@@ -344,7 +344,7 @@ while True:
 
         elif command in ["help", "halp", "", "eehm", "?", "??", "???"]:
             if len(splitIn) == 1:
-                print("Possible commands are: go, look, take, attack and quit")
+                print("Possible commands are: go, look, take, attack, map and quit (and help)")
             else:
                 if splitIn[1] in helpText:
                     print()
@@ -378,7 +378,8 @@ while True:
             else:
                 print("You shout, strike ... and land on the floor.")
                 print("Your bloody nose tells you that there was no enemy to attack..")
-
+        else:
+            print("This is not a valid command. Write help for a list of possible commands.")
     except Exception as e: 
         print(e)
         print("OOOPS!!! Either I or you made a mistake.")
