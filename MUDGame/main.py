@@ -297,6 +297,18 @@ while True:
                         elif commAdmin == "mob":
                             print("Creating new mob...")
                             npc.newMob()
+                        elif commAdmin == "map":
+                            mapL = []
+                            for o in roomL:
+                                oCoord = o[4:]    
+                                x = oCoord.split("_")[0]
+                                y = oCoord.split("_")[1]
+                                mapL.append((int(x),int(y)))
+                            bigY = max(mapL,key=operator.itemgetter(1))[1]
+                            bigX = max(mapL,key=operator.itemgetter(0))[0]
+                            litY = min(mapL,key=operator.itemgetter(1))[1]
+                            litX = min(mapL,key=operator.itemgetter(0))[0]
+                            mapper(litX, bigX, litY, bigY, mapL)
                         elif commAdmin == "quit":
                             print()
                             print("Returning to game...")
