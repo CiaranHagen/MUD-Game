@@ -167,10 +167,40 @@ print()
 print(("----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " "))
 print()
 
+commandL = []
+
 while True:
     try:
+        """
+        i = len(commandL)-1
+        while True:#making a loop
+            print(colors.fg.red + "> ", end='')
+            try: #used try so that if user pressed other than the given key error will not be shown
+                if getch() == ('^[[1;5A '):#if key is pressed 
+                    if i != 0:  
+                        i -= 1
+                        inputter = commandL[i]
+                        print(inputter)
+                    
+                elif getch() == ('^[[1;5B '):#if key is pressed 
+                    if i != len(commandL)-1:
+                        i += 1
+                        inputter = commandL[i]
+                        print(inputter)
+                elif getch() == ('K_RETURN'):
+                    break
+                else:
+                    inputter = input()
+                    break
+                print("", end="\r")
+            except:
+                break
+        """
+        
         inputter = input(colors.fg.red + "> " + colors.fg.orange)
+                
         print(colors.reset , end = '')
+        commandL.append(inputter)
         command = ""
         splitIn = inputter.split(" ")
         if len(splitIn) != 1:
@@ -240,7 +270,7 @@ while True:
 
         elif command in ["take", "grab", "borrow"]:
             if len(splitIn) == 1:
-                print("You grab in to the void.. You own now.. nothing.")
+                print("You grab in to the void.. You now own.. nothing.")
             else:
                 if splitIn[1] in cRoom.inventory:
                     print(cRoom.inventory[splitIn[1]] + "\n You acquired " + splitIn[1])
@@ -248,7 +278,7 @@ while True:
                     # cRoom.inventory.pop(splitIn[1])
 
                 else:
-                    print("There is no such thing here weirdo.")
+                    print("There is no such thing here, " + random.choice(["weirdo", "nutter", "whippersnapper", "beavus", "butthead", "you Thraal", "whacko"]) + ".")
 
         #========= Map ==========#
 
@@ -340,6 +370,11 @@ while True:
             else:
                 print("Returning to the game...")
 
+        #========= FizzBuzz =========#
+
+        elif command == "fizz":
+            print("buzz")
+
         #========= help [with commands] =========#
 
         elif command in ["help", "halp", "", "eehm", "?", "??", "???"]:
@@ -361,6 +396,7 @@ while True:
             if len(splitIn) > 1:
                 if splitIn[1] in npcL:
                     attackMob = npc.loadNpc(splitIn[1], "mob")
+                    os.system("clear")
                     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
                     loser = attack.fight(cChar, attackMob)
                     if loser == "mob":
@@ -369,7 +405,7 @@ while True:
                         for c in npcL:
                             npc.loadNpc(c, "mob")
                     elif loser == "char":
-                        for c in char.inventory:
+                        for c in cChar.inventory:
                             cRoom.inventory.append(c)
                         cChar.inventory = []
                         cRoom = loadCRoom()
