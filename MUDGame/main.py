@@ -280,6 +280,7 @@ while True:
             print(colors.reset , end = '')
             if (uName == "42") and (pwd == "42"):
                 print("Username and Password correct. (\"quit\" to exit)")
+                print("Commands are: room, mob, map, quit")
                 while True:
                     try:
                         admIn = input(colors.fg.red + ">> " + colors.fg.pink)
@@ -291,12 +292,15 @@ while True:
                         commAdmin = splitMin[0]
                         
                         if commAdmin == "room":
-                            coord = input("Please enter the coordinates: ")
+                            coord = input("Please enter the coordinates (seperate by space): ")
                             room.newRoom(int(coord.split(' ')[0]), int(coord.split(' ')[1]))
                             roomL = room.loadRooms()
                         elif commAdmin == "mob":
                             print("Creating new mob...")
                             npc.newMob()
+                            npcL = npc.loadNpcs()
+                            for c in npcL:
+                                npc.loadNpc(c, "mob")
                         elif commAdmin == "map":
                             mapL = []
                             for o in roomL:

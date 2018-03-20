@@ -10,6 +10,7 @@ class Npc:
         self.inventory = []
         self.location = [0,0]
         self.level = 0
+        self.health = 100
         return
 
     def move(self):
@@ -26,6 +27,7 @@ class Npc:
                 self.location = (self.location[0] + 1, self.location[1])
             elif direction == ('west' or 'w'):
                 self.location = (self.location[0] - 1, self.location[1])
+         self.save()
         return
 
     def save(self):
@@ -92,19 +94,6 @@ def newMob():
     return loadNpc(name, "mob")
 
 #------------------------------------------------------------------------------
-
-def move(self, direction):
-        exec('possibleDirections = ' + 'room' + str(self.location[0]) + '_' + str(self.location[1]) + '.possibleDirections')
-        if direction in possibleDirections:
-            if direction == ('north' or 'n'):
-                self.location = (self.location[0], self.location[1] + 1)
-            elif direction == ('south' or 's'):
-                self.location = (self.location[0], self.location[1] - 1)
-            elif direction == ('east' or 'e'):
-                self.location = (self.location[0] + 1, self.location[1])
-            elif direction == ('west' or 'w'):
-                self.location = (self.location[0] - 1, self.location[1])
-        return
 
 def loadNpcs():
     '''

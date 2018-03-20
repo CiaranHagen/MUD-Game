@@ -12,6 +12,7 @@ class Character:
         self.level = 0
         self.player = ''
         self.achievements = {"map":False}
+        self.health = 100
         return
 
     def addItem(self, item, descr):
