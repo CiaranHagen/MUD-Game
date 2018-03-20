@@ -192,10 +192,11 @@ while True:
                     # ------- Move mobs -------- #
                     
                     for c in npcL:
-                        mobber = npc.loadNpc(c, "mob")
-                        mobber.move()
-                    for c in npcL:
-                        npc.loadNpc(c, "mob")
+                        moveRan = random.randint(0,2)
+                        if moveRan == 0:
+                            mobber = npc.loadNpc(c, "mob")
+                            mobber.move()
+                            npc.loadNpc(c, "mob")
                      # -------------------------- #   
                 else:
                     print("You cannot go " + splitIn[1] + ". Possible directions are: ", end = '')
@@ -359,13 +360,19 @@ while True:
         elif command in ["attack", "strike", "kill", "engage", "challenge"]:
             if len(splitIn) > 1:
                 if splitIn[1] in npcL:
+                    attackMob = npc.loadNpc(splitIn[1], "mob")
                     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
-                    loser = attack.fight(cChar, splitIn[1])
+                    loser = attack.fight(cChar, attackMob)
                     if loser == "mob":
                         newMob = npc.newMob()
                         npcL = npc.loadNpcs()
                         for c in npcL:
                             npc.loadNpc(c, "mob")
+                    elif loser == "char":
+                        for c in char.inventory:
+                            cRoom.inventory.append(c)
+                        cChar.inventory = []
+                        cRoom = loadCRoom()
                 else:
                     print("You let loose a war-cry, incoherently screaming random names. Anyone present looks at you in confusion. No-one here seems to go by that name.")
             else:

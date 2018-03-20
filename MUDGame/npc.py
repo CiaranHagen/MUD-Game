@@ -27,7 +27,7 @@ class Npc:
                 self.location = (self.location[0] + 1, self.location[1])
             elif direction == ('west' or 'w'):
                 self.location = (self.location[0] - 1, self.location[1])
-         self.save()
+        self.save()
         return
 
     def save(self):
