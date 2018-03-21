@@ -5,6 +5,7 @@ from pickle import Unpickler
 class Character:
     def __init__(self, name):
         self.name = name
+        self.race = ''
         self.inventory = {}
         self.onPerson = {'weapon':"default", 'shield':"default", 'armor':"default", 'bag':'default'}
         self.characterSkin = "default"
@@ -13,6 +14,11 @@ class Character:
         self.player = ''
         self.achievements = {"map":False}
         self.health = 100
+        self.stats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
+        return
+
+    def addStatVal(self, key, value):
+        self.stats[key] += value
         return
 
     def addItem(self, item, descr):
@@ -86,25 +92,3 @@ def loadCharacter(name, cPlayerName):
             return "new"
         else:
             return loadCharacter(name, cPlayerName)
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

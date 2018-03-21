@@ -63,10 +63,41 @@ def onstart():
         print(colors.reset , end = '')
         if newCharacter == "1":
             print("Character creation \n")
-
-            charactername = input("Character name: " + colors.fg.orange)
-            print(colors.reset , end = '')
-            currentChar = character.newCharacter(charactername, currentPlayer.username)
+            while True:
+                charactername = input("Character name: " + colors.fg.orange)
+                raceList = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfli', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
+                while charactername == '':
+                    print("Only I am the one without name!!")
+                    charactername = input("Character name: \n> " + colors.fg.orange)
+                charRace = ''
+                while True:
+                    charRace = input("What is your race?\nYou can choose from: orc, dwarf, elf, troll, succubus, gelfling, gockcobbler, shinigami and hickdead.\n> " + colors.fg.orange)
+                    if charRace in raceList:
+                        break
+                    else:
+                        print("This race is not known to me.. Try again")
+                while True:
+                    print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill")
+                    strength = input("How strong are you?: \n> ")
+                    agility = input("How agile are you?: \n> ")
+                    wit = input("How would you rate your intelligence?: \n> ")
+                    luck = input("Are you feeling lucky?: \n> ")
+                    try:
+                        if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
+                            print("What the hell should this be? Well, I don't really care...")
+                            break
+                        else:
+                            print("Do you even math?")
+                    except:
+                        print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
+                print(colors.reset , end = '')
+                currentChar = character.newCharacter(charactername, currentPlayer.username)
+                currentChar.race = charRace
+                currentChar.stats['strength'] = int(strength)
+                currentChar.stats['agility'] = int(agility)
+                currentChar.stats['wit'] = int(wit)
+                currentChar.stats['luck'] = int(luck)
+                break
             print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
             wait = input()
         else:
@@ -91,7 +122,7 @@ def onstart():
 def mapper(litX, bigX, litY, bigY, mapL):
     drawL = []
     distX = (-1) * litX
-    distY = (-1) * litY 
+    distY = (-1) * litY
     for j in range(litY, bigY+1):
         drawL.append([])
         for i in range(litX, bigX+1):
@@ -114,15 +145,15 @@ def mapper(litX, bigX, litY, bigY, mapL):
             else:
                 print(colors.fg.cyan, end='')
             print(drawL[j + distY][i + distX], end='')
-            if (drawL[j + distY][i + distX] == "O") and ((i + distX) != (len(drawL[j+distY])-1)):       
+            if (drawL[j + distY][i + distX] == "O") and ((i + distX) != (len(drawL[j+distY])-1)):
                 if "east" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
                     print(colors.fg.cyan + "--", end='')
                 else:
                     print("  ", end='')
             else:
                 print(" ", end='')
-            
-            if (drawL[j + distY][i + distX] == "O") and ((j + distY) != 0):       
+
+            if (drawL[j + distY][i + distX] == "O") and ((j + distY) != 0):
                 if "south" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
                     spaceLine += "|  "
                 else:
@@ -134,7 +165,7 @@ def mapper(litX, bigX, litY, bigY, mapL):
         print(spaceLine)
     print(colors.reset , end = '')
     print(dis*"=" + " MAP " + dis*"=")
-    print() 
+    print()
 
 def loadCRoom():
     roomName = "room" + str(cChar.location[0]) + "_" + str(cChar.location[1])
@@ -176,13 +207,13 @@ while True:
         while True:#making a loop
             print(colors.fg.red + "> ", end='')
             try: #used try so that if user pressed other than the given key error will not be shown
-                if getch() == ('^[[1;5A '):#if key is pressed 
-                    if i != 0:  
+                if getch() == ('^[[1;5A '):#if key is pressed
+                    if i != 0:
                         i -= 1
                         inputter = commandL[i]
                         print(inputter)
-                    
-                elif getch() == ('^[[1;5B '):#if key is pressed 
+
+                elif getch() == ('^[[1;5B '):#if key is pressed
                     if i != len(commandL)-1:
                         i += 1
                         inputter = commandL[i]
@@ -196,9 +227,9 @@ while True:
             except:
                 break
         """
-        
+
         inputter = input(colors.fg.red + "> " + colors.fg.orange)
-                
+
         print(colors.reset , end = '')
         commandL.append(inputter)
         command = ""
@@ -218,16 +249,16 @@ while True:
                     cRoom.save()
                     cRoom = loadCRoom()
                     print("You go " + splitIn[1] + ".")
-                    
+
                     # ------- Move mobs -------- #
-                    
+
                     for c in npcL:
                         moveRan = random.randint(0,2)
                         if moveRan == 0:
                             mobber = npc.loadNpc(c, "mob")
                             mobber.move()
                             npc.loadNpc(c, "mob")
-                     # -------------------------- #   
+                     # -------------------------- #
                 else:
                     print("You cannot go " + splitIn[1] + ". Possible directions are: ", end = '')
                     for key in cRoom.possibleDirections:
@@ -286,11 +317,11 @@ while True:
             os.system("clear")
             mapL = []
             for o in roomL:
-                oCoord = o[4:]    
+                oCoord = o[4:]
                 x = oCoord.split("_")[0]
                 y = oCoord.split("_")[1]
                 mapL.append((int(x),int(y)))
-            if cChar.achievements["map"] == True: 
+            if cChar.achievements["map"] == True:
                 bigY = max(mapL,key=operator.itemgetter(1))[1]
                 bigX = max(mapL,key=operator.itemgetter(0))[0]
                 litY = min(mapL,key=operator.itemgetter(1))[1]
@@ -301,9 +332,9 @@ while True:
                 bigY = cChar.location[1] + 1
                 litY = cChar.location[1] - 1
             mapper(litX, bigX, litY, bigY, mapL)
-        
+
         #========= Admin part ==========#
-        
+
         elif command == "admin":
             uName = input("Admin username: " + colors.invisible)
             print(colors.reset , end = '')
@@ -321,7 +352,7 @@ while True:
                         for w in splitMin:
                             w = w.lower()
                         commAdmin = splitMin[0]
-                        
+
                         if commAdmin == "room":
                             coord = input("Please enter the coordinates (seperate by space): ")
                             room.newRoom(int(coord.split(' ')[0]), int(coord.split(' ')[1]))
@@ -337,7 +368,7 @@ while True:
                         elif commAdmin == "map":
                             mapL = []
                             for o in roomL:
-                                oCoord = o[4:]    
+                                oCoord = o[4:]
                                 x = oCoord.split("_")[0]
                                 y = oCoord.split("_")[1]
                                 mapL.append((int(x),int(y)))
@@ -363,12 +394,17 @@ while True:
                             break
                         else:
                             print("Possible commands are \"room\", \"mob\" and \"quit\".")
+<<<<<<< Updated upstream
                     except Exception as e:
                         print(e)
                         print("Weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee... Samfing diiidn't wörk.") 
+=======
+                    except:
+                        print("Weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee... Samfing diiidn't wörk.")
+>>>>>>> Stashed changes
             else:
                 print("Username or password incorrect.")
-                        
+
 
         #========= Quit Sequence ==========#
 
@@ -430,6 +466,6 @@ while True:
         else:
             print(random.choice(["What the hell are you trying to say?", "STOP MUMBLING!", "Huh?", "Wut?"]), end='   ')
             print("(Write \"help\" for help. (Why else...))")
-    except Exception as e: 
+    except Exception as e:
         print(e)
         print("OOOPS!!! Either I or you made a mistake.")
