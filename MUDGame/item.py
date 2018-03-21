@@ -1,16 +1,20 @@
+from pickle import Pickler
+from pickle import Unpickler
+
 class Item:
-    def __init__(self, name, level, cost, description):
+    def __init__(self, name, level, cost, description, giver, health):
         self.name = name
         self.level = level
         self.cost = cost,
         self.description = description
         self.giver = giver
+        self.health = health
 
     def save(self, kind):
         try:
             f = open("../data/items/"+ kind +"_"+ self.name + ".txt", "wb")
         except FileNotFoundError:
-            print('NPC file not found. Unable to save progress.')
+            print('Item file not found. Unable to save progress.')
             print()
             return
         Pickler(f).dump(self)
@@ -18,72 +22,78 @@ class Item:
         return
 
     def loadItem(name, kind):
-    '''
-    takes the npc name and kind,
-    returns the npc object
-    '''
-    try:
-        f = open("../data/items/" + kind + "_" + name + ".txt", "rb")
-    except FileNotFoundError:
-        print("Item file not found. Unable to load progress. \n")
-        print("Please enter a valid Item name or kind.")
-    item = Unpickler(f).load()
-    f.close()
-    return item
+        '''
+        takes the npc name and kind,
+        returns the npc object
+        '''
+        try:
+            f = open("../data/items/" + kind + "_" + name + ".txt", "rb")
+        except FileNotFoundError:
+            print("Item file not found. Unable to load progress. \n")
+            print("Please enter a valid Item name or kind.")
+        item = Unpickler(f).load()
+        f.close()
+        return item
         
 class Weapon(Item):
-    def __init__(self, name, level, cost, description, attackValue, giver, handed):
-        Item.__init__(self, name, level, cost, description, giver)
+    def __init__(self, name, level, cost, description, attackValue, giver, handed, health):
+        Item.__init__(self, name, level, cost, description, giver, health)
         self.attackValue = attackValue
         self.handed = handed
 
 class Shield(Item):
-    def __init__(self, name, level, cost, description, defenceValue, giver):
-        Item.__init__(self, name, level, cost, description, giver)
+    def __init__(self, name, level, cost, description, defenceValue, giver, health):
+        Item.__init__(self, name, level, cost, description, giver, health)
         self.defenceValue = defenceValue
 
 class Armor(Item):
-    def __init__(self, name, level, cost, description, defenceValue, giver):
-        Item.__init__(self, name, level, cost, description, giver)
+    def __init__(self, name, level, cost, description, defenceValue, giver, health):
+        Item.__init__(self, name, level, cost, description, giver, health)
         self.defenceValue = defenceValue
 
 def newWeapon():
     name = input("Name: ")
-    level = input("Level: ")
-    cost = input("Cost: ")
+    level = int(input("Level: "))
+    cost = int(input("Cost: "))
     description = input("Description: ")
-    attackValue = input("Attack Value: ")
+    attackValue = int(input("Attack Value: "))
+    health = int(input("Health: "))
     giver = {"strength":0, "agility":0, "wit":0, "luck":0}
+    print("Effects on stats:")
     for key in giver:
         giver[key] = int(input(key + ": "))
     handed = input("One-handed (1) or Two-handed (2)? ")
-    weapon = Weapon(name, level, cost, description, attackValue, giver, handed)
+    weapon = Weapon(name, level, cost, description, attackValue, giver, handed, health)
     weapon.save("wpn")
     print("New weapon created.")
 
 def newShield():
     name = input("Name: ")
-    level = input("Level: ")
-    cost = input("Cost: ")
+    level = int(input("Level: "))
+    cost = int(input("Cost: "))
     description = input("Description: ")
-    defenceValue = input("Defence Value: ")
+    defenceValue = int(input("Defence Value: "))
+    health = int(input("Health: "))
     giver = {"strength":0, "agility":0, "wit":0, "luck":0}
+    print("Effects on stats:")
     for key in giver:
         giver[key] = int(input(key + ": "))
-    shield = Shield(name, level, cost, description, defenceValue, giver)
+    shield = Shield(name, level, cost, description, defenceValue, giver, health)
     shield.save("shd")
     print("New shield created.")
 
 def newArmor():
     name = input("Name: ")
-    level = input("Level: ")
-    cost = input("Cost: ")
+    level = int(input("Level: "))
+    cost = int(input("Cost: "))
     description = input("Description: ")
-    defenceValue = input("Defence Value: ")
+    defenceValue = int(input("Defence Value: "))
+    health = int(input("Health: "))
     giver = {"strength":0, "agility":0, "wit":0, "luck":0}
+    print("Effects on stats:")
     for key in giver:
         giver[key] = int(input(key + ": "))
-    armor = Armor(name, level, cost, description, defenceValue, giver)
+    armor = Armor(name, level, cost, description, defenceValue, giver, health)
     armor.save("arm")
     print("New armor created.")
     

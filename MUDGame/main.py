@@ -1,4 +1,4 @@
-import character, room, npc, player, attack, os, operator, random
+import character, room, npc, player, attack, os, operator, random, item
 
 class colors:
     '''Colors class:reset all colors with colors.reset; two
@@ -311,7 +311,7 @@ while True:
             print(colors.reset , end = '')
             if (uName == "42") and (pwd == "42"):
                 print("Username and Password correct. (\"quit\" to exit)")
-                print("Commands are: room, mob, map, quit")
+                print("Commands are: room, mob, map, quit, item")
                 while True:
                     try:
                         admIn = input(colors.fg.red + ">> " + colors.fg.pink)
@@ -348,7 +348,7 @@ while True:
                             mapper(litX, bigX, litY, bigY, mapL)
 
                         elif commAdmin == "item":
-                            kind = input("weapon, armor or shield")
+                            kind = input("weapon, armor or shield: ")
                             if kind == "weapon":
                                 item.newWeapon()
                             elif kind == "shield":
@@ -363,7 +363,8 @@ while True:
                             break
                         else:
                             print("Possible commands are \"room\", \"mob\" and \"quit\".")
-                    except:
+                    except Exception as e:
+                        print(e)
                         print("Weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee... Samfing diiidn't wörk.") 
             else:
                 print("Username or password incorrect.")
