@@ -386,7 +386,7 @@ while True:
                                 item.newShield()
                             elif kind == "armor":
                                 item.newArmor()
-    
+
                         elif commAdmin == "quit":
                             print()
                             print("Returning to game...")
@@ -394,14 +394,11 @@ while True:
                             break
                         else:
                             print("Possible commands are \"room\", \"mob\" and \"quit\".")
-<<<<<<< Updated upstream
+
                     except Exception as e:
                         print(e)
-                        print("Weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee... Samfing diiidn't wörk.") 
-=======
-                    except:
                         print("Weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee... Samfing diiidn't wörk.")
->>>>>>> Stashed changes
+
             else:
                 print("Username or password incorrect.")
 
