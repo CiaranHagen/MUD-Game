@@ -1,5 +1,6 @@
 import os, npc, random, time
 weaponDict = {
+"""
 #[name, level, cost]
 "default":[1, 0],
 "rusty sword":[2, 20],
@@ -29,9 +30,10 @@ armorDict = {
 "elven armor":[6, 300],
 "rayshielded suit":[10, 1000]
 }
+"""
 def hit(attacker, defender):
-    ranDamage = random.randint(0, 11)
-    Damage = ranDamage * weaponDict[attacker.onPerson["weapon"]][0] - armorDict[defender.onPerson["armor"]][0] - shieldDict[defender.onPerson["shield"]][0]
+    ranDamage = random.randint(0 + attacker.stats["luck"], 11)
+    Damage = ranDamage * loadItem(attacker.onPerson["weapon"], "wpn").attackValue - loadItem(defender.onPerson["armor"], "arm").defenceValue - loadItem(defender.onPerson["shield"], "shd").defenceValue
     if Damage < 0:
         Damage = (-1) * Damage
     defender.health -= Damage

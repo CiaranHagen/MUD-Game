@@ -16,6 +16,20 @@ class Item:
         Pickler(f).dump(self)
         f.close()
         return
+
+    def loadItem(name, kind):
+    '''
+    takes the npc name and kind,
+    returns the npc object
+    '''
+    try:
+        f = open("../data/items/" + kind + "_" + name + ".txt", "rb")
+    except FileNotFoundError:
+        print("Item file not found. Unable to load progress. \n")
+        print("Please enter a valid Item name or kind.")
+    item = Unpickler(f).load()
+    f.close()
+    return item
         
 class Weapon(Item):
     def __init__(self, name, level, cost, description, attackValue, giver, handed):
@@ -34,33 +48,42 @@ class Armor(Item):
         self.defenceValue = defenceValue
 
 def newWeapon():
-    name = input()
-    level = input()
-    cost = input()
-    description = input()
-    attackValue = input()
-    giver = input()
-    handed = input()
+    name = input("Name: ")
+    level = input("Level: ")
+    cost = input("Cost: ")
+    description = input("Description: ")
+    attackValue = input("Attack Value: ")
+    giver = {"strength":0, "agility":0, "wit":0, "luck":0}
+    for key in giver:
+        giver[key] = int(input(key + ": "))
+    handed = input("One-handed (1) or Two-handed (2)? ")
     weapon = Weapon(name, level, cost, description, attackValue, giver, handed)
     weapon.save("wpn")
+    print("New weapon created.")
 
 def newShield():
-    name = input()
-    level = input()
-    cost = input()
-    description = input()
-    defenceValue = input()
-    giver = input()
+    name = input("Name: ")
+    level = input("Level: ")
+    cost = input("Cost: ")
+    description = input("Description: ")
+    defenceValue = input("Defence Value: ")
+    giver = {"strength":0, "agility":0, "wit":0, "luck":0}
+    for key in giver:
+        giver[key] = int(input(key + ": "))
     shield = Shield(name, level, cost, description, defenceValue, giver)
     shield.save("shd")
+    print("New shield created.")
 
 def newArmor():
-    name = input()
-    level = input()
-    cost = input()
-    description = input()
-    defenceValue = input()
-    giver = input()
+    name = input("Name: ")
+    level = input("Level: ")
+    cost = input("Cost: ")
+    description = input("Description: ")
+    defenceValue = input("Defence Value: ")
+    giver = {"strength":0, "agility":0, "wit":0, "luck":0}
+    for key in giver:
+        giver[key] = int(input(key + ": "))
     armor = Armor(name, level, cost, description, defenceValue, giver)
     armor.save("arm")
+    print("New armor created.")
     

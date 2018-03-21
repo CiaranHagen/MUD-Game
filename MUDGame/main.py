@@ -326,12 +326,14 @@ while True:
                             coord = input("Please enter the coordinates (seperate by space): ")
                             room.newRoom(int(coord.split(' ')[0]), int(coord.split(' ')[1]))
                             roomL = room.loadRooms()
+
                         elif commAdmin == "mob":
                             print("Creating new mob...")
                             npc.newMob()
                             npcL = npc.loadNpcs()
                             for c in npcL:
                                 npc.loadNpc(c, "mob")
+
                         elif commAdmin == "map":
                             mapL = []
                             for o in roomL:
@@ -344,6 +346,16 @@ while True:
                             litY = min(mapL,key=operator.itemgetter(1))[1]
                             litX = min(mapL,key=operator.itemgetter(0))[0]
                             mapper(litX, bigX, litY, bigY, mapL)
+
+                        elif commAdmin == "item":
+                            kind = input("weapon, armor or shield")
+                            if kind == "weapon":
+                                item.newWeapon()
+                            elif kind == "shield":
+                                item.newShield()
+                            elif kind == "armor":
+                                item.newArmor()
+    
                         elif commAdmin == "quit":
                             print()
                             print("Returning to game...")
