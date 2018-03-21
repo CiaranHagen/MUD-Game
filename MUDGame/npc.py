@@ -7,10 +7,11 @@ class Npc:
     def __init__(self, name):
         self.race = ''
         self.name = name
-        self.inventory = []
+        self.inventory = {}
+        self.onPerson = {'weapon':"default", 'shield':"default", 'armor':"default"}
         self.location = [0,0]
         self.level = 0
-        self.health = 100
+        self.health = 90
         return
 
     def move(self):

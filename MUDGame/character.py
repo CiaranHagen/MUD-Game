@@ -6,7 +6,7 @@ class Character:
     def __init__(self, name):
         self.name = name
         self.inventory = {}
-        self.onPerson = {'sword':"default", 'shield':"default", 'armor':"default", 'bag':"default"}
+        self.onPerson = {'weapon':"default", 'shield':"default", 'armor':"default", 'bag':'default'}
         self.characterSkin = "default"
         self.location = [0,0]
         self.level = 0
