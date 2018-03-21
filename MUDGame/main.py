@@ -443,8 +443,8 @@ while True:
 
         elif command in ["attack", "strike", "kill", "engage", "challenge"]:
             if len(splitIn) > 1:
-                if splitIn[1] in npcL:
-                    attackMob = npc.loadNpc(splitIn[1], "mob")
+                if (splitIn[1][0].upper() + splitIn[1][1:]) in npcL:
+                    attackMob = npc.loadNpc((splitIn[1][0].upper() + splitIn[1][1:]), "mob")
                     os.system("clear")
                     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
                     loser = attack.fight(cChar, attackMob)
