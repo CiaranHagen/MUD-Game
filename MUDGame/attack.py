@@ -1,6 +1,7 @@
 import os, npc, random, time
-weaponDict = {
 """
+weaponDict = {
+
 #[name, level, cost]
 "default":[1, 0],
 "rusty sword":[2, 20],
