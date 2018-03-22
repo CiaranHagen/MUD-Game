@@ -55,7 +55,7 @@ def onstart():
         while True:
             charactername = input("Character name: " + colors.fg.orange)
             print(colors.reset , end = '')
-            raceList = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfli', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
+            raceList = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfling', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
             while charactername == '':
                 print("Only I am the one without name!!")
                 charactername = input("Character name: \n> " + colors.fg.orange)
@@ -115,7 +115,7 @@ def onstart():
             while True:
                 charactername = input("Character name: " + colors.fg.orange)
                 print(colors.reset , end = '')
-                raceList = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfli', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
+                raceList = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfling', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
                 while charactername == '':
                     print("Only I am the one without name!!")
                     charactername = input("Character name: \n> " + colors.fg.orange)
