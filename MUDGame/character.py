@@ -6,6 +6,7 @@ class Character:
     def __init__(self, name):
         self.name = name
         self.race = ''
+        self.job = ''
         self.inventory = {}
         self.onPerson = {'weapon':"default", 'shield':"default", 'armor':"default", 'bag':'default'}
         self.characterSkin = "default"
