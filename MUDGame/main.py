@@ -97,35 +97,35 @@ def onstart():
             charJob = ''
             def choice(charJob):
                 while True:
-                    print("Do you wish to choose {} as your class ? \n"
-                    "[y/n]".format(charJob.upper()))
-                    answer = input('> ').lower()
+                    print("Do you wish to choose " + colors.fg.cyan + str(charJob.upper()) + colors.reset + " as your class ? \n["
+                          + colors.fg.green + "y" + colors.reset + "/" + colors.fg.red + "n" + colors.reset , end = ''  + "]")
+                    answer = input('> ' + colors.fg.orange).lower()
+                    print(colors.reset , end = '')
                     if answer == 'y':
                         return False
                     if answer == 'n':
                         return True
                     else:
-                        print ("this is not a valid input, try again ... \n"
-                               "Do you wish to choose {} as your class ? \n"
-                               "[y/n]".format(charJob.upper()))
-                        return True
+                        print ("this is not a valid input, try again ... \n")
+                        return choice(charJob)
 
             jobList = ["warrior", "rogue", "beggar"]
 
             run = True
             while run:
                 charJob = input("What class do you choose? \n"
-                            "You can choose from: {}\n> ".format(jobList)).lower()
+                            "You can choose from:  "+ colors.fg.cyan +"{}\n> ".format(jobList)).lower()
+                print(colors.reset , end = '')
 
                 if charJob in jobList:
                     if charJob == "warrior":
                         print('warriors are a heavy class known for their strength and proficiency with swords & shields\n')
-                        print('you get a bonus of +5 on strength, proficiency with swords & shields and bonus on any armor')
-                        print('but you loose out on 1 wit and 1 agility')
+                        print('you get a bonus of ' + colors.fg.cyan + '+5 on strength' + colors.reset , end = '' + ', proficiency with swords & shields and bonus on any armor')
+                        print('but you loose out on ' + colors.fg.red + '1 wit and 1 agility' + colors.reset , end = '')
                         run = choice(charJob)
                     elif charJob == "rogue":
                         print('rogues are a nimble class known for their agility and proficiency with daggers\n')
-                        print('you get a bonus of +3 on agility, proficiency with daggers and bonus on light armor')
+                        print('you get a bonus of ' + colors.fg.cyan + '+3 on agility ' + colors.reset , end = '' + ', proficiency with daggers and bonus on light armor')
                         run = choice(charJob)
                     else:
                         print('beggars are beggars, nothing special .... what did you expect ?\n')
@@ -136,13 +136,13 @@ def onstart():
                     print("This class is not known to me.. Try again.\n")
             while True:
                 print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.")
-                strength = input("How strong are you?: \n> "+ colors.fg.orange)
+                strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.orange)
                 print(colors.reset , end = '')
-                agility = input("How agile are you?: \n> "+ colors.fg.orange)
+                agility = input("How " + colors.fg.cyan + "agile " + colors.reset + "are you?: \n> "+ colors.fg.orange)
                 print(colors.reset , end = '')
-                wit = input("How would you rate your intelligence?: \n> "+ colors.fg.orange)
+                wit = input("How would you rate your " + colors.fg.cyan + "intelligence" + colors.reset + "?: \n> "+ colors.fg.orange)
                 print(colors.reset , end = '')
-                luck = input("Are you feeling lucky?: \n> "+ colors.fg.orange)
+                luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.orange)
                 print(colors.reset , end = '')
                 try:
                     if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
@@ -162,25 +162,25 @@ def onstart():
             currentChar.race = charRace
             currentChar.job = charJob
             if currentChar.job == 'warrior':
-                currentChar.stats['strength'] = int(strength+5)
-                currentChar.stats['agility'] = int(agility-1)
-                currentChar.stats['wit'] = int(wit-1)
+                currentChar.stats['strength'] = int(strength)+5
+                currentChar.stats['agility'] = int(agility)-1
+                currentChar.stats['wit'] = int(wit)-1
                 currentChar.stats['luck'] = int(luck)
             if currentChar.job == 'rogue':
                 currentChar.stats['strength'] = int(strength)
-                currentChar.stats['agility'] = int(agility+3)
-                currentChar.stats['wit'] = int(wit+1)
-                currentChar.stats['luck'] = int(luck+1)
+                currentChar.stats['agility'] = int(agility)+3
+                currentChar.stats['wit'] = int(wit)+1
+                currentChar.stats['luck'] = int(luck)+1
             if currentChar.job == 'beggar':
                 currentChar.stats['strength'] = int(strength)
                 currentChar.stats['agility'] = int(agility)
-                currentChar.stats['wit'] = int(wit+2)
-                currentChar.stats['luck'] = int(luck+2)
-            print('You are :\n')
-            print('Name: '+ str(charactername))
-            print('Race: '+ str(charRace))
-            print('Job: '+ str(charJob))
-            print('Stats: '+ str(stats))
+                currentChar.stats['wit'] = int(wit)+2
+                currentChar.stats['luck'] = int(luck)+2
+            print()
+            print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(charactername))
+            print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(charRace))
+            print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(charJob))
+            print(colors.fg.orange + 'Stats: '+ colors.fg.green + str(currentChar.stats))
             break
 
         print(colors.reset , end = '')
