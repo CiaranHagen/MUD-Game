@@ -10,8 +10,8 @@ class Npc:
         self.inventory = {}
         self.onPerson = {'weapon':"default", 'shield':"default", 'armor':"default"}
         self.location = [0,0]
-        self.level = 0
-        self.health = 90
+        self.level = 1
+        self.health = 100 * self.level
         return
 
     def move(self):
@@ -90,7 +90,7 @@ def newMob():
     mob.race = race
     roomCoord = random.choice(os.listdir('../data/rooms/'))[4:-4]
     mob.location = [int(roomCoord[: len(roomCoord)//2]), int(roomCoord[(len(roomCoord)//2) + 1 :])]
-    mob.level = random.randint(0, 5)
+    mob.level = random.randint(1, 5)
     mob.save()
     return loadNpc(name, "mob")
 

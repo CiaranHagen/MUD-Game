@@ -1,4 +1,4 @@
-import os, npc, random, time
+import os, npc, random, time, item, character, room
 """
 weaponDict = {
 
@@ -33,8 +33,11 @@ armorDict = {
 }
 """
 def hit(attacker, defender):
-    ranDamage = random.randint(0 + attacker.stats["luck"], 11)
-    Damage = ranDamage * loadItem(attacker.onPerson["weapon"], "wpn").attackValue - loadItem(defender.onPerson["armor"], "arm").defenceValue - loadItem(defender.onPerson["shield"], "shd").defenceValue
+    ranDamage = random.randint(0, 51)
+    if type(attacker) == character.Character:
+        ranDamage = random.randint(0 + attacker.stats["luck"], 51)
+        ranDamage += attacker.stats["strength"]
+    Damage = ranDamage * item.loadItem(attacker.onPerson["weapon"], "wpn").attackValue - item.loadItem(defender.onPerson["armor"], "arm").defenceValue - item.loadItem(defender.onPerson["shield"], "shd").defenceValue
     if Damage < 0:
         Damage = (-1) * Damage
     defender.health -= Damage
@@ -45,17 +48,37 @@ def fight(char, npc):
     draw(npc)
     damageToll = 0
     while True:
-        damageToll += hit(char, npc)
-        time.sleep(1)
-        if npc.health <= 0:
-            os.system("clear")
-            print(damageToll)
-            print("You are victorious!")
-            drawDead(npc)
-            os.system("rm ../data/npcs/mob_" + npc.name + ".txt")
-            del npc
-            return "mob"
+        action = input("\033[31mo\033[33m-\033[90m(\033[37m==> ")
+        if action in ["hit", "slash", "lunge", "stab"]:
+            damageToll += hit(char, npc)
+            time.sleep(1)
+            if npc.health <= 0:
+                #os.system("clear")
+                print("You are victorious!")
+                drawDead(npc)
+                os.system("rm ../data/npcs/mob_" + npc.name + ".txt")
+                del npc
+                return "mob"
 
+        elif action in ["flee", "retreat", "run", "turn tail"]:
+            chance = random.randint(0, 2)
+            if chance == 0:
+                print("You manage to flee the scene and sit in a corner, shivering like the coward that you are.")
+                char.move(random.choice(room.loadRoom('room' + str(char.location[0]) + '_' + str(char.location[1])).possibleDirections.values()))
+                return "none"
+            else:
+                print("The enemy hit you back into the room.")        
+
+        elif action in ["dodge", "roll", "parry"]:
+            chance = random.randint(0, 2 + char.stats["agility"])
+            if chance in range(1, 2 + char.stats["agility"]):
+                print("You evade the enemy's attack.")
+                continue
+            else:
+                print("Bad luck. The enemy hit you anyways.")
+        else:
+            print("That is not an option...")
+            continue
         hit(npc, char)
         if char.health <= 0:
             print(damageToll)
@@ -98,7 +121,7 @@ def drawDead(mob):
     print()
     print("                   (    )")
     print("                  ((((()))")
-    print("                  |o\ /o)|")
+    print("                  |x\ /x)|")
     print("                  ( (  _')")
     print("                   (._.  /")
     print("                   \___,/")
@@ -107,7 +130,7 @@ def drawDead(mob):
     print()
     print()
     
-    print("                      . .")
+    print("\033[31m                      . .")
     print("                     ` ' `")
     print("                 .'''. ' .'''.")
     print("                  .. ' ' ..")
@@ -116,8 +139,8 @@ def drawDead(mob):
     print("                  ' .''.''. '")
     print("                   . . : . .")
     print("                  '   ':'   '")
-    print("                       :   __")
-    print("                  ,    :  '  ')")
+    print("                       :   \033[0m__")
+    print("                  ,   \033[31m :  \033[0m'  ')")
     print("    '.,_,,       (  .- .   .    )")
     print("     \   \\\\     ( '        )(    )")
     print("      \   \\\\    \.  _.__ ____( .  |")

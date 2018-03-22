@@ -1,4 +1,5 @@
 import character, room, npc, player, attack, os, operator, random, item
+import sys,tty,termios
 
 class colors:
     '''Colors class:reset all colors with colors.reset; two
@@ -40,6 +41,29 @@ class colors:
         cyan='\033[46m'
         lightgrey='\033[47m'
 
+class BreakIt(Exception): pass
+
+class _Getch:       
+    def __call__(self):
+            fd = sys.stdin.fileno()
+            old_settings = termios.tcgetattr(fd)
+            try:
+                tty.setraw(sys.stdin.fileno())
+                ch = sys.stdin.read(1)
+            finally:
+                termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+            return ch
+
+def getKey():
+    inkey = _Getch()
+    while(1):
+            k=inkey()
+            if k!='':break
+    return k
+
+##========================================================================
+##===================Interesting stuff starts here========================
+##========================================================================
 
 def onstart():
     newPlayer = input("Register (r) or log in (l)." + colors.fg.orange)
@@ -259,40 +283,86 @@ print()
 print(("----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " "))
 print()
 
-commandL = []
-
+commandL = ["help"]
 while True:
     try:
+        
+        #===============Key input part==================
         """
-        i = len(commandL)-1
+        I have NO idea how or why this works... but it does. DO NOT change ANYTHING!!! This took me 5 to 6 hours to make!!!!!!!
+        """
+        inputter = ''        
+        if len(commandL)>0:
+            i = len(commandL)
+        else:
+            i = 0
+        print(colors.fg.red + "> " + colors.reset + inputter, end="\r")
         while True:#making a loop
-            print(colors.fg.red + "> ", end='')
-            try: #used try so that if user pressed other than the given key error will not be shown
-                if getch() == ('^[[1;5A '):#if key is pressed
-                    if i != 0:
+            try: #used try so that if user pressed other than the given key error will not be shown                
+                if inputter[len(inputter)-2:len(inputter)] == "[A":
+                    print(' ' * (len(inputter)+2), end = '\r')
+                    if (len(commandL)>0) and (i != 0):
                         i -= 1
                         inputter = commandL[i]
-                        print(inputter)
-
-                elif getch() == ('^[[1;5B '):#if key is pressed
-                    if i != len(commandL)-1:
+                        print(colors.fg.red + "> " + colors.reset + inputter, end="\r")
+                    elif i == 0:
+                        inputter = "help"
+                        print(colors.fg.red + "> " + colors.reset + inputter, end="\r")
+                    else: 
+                        continue
+                elif inputter[len(inputter)-2:len(inputter)] == "[B":
+                    print(' ' * (len(inputter)+2), end = '\r')
+                    if (len(commandL)>0) and ( i != len(commandL)-1):
                         i += 1
                         inputter = commandL[i]
-                        print(inputter)
-                elif getch() == ('K_RETURN'):
-                    break
-                else:
-                    inputter = input()
-                    break
-                print("", end="\r")
-            except:
-                break
-        """
+                        print(colors.fg.red + "> " + colors.reset + inputter, end="\r")
+                    elif i == len(commandL)-1:
+                        inputter = ""
+                        print(colors.fg.red + "> " + colors.reset, end="\r")
+                    else: 
+                        continue
 
-        inputter = input(colors.fg.red + "> " + colors.fg.orange)
+                k = getKey()
+                print(' ' * (len(inputter)+2), end = '\r')
+                if (ord(k) == 27):#up key
+                    if (ord(k) == 91):
+                        if (ord(k) == 65):
+                            inputter = ''
+
+                elif (ord(k) == 27):#down key
+                    if (ord(k) == 91):
+                        if (ord(k) == 66):
+                            inputter = ''
+
+                elif ord(k) == 13: #enter
+                    commandL.append(inputter)
+                    if len(commandL)>0:
+                        i = len(commandL)-1
+                    else:
+                        i = 0
+                    print(colors.fg.red + "> " + colors.reset + inputter)
+                    dupliL = ["help"]
+                    commandL.reverse()
+                    for w in commandL:
+                        if w not in dupliL:
+                            dupliL.insert(1, w)
+                    commandL = dupliL
+                    raise BreakIt
+
+                elif ord(k) == 127: #backspace
+                    inputter = inputter[0:len(inputter)-1]
+                    print(colors.fg.red + "> " + colors.reset + inputter, end="\r")
+
+                else: #letters etc.
+                    inputter += k
+                    print(colors.fg.red + "> " + colors.reset + inputter, end="\r")
+            except BreakIt:
+                break
+        #=============================================================================
+
+        #inputter = input(colors.fg.red + "> " + colors.fg.orange)
 
         print(colors.reset , end = '')
-        commandL.append(inputter)
         command = ""
         splitIn = inputter.split(" ")
         if len(splitIn) != 1:

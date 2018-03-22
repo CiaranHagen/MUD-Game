@@ -13,7 +13,7 @@ class Character:
         self.level = 0
         self.player = ''
         self.achievements = {"map":False}
-        self.health = 100
+        self.health = 500
         self.stats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
         return
 
