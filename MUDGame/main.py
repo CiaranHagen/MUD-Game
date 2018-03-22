@@ -3,7 +3,7 @@ import sys,tty,termios
 
 class colors:
     '''Colors class:reset all colors with colors.reset; two
-    sub classes fg for foreground
+    sub classes fg for foregroun
     and bg for background; use as colors.subclass.colorname.
     i.e. colors.fg.red or colors.bg.greenalso, the generic bold, disable,
     underline, reverse, strike through,
@@ -80,6 +80,7 @@ def onstart():
             charactername = input("Character name: " + colors.fg.orange)
             print(colors.reset , end = '')
             raceList = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfling', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
+            jobList = ['warrior', 'rogue', 'beggar']
             while charactername == '':
                 print("Only I am the one without name!!")
                 charactername = input("Character name: \n> " + colors.fg.orange)
@@ -92,6 +93,62 @@ def onstart():
                     break
                 else:
                     print("This race is not known to me.. Try again.")
+            charJob = ''
+            while True:
+                try:
+                    charJob = input("What class do you choose?\nYou can choose from: warrior, rogue or beggar.\n> " + colors.fg.orange)
+                    print(colors.reset , end = '')
+                    if charJob in jobList:
+                        if charJob == 'warrior':
+                            print('warriors are a heavy class known for their strength and proficiency with swords & shields')
+                            print()
+                            print('you get a bonus of +5 on strength, proficiency with swords & shields and bonus on any armor')
+                            print('but you loose out on 1 wit and 1 agility')
+                            print()
+                            print("do you wish to choose WARRIOR as your class ?").lower
+                            print('[Y/N]')
+                            choice = input('>').lower
+                            if choice in ['yes', 'y', 'no', 'n']:
+                                if choice in ['yes', 'y']:
+                                    print('congraz, you are now officially a warrior !')
+                                    raise Found
+                            elif choice in ['no', 'n']:
+                                continue
+                        if charJob == 'rogue':
+                            print('rogues are a nimble class known for their agility and proficiency with daggers')
+                            print()
+                            print('you get a bonus of +3 on agility, proficiency with daggers and bonus on light armor')
+                            print()
+                            print("do you wish to choose ROGUE as your class ?")
+                            print('[Y/N]')
+                            choice = input('>').lower
+                            if choice in ['yes', 'y', 'no', 'n']:
+                                if choice in ['yes', 'y']:
+                                    print('congraz, you are now officially a rogue !')
+                                    raise Found
+                                elif choice in ['no', 'n']:
+                                    continue
+                        if charJob == 'beggar':
+                            print('beggars are beggars, nothing special .... what did you expect ?')
+                            print()
+                            print('you get a non-existant bonus of +999 on everything, proficiency begging and an additional amount of self-pity')
+                            print()
+                            print("do you wish to choose BEGGAR as your class ?").lower
+                            print('[Y/N]')
+                            choice = input('>').lower
+                            if choice in ['yes', 'y', 'no', 'n']:
+                                if choice in ['yes', 'y']:
+                                    print('congraz, you are now officially a beggar !')
+                                    print()
+                                    print('because you chose the useless, you gett a hidden buff')
+                                    raise Found
+                                elif choice in ['no', 'n']:
+                                    continue
+                    else:
+                        print("This class is not known to me.. Try again.")
+                    pass
+                except Found:
+                    break
             while True:
                 print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.")
                 strength = input("How strong are you?: \n> "+ colors.fg.orange)
@@ -118,10 +175,22 @@ def onstart():
             print(colors.reset , end = '')
             currentChar = character.newCharacter(charactername, currentPlayer.username)
             currentChar.race = charRace
-            currentChar.stats['strength'] = int(strength)
-            currentChar.stats['agility'] = int(agility)
-            currentChar.stats['wit'] = int(wit)
-            currentChar.stats['luck'] = int(luck)
+            currentChar.job = charJob
+            if currentChar.job == 'warrior':
+                currentChar.stats['strength'] = int(strength+5)
+                currentChar.stats['agility'] = int(agility-1)
+                currentChar.stats['wit'] = int(wit-1)
+                currentChar.stats['luck'] = int(luck)
+            if currentChar.job == 'rogue':
+                currentChar.stats['strength'] = int(strength)
+                currentChar.stats['agility'] = int(agility+3)
+                currentChar.stats['wit'] = int(wit+1)
+                currentChar.stats['luck'] = int(luck+1)
+            if currentChar.job == 'beggar':
+                currentChar.stats['strength'] = int(strength)
+                currentChar.stats['agility'] = int(agility)
+                currentChar.stats['wit'] = int(wit+2)
+                currentChar.stats['luck'] = int(luck+2)
             break
 
         print(colors.reset , end = '')
