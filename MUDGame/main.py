@@ -43,7 +43,7 @@ class colors:
 
 class BreakIt(Exception): pass
 
-class _Getch:       
+class _Getch:
     def __call__(self):
             fd = sys.stdin.fileno()
             old_settings = termios.tcgetattr(fd)
@@ -75,6 +75,7 @@ def onstart():
         print("Character creation \n")
 
         #i am lazy and will just copy char creation twice, at clean up we make a function of this in char.py anyway
+        # I am just as lazy and followed in your footsteps xD (Faolin)
 
         while True:
             charactername = input("Character name: " + colors.fg.orange)
@@ -94,61 +95,45 @@ def onstart():
                 else:
                     print("This race is not known to me.. Try again.")
             charJob = ''
-            while True:
-                try:
-                    charJob = input("What class do you choose?\nYou can choose from: warrior, rogue or beggar.\n> " + colors.fg.orange)
-                    print(colors.reset , end = '')
-                    if charJob in jobList:
-                        if charJob == 'warrior':
-                            print('warriors are a heavy class known for their strength and proficiency with swords & shields')
-                            print()
-                            print('you get a bonus of +5 on strength, proficiency with swords & shields and bonus on any armor')
-                            print('but you loose out on 1 wit and 1 agility')
-                            print()
-                            print("do you wish to choose WARRIOR as your class ?").lower
-                            print('[Y/N]')
-                            choice = input('>').lower
-                            if choice in ['yes', 'y', 'no', 'n']:
-                                if choice in ['yes', 'y']:
-                                    print('congraz, you are now officially a warrior !')
-                                    raise Found
-                            elif choice in ['no', 'n']:
-                                continue
-                        if charJob == 'rogue':
-                            print('rogues are a nimble class known for their agility and proficiency with daggers')
-                            print()
-                            print('you get a bonus of +3 on agility, proficiency with daggers and bonus on light armor')
-                            print()
-                            print("do you wish to choose ROGUE as your class ?")
-                            print('[Y/N]')
-                            choice = input('>').lower
-                            if choice in ['yes', 'y', 'no', 'n']:
-                                if choice in ['yes', 'y']:
-                                    print('congraz, you are now officially a rogue !')
-                                    raise Found
-                                elif choice in ['no', 'n']:
-                                    continue
-                        if charJob == 'beggar':
-                            print('beggars are beggars, nothing special .... what did you expect ?')
-                            print()
-                            print('you get a non-existant bonus of +999 on everything, proficiency begging and an additional amount of self-pity')
-                            print()
-                            print("do you wish to choose BEGGAR as your class ?").lower
-                            print('[Y/N]')
-                            choice = input('>').lower
-                            if choice in ['yes', 'y', 'no', 'n']:
-                                if choice in ['yes', 'y']:
-                                    print('congraz, you are now officially a beggar !')
-                                    print()
-                                    print('because you chose the useless, you gett a hidden buff')
-                                    raise Found
-                                elif choice in ['no', 'n']:
-                                    continue
+            def choice(charJob):
+                while True:
+                    print("Do you wish to choose {} as your class ? \n"
+                    "[y/n]".format(charJob.upper()))
+                    answer = input('> ').lower()
+                    if answer == 'y':
+                        return False
+                    if answer == 'n':
+                        return True
                     else:
-                        print("This class is not known to me.. Try again.")
-                    pass
-                except Found:
-                    break
+                        print ("this is not a valid input, try again ... \n"
+                               "Do you wish to choose {} as your class ? \n"
+                               "[y/n]".format(charJob.upper()))
+                        return True
+
+            jobList = ["warrior", "rogue", "beggar"]
+
+            run = True
+            while run:
+                charJob = input("What class do you choose? \n"
+                            "You can choose from: {}\n> ".format(jobList)).lower()
+
+                if charJob in jobList:
+                    if charJob == "warrior":
+                        print('warriors are a heavy class known for their strength and proficiency with swords & shields\n')
+                        print('you get a bonus of +5 on strength, proficiency with swords & shields and bonus on any armor')
+                        print('but you loose out on 1 wit and 1 agility')
+                        run = choice(charJob)
+                    elif charJob == "rogue":
+                        print('rogues are a nimble class known for their agility and proficiency with daggers\n')
+                        print('you get a bonus of +3 on agility, proficiency with daggers and bonus on light armor')
+                        run = choice(charJob)
+                    else:
+                        print('beggars are beggars, nothing special .... what did you expect ?\n')
+                        print('you get a non-existant bonus of +999 on everything,\n'
+                              'proficiency in begging and an additional amount of self-pity')
+                        run = choice(charJob)
+                else:
+                    print("This class is not known to me.. Try again.\n")
             while True:
                 print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.")
                 strength = input("How strong are you?: \n> "+ colors.fg.orange)
@@ -191,6 +176,11 @@ def onstart():
                 currentChar.stats['agility'] = int(agility)
                 currentChar.stats['wit'] = int(wit+2)
                 currentChar.stats['luck'] = int(luck+2)
+            print('You are :\n')
+            print('Name: '+ str(charactername))
+            print('Race: '+ str(charRace))
+            print('Job: '+ str(charJob))
+            print('Stats: '+ str(stats))
             break
 
         print(colors.reset , end = '')
@@ -221,6 +211,46 @@ def onstart():
                         break
                     else:
                         print("This race is not known to me.. Try again.")
+                charJob = ''
+                def choice(charJob):
+                    while True:
+                        print("Do you wish to choose {} as your class ? \n"
+                        "[y/n]".format(charJob.upper()))
+                        answer = input('> ').lower()
+                        if answer == 'y':
+                            return False
+                        if answer == 'n':
+                            return True
+                        else:
+                            print ("this is not a valid input, try again ... \n"
+                                   "Do you wish to choose {} as your class ? \n"
+                                   "[y/n]".format(charJob.upper()))
+                            return True
+
+                jobList = ["warrior", "rogue", "beggar"]
+
+                run = True
+                while run:
+                    charJob = input("What class do you choose? \n"
+                                "You can choose from: {}\n> ".format(jobList)).lower()
+
+                    if charJob in jobList:
+                        if charJob == "warrior":
+                            print('warriors are a heavy class known for their strength and proficiency with swords & shields\n')
+                            print('you get a bonus of +5 on strength, proficiency with swords & shields and bonus on any armor')
+                            print('but you loose out on 1 wit and 1 agility')
+                            run = choice(charJob)
+                        elif charJob == "rogue":
+                            print('rogues are a nimble class known for their agility and proficiency with daggers\n')
+                            print('you get a bonus of +3 on agility, proficiency with daggers and bonus on light armor')
+                            run = choice(charJob)
+                        else:
+                            print('beggars are beggars, nothing special .... what did you expect ?\n')
+                            print('you get a non-existant bonus of +999 on everything,\n'
+                                  'proficiency in begging and an additional amount of self-pity')
+                            run = choice(charJob)
+                    else:
+                        print("This class is not known to me.. Try again.\n")
                 while True:
                     print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.")
                     strength = input("How strong are you?: \n> "+ colors.fg.orange)
@@ -247,10 +277,27 @@ def onstart():
                 print(colors.reset , end = '')
                 currentChar = character.newCharacter(charactername, currentPlayer.username)
                 currentChar.race = charRace
-                currentChar.stats['strength'] = int(strength)
-                currentChar.stats['agility'] = int(agility)
-                currentChar.stats['wit'] = int(wit)
-                currentChar.stats['luck'] = int(luck)
+                currentChar.job = charJob
+                if currentChar.job == 'warrior':
+                    currentChar.stats['strength'] = int(strength+5)
+                    currentChar.stats['agility'] = int(agility-1)
+                    currentChar.stats['wit'] = int(wit-1)
+                    currentChar.stats['luck'] = int(luck)
+                if currentChar.job == 'rogue':
+                    currentChar.stats['strength'] = int(strength)
+                    currentChar.stats['agility'] = int(agility+3)
+                    currentChar.stats['wit'] = int(wit+1)
+                    currentChar.stats['luck'] = int(luck+1)
+                if currentChar.job == 'beggar':
+                    currentChar.stats['strength'] = int(strength)
+                    currentChar.stats['agility'] = int(agility)
+                    currentChar.stats['wit'] = int(wit+2)
+                    currentChar.stats['luck'] = int(luck+2)
+                print('You are :\n')
+                print('Name: '+ str(charactername))
+                print('Race: '+ str(charRace))
+                print('Job: '+ str(charJob))
+                print('Stats: '+ str(stats))
                 break
             print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
             wait = input()
@@ -355,19 +402,19 @@ print()
 commandL = ["help"]
 while True:
     try:
-        
+
         #===============Key input part==================
         """
         I have NO idea how or why this works... but it does. DO NOT change ANYTHING!!! This took me 5 to 6 hours to make!!!!!!!
         """
-        inputter = ''        
+        inputter = ''
         if len(commandL)>0:
             i = len(commandL)
         else:
             i = 0
         print(colors.fg.red + "> " + colors.reset + inputter, end="\r")
         while True:#making a loop
-            try: #used try so that if user pressed other than the given key error will not be shown                
+            try: #used try so that if user pressed other than the given key error will not be shown
                 if inputter[len(inputter)-2:len(inputter)] == "[A":
                     print(' ' * (len(inputter)+2), end = '\r')
                     if (len(commandL)>0) and (i != 0):
@@ -377,7 +424,7 @@ while True:
                     elif i == 0:
                         inputter = "help"
                         print(colors.fg.red + "> " + colors.reset + inputter, end="\r")
-                    else: 
+                    else:
                         continue
                 elif inputter[len(inputter)-2:len(inputter)] == "[B":
                     print(' ' * (len(inputter)+2), end = '\r')
@@ -388,7 +435,7 @@ while True:
                     elif i == len(commandL)-1:
                         inputter = ""
                         print(colors.fg.red + "> " + colors.reset, end="\r")
-                    else: 
+                    else:
                         continue
 
                 k = getKey()
