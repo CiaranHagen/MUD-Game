@@ -7,6 +7,7 @@ class Player:
         self.username = input("Please enter your desired username: " + colors.fg.orange)
         print(colors.reset , end = '')
         self.setPw()
+        self.admin = False
 
     def setPw(self):
         pw = input("Please enter a password: " + colors.invisible)
