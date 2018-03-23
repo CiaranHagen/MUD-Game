@@ -22,10 +22,11 @@ class Item:
         return
         
 class Weapon(Item):
-    def __init__(self, name, level, cost, description, attackValue, giver, handed, health):
+    def __init__(self, name, level, cost, description, attackValue, giver, handed, health, kind):
         Item.__init__(self, name, level, cost, description, giver, health)
         self.attackValue = attackValue
         self.handed = handed
+        self.kind = kind
 
 class Shield(Item):
     def __init__(self, name, level, cost, description, defenceValue, giver, health):
@@ -39,6 +40,7 @@ class Armor(Item):
 
 def newWeapon():
     name = input("Name: ")
+    kind = input("Kind: ")
     level = int(input("Level: "))
     cost = int(input("Cost: "))
     description = input("Description: ")
@@ -49,7 +51,7 @@ def newWeapon():
     for key in giver:
         giver[key] = int(input(key + ": "))
     handed = input("One-handed (1) or Two-handed (2)? ")
-    weapon = Weapon(name, level, cost, description, attackValue, giver, handed, health)
+    weapon = Weapon(name, level, cost, description, attackValue, giver, handed, health, kind)
     weapon.save("wpn")
     print("New weapon created.")
 

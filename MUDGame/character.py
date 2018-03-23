@@ -16,6 +16,7 @@ class Character:
         self.achievements = {"map":False}
         self.health = 500
         self.stats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
+        self.xp = 0
         return
 
     def addStatVal(self, key, value):
@@ -93,3 +94,9 @@ def loadCharacter(name, cPlayerName):
             return "new"
         else:
             return loadCharacter(name, cPlayerName)
+
+def checkLevel(char):
+    if char.xp >= 1000:
+        char.level += 1
+        char.xp -= 1000
+        

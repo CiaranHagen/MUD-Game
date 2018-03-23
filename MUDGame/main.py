@@ -538,6 +538,8 @@ while True:
                             print(items[key])
                     else:
                         print("Your inventory is empty")
+                elif splitIn[1] in npcL:
+                    print(npc.loadNpc(splitIn[1], "mob").description)
                 else:
                     print("There is no "+ splitIn[1] + " here.")
 

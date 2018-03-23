@@ -33,13 +33,40 @@ armorDict = {
 }
 """
 def hit(attacker, defender):
+    attWeapon = item.loadItem(attacker.onPerson["weapon"], "wpn")
+    defArmor = item.loadItem(defender.onPerson["armor"], "arm")  
+    defShield = item.loadItem(defender.onPerson["shield"], "shd")
     ranDamage = random.randint(0, 51)
+    attWeaponV = attWeapon.attackValue
+    defArmorV = defArmor.defenceValue
+    defShieldV = defShield.defenceValue
+
+    # Special calcs for characters
     if type(attacker) == character.Character:
+        attWeapon.health -= 1
+        if ((attWeapon.kind == "dagger") and (attacker.job == "rogue")) or ((attWeapon.kind == "sword") and (attacker.job == "warrior")):
+            attWeaponV += 2
+            
         ranDamage = random.randint(0 + attacker.stats["luck"], 51)
         ranDamage += attacker.stats["strength"]
-    Damage = ranDamage * item.loadItem(attacker.onPerson["weapon"], "wpn").attackValue - item.loadItem(defender.onPerson["armor"], "arm").defenceValue - item.loadItem(defender.onPerson["shield"], "shd").defenceValue
+    if type(defender) == character.Character:
+        if defArmor.health == 0:
+            print("Your armor is broken and fails to protect you.")
+        if defShield.health == 0:
+            print("Your shield is broken and fails to protect you.")
+    # General calcs
+    if defArmor.health > 0:
+        defArmor.health -= 1
+    elif defArmor.health == 0:
+        defArmorV = 0
+    if defShield.health > 0:
+        defShield.health -= 1
+    elif defShield.health == 0:
+        defShieldV = 0
+
+    Damage = ranDamage * attWeaponV - defArmorV - defShieldV
     if Damage < 0:
-        Damage = (-1) * Damage
+        Damage = 0
     defender.health -= Damage
     print(attacker.name + " hit " + defender.name + " for " + str(Damage) + " damage. \n")
     return Damage
@@ -50,20 +77,27 @@ def fight(char, npc):
     while True:
         action = input("\033[31mo\033[33m-\033[90m(\033[37m==> ")
         if action in ["hit", "slash", "lunge", "stab"]:
-            damageToll += hit(char, npc)
-            time.sleep(1)
-            if npc.health <= 0:
-                print(colors.invisible)
-                os.system("clear")
-                print(colors.reset)
-                print("You are victorious!")
-                drawDead(npc)
-                os.system("rm ../data/npcs/mob_" + npc.name + ".txt")
-                del npc
-                return "mob"
-
+            if item.loadItem(char.onPerson["weapon"], "wpn").health > 0:           
+                damageToll += hit(char, npc)
+                time.sleep(1)
+                if npc.health <= 0:
+                    char.xp += npc.level * 100
+                    character.checkLevel(char)
+                    print('\033[08m')
+                    os.system("clear")
+                    print('\033[0m')
+                    print("You are victorious!")
+                    print()
+                    print("Gained " + str(npc.level * 100) + " XP.")
+                    drawDead(npc)
+                    os.system("rm ../data/npcs/mob_" + npc.name + ".txt")
+                    del npc
+                    return "mob"
+            else:
+                print("Your weapon is broken and useless. You desperately try to punch a better equipped opponent, but fail miserably.")
+        
         elif action in ["flee", "retreat", "run", "turn tail"]:
-            chance = random.randint(0, 2)
+            chance = random.randint(0, 2 + char.stats["luck"])
             if chance == 0:
                 print("You manage to flee the scene and sit in a corner, shivering like the coward that you are.")
                 char.move(random.choice(room.loadRoom('room' + str(char.location[0]) + '_' + str(char.location[1])).possibleDirections.values()))
@@ -83,10 +117,9 @@ def fight(char, npc):
             continue
         hit(npc, char)
         if char.health <= 0:
-            print(damageToll)
             print("You have died.")
             char.location = [0,0]
-            char.health = 100
+            char.health = 500
             print()
             print("You have returned to the start-room.")
             print("".center(os.get_terminal_size().columns, "-"))
