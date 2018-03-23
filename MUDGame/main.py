@@ -1,4 +1,4 @@
-import character, room, npc, player, attack, os, operator, random, item
+import character, room, npc, player, attack, os, operator, random, item, job
 import sys,tty,termios
 
 class colors:
@@ -81,7 +81,6 @@ def onstart():
             charactername = input("Character name: " + colors.fg.orange)
             print(colors.reset , end = '')
             raceList = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfling', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
-            jobList = ['warrior', 'rogue', 'beggar']
             while charactername == '':
                 print("Only I am the one without name!!")
                 charactername = input("Character name: \n> " + colors.fg.orange)
@@ -94,48 +93,10 @@ def onstart():
                     break
                 else:
                     print("This race is not known to me.. Try again.")
-            charJob = ''
-            def choice(charJob):
-                while True:
-                    print("Do you wish to choose " + colors.fg.cyan + str(charJob.upper()) + colors.reset + " as your class ? \n["
-                          + colors.fg.green + "y" + colors.reset + "/" + colors.fg.red + "n" + colors.reset , end = ''  + "]")
-                    answer = input('> ' + colors.fg.orange).lower()
-                    print(colors.reset , end = '')
-                    if answer == 'y':
-                        return False
-                    if answer == 'n':
-                        return True
-                    else:
-                        print ("this is not a valid input, try again ... \n")
-                        return choice(charJob)
-
-            jobList = ["warrior", "rogue", "beggar"]
-
-            run = True
-            while run:
-                charJob = input("What class do you choose? \n"
-                            "You can choose from:  "+ colors.fg.cyan +"{}\n> ".format(jobList)).lower()
-                print(colors.reset , end = '')
-
-                if charJob in jobList:
-                    if charJob == "warrior":
-                        print('warriors are a heavy class known for their strength and proficiency with swords & shields\n')
-                        print('you get a bonus of ' + colors.fg.cyan + '+5 on strength' + colors.reset , end = '' + ', proficiency with swords & shields and bonus on any armor')
-                        print('but you loose out on ' + colors.fg.red + '1 wit and 1 agility' + colors.reset , end = '')
-                        run = choice(charJob)
-                    elif charJob == "rogue":
-                        print('rogues are a nimble class known for their agility and proficiency with daggers\n')
-                        print('you get a bonus of ' + colors.fg.cyan + '+3 on agility ' + colors.reset , end = '' + ', proficiency with daggers and bonus on light armor')
-                        run = choice(charJob)
-                    else:
-                        print('beggars are beggars, nothing special .... what did you expect ?\n')
-                        print('you get a non-existant bonus of +999 on everything,\n'
-                              'proficiency in begging and an additional amount of self-pity')
-                        run = choice(charJob)
-                else:
-                    print("This class is not known to me.. Try again.\n")
+            charJob = job.chooseJob()
+            print('\n'+charJob+'\n')
             while True:
-                print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.")
+                print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.\n")
                 strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.orange)
                 print(colors.reset , end = '')
                 agility = input("How " + colors.fg.cyan + "agile " + colors.reset + "are you?: \n> "+ colors.fg.orange)
@@ -161,21 +122,12 @@ def onstart():
             currentChar = character.newCharacter(charactername, currentPlayer.username)
             currentChar.race = charRace
             currentChar.job = charJob
-            if currentChar.job == 'warrior':
-                currentChar.stats['strength'] = int(strength)+5
-                currentChar.stats['agility'] = int(agility)-1
-                currentChar.stats['wit'] = int(wit)-1
-                currentChar.stats['luck'] = int(luck)
-            if currentChar.job == 'rogue':
-                currentChar.stats['strength'] = int(strength)
-                currentChar.stats['agility'] = int(agility)+3
-                currentChar.stats['wit'] = int(wit)+1
-                currentChar.stats['luck'] = int(luck)+1
-            if currentChar.job == 'beggar':
-                currentChar.stats['strength'] = int(strength)
-                currentChar.stats['agility'] = int(agility)
-                currentChar.stats['wit'] = int(wit)+2
-                currentChar.stats['luck'] = int(luck)+2
+
+            currentChar.stats['strength'] = int(job.jobStrength(charJob,strength))
+            currentChar.stats['agility'] = int(job.jobAgility(charJob,agility))
+            currentChar.stats['wit'] = int(job.jobWit(charJob,wit))
+            currentChar.stats['luck'] = int(job.jobLuck(charJob,luck))
+
             print()
             print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(charactername))
             print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(charRace))
