@@ -52,7 +52,7 @@ class Character:
         self.characterSkin = "default"
         self.location = [0,0]
         self.level = 0
-#Character level follows: [lvl / Exp to next lvl / Total Exp] // [1 / 100 / 100] // [2 / 600 / 700] // [3 / 1500 / 2200] // [4 / 1800 / 4000] // [5 / 4500 / 8500]
+#Character level follows: [lvl / Exp to next lvl / Total Exp] // [1 / 200 / 200] // [2 / 1600 / 1800] // [3 / 4200 / 6000] // [4 / 8000 / 14000] // [5 / 13000 / 27000]
         self.player = ''
         self.achievements = {"map":False}
         self.health = 500
@@ -137,6 +137,6 @@ def loadCharacter(name, cPlayerName):
             return loadCharacter(name, cPlayerName)
 
 def checkLevel(char):
-    if char.xp >= 100 * (1 + char.level * 2) * (1 + char.level):
+    if char.xp >= 200 * (1 + char.level * 3) * (1 + char.level):
         char.level += 1
-        char.xp -= 100 * (1 + char.level * 2) * (1 + char.level)
+        char.xp -= 200 * (1 + char.level * 3) * (1 + char.level)
