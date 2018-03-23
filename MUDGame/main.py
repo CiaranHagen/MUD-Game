@@ -421,7 +421,7 @@ while True:
 
         #========= Look [object] ==========#
 
-        elif command in ["look", "watch", "observe", "see", "eye", "regard"]:
+    elif command in ["look", "watch", "observe", "see", "eye", "regard", "check"]:
             if len(splitIn) == 1:
                 print(cRoom.description)
                 print("Also present: ", end="")
@@ -598,7 +598,7 @@ while True:
                     print(colors.invisible)
                     os.system("clear")
                     print(colors.reset)
-                    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
+                    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
                     loser = attack.fight(cChar, attackMob)
                     if loser == "mob":
                         newMob = npc.newMob()

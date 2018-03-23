@@ -34,7 +34,7 @@ armorDict = {
 """
 def hit(attacker, defender):
     attWeapon = item.loadItem(attacker.onPerson["weapon"], "wpn")
-    defArmor = item.loadItem(defender.onPerson["armor"], "arm")  
+    defArmor = item.loadItem(defender.onPerson["armor"], "arm")
     defShield = item.loadItem(defender.onPerson["shield"], "shd")
     ranDamage = random.randint(0, 51)
     attWeaponV = attWeapon.attackValue
@@ -44,9 +44,11 @@ def hit(attacker, defender):
     # Special calcs for characters
     if type(attacker) == character.Character:
         attWeapon.health -= 1
-        if ((attWeapon.kind == "dagger") and (attacker.job == "rogue")) or ((attWeapon.kind == "sword") and (attacker.job == "warrior")):
-            attWeaponV += 2
-            
+        if ((attWeapon.kind == "dagger") and (attacker.job == "rogue")):
+            attWeaponV += attacker.stats['agility']
+        if ((attWeapon.kind == "sword") and (attacker.job == "warrior")):
+            attWeaponV += attacker.stats['strength']
+
         ranDamage = random.randint(0 + attacker.stats["luck"], 51)
         ranDamage += attacker.stats["strength"]
     if type(defender) == character.Character:
@@ -77,7 +79,7 @@ def fight(char, npc):
     while True:
         action = input("\033[31mo\033[33m-\033[90m(\033[37m==> ")
         if action in ["hit", "slash", "lunge", "stab"]:
-            if item.loadItem(char.onPerson["weapon"], "wpn").health > 0:           
+            if item.loadItem(char.onPerson["weapon"], "wpn").health > 0:
                 damageToll += hit(char, npc)
                 time.sleep(1)
                 if npc.health <= 0:
@@ -88,14 +90,14 @@ def fight(char, npc):
                     print('\033[0m')
                     print("You are victorious!")
                     print()
-                    print("Gained " + str(npc.level * 100) + " XP.")
+                    print("Gained " + str(npc.level * 50) + " XP.")
                     drawDead(npc)
                     os.system("rm ../data/npcs/mob_" + npc.name + ".txt")
                     del npc
                     return "mob"
             else:
                 print("Your weapon is broken and useless. You desperately try to punch a better equipped opponent, but fail miserably.")
-        
+
         elif action in ["flee", "retreat", "run", "turn tail"]:
             chance = random.randint(0, 2 + char.stats["luck"])
             if chance == 0:
@@ -103,11 +105,14 @@ def fight(char, npc):
                 char.move(random.choice(room.loadRoom('room' + str(char.location[0]) + '_' + str(char.location[1])).possibleDirections.values()))
                 return "none"
             else:
-                print("The enemy hit you back into the room.")        
+                print("The enemy hit you back into the room.")
 
-        elif action in ["dodge", "roll", "parry"]:
+        elif action in ["dodge", "roll", "parry", "evade"]:
             chance = random.randint(0, 2 + char.stats["agility"])
             if chance in range(1, 2 + char.stats["agility"]):
+
+# Needs to be revised (example: min ev needed = 1+ mob lvl + (moblvl - player lvl))
+
                 print("You evade the enemy's attack.")
                 continue
             else:
@@ -164,7 +169,7 @@ def drawDead(mob):
     print()
     print()
     print()
-    
+
     print("\033[31m                      . .")
     print("                     ` ' `")
     print("                 .'''. ' .'''.")
@@ -194,7 +199,3 @@ def drawDead(mob):
     print("                          _/,/'")
     print("                        /,/,\"")
     print()
-    
-        
-        
-    
