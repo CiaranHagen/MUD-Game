@@ -106,17 +106,23 @@ def onstart():
                 luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.orange)
                 print(colors.reset , end = '')
                 try:
-                    if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
-                        if int(strength) > 4 or int(agility)>4 or int(wit)>4 or int(luck)>4:
-                            print("What the hell should this be? Well, I don't really care...")
-                        elif int(wit) < 3:
-                            print("Go and have fun in the dungeons you dumdum, I bet you will have at least one peer down there.")
-                        else:
-                            print("Ok, that looks pretty solid. Have fun...")
-                        break
-                    else:
-                        print("Do you even math?")
-                except:
+                    if (int(strength) > 0) and (int(agility) > 0) and (int(wit) > 0) and (int(luck) > 0): 
+                        if currentPlayer.admin == False:
+                            if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
+                                if int(strength) > 4 or int(agility)>4 or int(wit)>4 or int(luck)>4:
+                                    print("What the hell should this be? Well, I don't really care...")
+                                elif int(wit) < 3:
+                                    print("Go and have fun in the dungeons you dumdum, I bet you will have at least one peer down there.")
+                                else:
+                                    print("Ok, that looks pretty solid. Have fun...")
+                                break
+                            else:
+                                print("Do you even math?")
+                        elif currentPlayer.admin == True:
+                            print("Well I can't really tell you what to do, so I'm not even gonna look at what you wrote...")
+                            break
+                except Exception as e:
+                    print(e)
                     print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
             print(colors.reset , end = '')
             currentChar = character.newCharacter(charactername, currentPlayer.username)
@@ -177,17 +183,23 @@ def onstart():
                     luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.orange)
                     print(colors.reset , end = '')
                     try:
-                        if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
-                            if int(strength) > 4 or int(agility)>4 or int(wit)>4 or int(luck)>4:
-                                print("What the hell should this be? Well, I don't really care...")
-                            elif int(wit) < 3:
-                                print("Go and have fun in the dungeons you dumdum, I bet you will have at least one peer down there.")
-                            else:
-                                print("Ok, that looks pretty solid. Have fun...")
-                            break
-                        else:
-                            print("Do you even math?")
-                    except:
+                        if (int(strength) > 0) and (int(agility) > 0) and (int(wit) > 0) and (int(luck) > 0): 
+                            if currentPlayer.admin == False:
+                                if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
+                                    if int(strength) > 4 or int(agility)>4 or int(wit)>4 or int(luck)>4:
+                                        print("What the hell should this be? Well, I don't really care...")
+                                    elif int(wit) < 3:
+                                        print("Go and have fun in the dungeons you dumdum, I bet you will have at least one peer down there.")
+                                    else:
+                                        print("Ok, that looks pretty solid. Have fun...")
+                                    break
+                                else:
+                                    print("Do you even math?")
+                            elif currentPlayer.admin == True:
+                                print("Well I can't really tell you what to do, so I'm not even gonna look at what you wrote...")
+                                break
+                    except Exception as e:
+                        print(e)
                         print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
                 print(colors.reset , end = '')
                 currentChar = character.newCharacter(charactername, currentPlayer.username)
@@ -299,9 +311,14 @@ helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "take"
 print(colors.invisible)
 os.system("clear")
 print(colors.reset)
-print()
-print(("----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " "))
-print()
+if not cPlayer.admin:
+    print()
+    print(("----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " "))
+    print()
+elif cPlayer.admin:
+    print()
+    print("You are logged in as admin. Remember that you are not limited to cardinal directions when moving. Just write \"go <x> <y>\".")
+    print()
 
 commandL = ["help"]
 while True:
@@ -408,6 +425,27 @@ while True:
                             mobber.move()
                             npc.loadNpc(c, "mob")
                      # -------------------------- #
+                elif cPlayer.admin == True:
+                    try:
+                        coords = splitIn[1].split(" ")
+                        if ("room" + coords[0] + "_" + coords[1]) in roomL:
+                            print("You've teleported to "+ coords[0] + ", " + coords[1])
+                            cChar.location[0] = int(coords[0])
+                            cChar.location[1] = int(coords[1])
+                            cRoom.save()
+                            cRoom = loadCRoom()
+                            for c in npcL:
+                                moveRan = random.randint(0,2)
+                                if moveRan == 0:
+                                    mobber = npc.loadNpc(c, "mob")
+                                    mobber.move()
+                                    npc.loadNpc(c, "mob")
+                        else:
+                            print("Apparently you are too stupid to use coordinates. Do... you... need... help... ? (Tries using sign language...)")
+                    except Exception as e:
+                        print(e)
+                        print("Apparently you are too stupid to use coordinates. Do... you... need... help... ? (Tries using sign language...)")
+
                 else:
                     print("You cannot go " + splitIn[1] + ". Possible directions are: ", end = '')
                     for key in cRoom.possibleDirections:
@@ -495,7 +533,7 @@ while True:
             print(colors.reset , end = '')
             if (uName == "42") and (pwd == "42"):
                 print("Username and Password correct. (\"quit\" to exit)")
-                print("Commands are: room, mob, map, quit, item")
+                print("Commands are: room, mob, map, quit, item, crown <username>")
                 while True:
                     try:
                         admIn = input(colors.fg.red + ">> " + colors.fg.pink)
@@ -539,7 +577,13 @@ while True:
                                 item.newShield()
                             elif kind == "armor":
                                 item.newArmor()
-
+                        
+                        elif commAdmin == "crown":
+                            cPlayer.admin = True
+                            cPlayer.save()
+                            if cPlayer.admin:
+                                print("Player " + cPlayer.username + " is now admin.")
+                            
                         elif commAdmin == "quit":
                             print()
                             print("Returning to game...")
