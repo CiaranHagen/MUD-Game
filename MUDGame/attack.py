@@ -83,7 +83,7 @@ def fight(char, npc):
                 damageToll += hit(char, npc)
                 time.sleep(1)
                 if npc.health <= 0:
-                    char.xp += npc.level * 100
+                    char.xp += npc.level * 50
                     character.checkLevel(char)
                     print('\033[08m')
                     os.system("clear")
@@ -109,7 +109,7 @@ def fight(char, npc):
 
         elif action in ["dodge", "roll", "parry", "evade"]:
             chance = random.randint(0, 2 + char.stats["agility"])
-            if chance in range(1, 2 + char.stats["agility"]):
+            if chance in range(1 + npc.level*2 - char.level, 2 + char.stats["agility"]):
 
 # Needs to be revised (example: min ev needed = 1+ mob lvl + (moblvl - player lvl))
 
