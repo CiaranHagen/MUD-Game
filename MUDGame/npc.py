@@ -12,6 +12,7 @@ class Npc:
         self.location = [0,0]
         self.level = 1
         self.health = 100 * self.level
+        self.description = ''
         return
 
     def move(self):
@@ -79,7 +80,8 @@ def nameBuilder():
 
 #------------------------------------------------------------------------------
 def newMob():
-    races = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfli', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
+    races = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfling', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
+    descriptions = {"orc":"Orc. A brustish ugly humanoid being. Not nice.", "dwarf":"Dwarf. Short stockish and bad-tempered with a distinct lack of hygiene. Don't mess with his hammer.", "elf":"Elf. Gracefully and elegantly deadly. Easily offended.", "troll":"Troll. Big, indescribably ugly and as dumb as he is strong.", "succubus":"Succubus.", "gelfling":"Gelfling. Small humanoid being with a bald head and a weird accent.", "gockcobbler":"GockCobbler. Shinigami.", "hickdead":"Hickdead. Annoying with an a**h*** attitude.", "thraal":"Thraal. Even dumber than a troll. It believes that if you can't see it, it can't see you."}
     name = nameBuilder()
     race = random.choice(races)
     #letters = string.ascii_uppercase
@@ -88,9 +90,11 @@ def newMob():
     #    name += letters[random.randint(0, 25)]
     mob = Mob(name)
     mob.race = race
+    mob.description = descriptions[race]
     roomCoord = random.choice(os.listdir('../data/rooms/'))[4:-4]
     mob.location = [int(roomCoord[: len(roomCoord)//2]), int(roomCoord[(len(roomCoord)//2) + 1 :])]
     mob.level = random.randint(1, 5)
+    mob.health = 100 * mob.level
     mob.save()
     return loadNpc(name, "mob")
 
