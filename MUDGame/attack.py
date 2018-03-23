@@ -53,7 +53,9 @@ def fight(char, npc):
             damageToll += hit(char, npc)
             time.sleep(1)
             if npc.health <= 0:
-                #os.system("clear")
+                print(colors.invisible)
+                os.system("clear")
+                print(colors.reset)
                 print("You are victorious!")
                 drawDead(npc)
                 os.system("rm ../data/npcs/mob_" + npc.name + ".txt")

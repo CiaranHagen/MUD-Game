@@ -305,6 +305,9 @@ def onstart():
             currentChar = character.newCharacter(charactername, currentPlayer.username)
             print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
             wait = input()
+        else:
+            charactername = input("Which character do you want to load? ")
+            currentChar = character.loadCharacter(charactername, currentPlayer.username)
 
     roomL = room.loadRooms()
 
@@ -367,7 +370,9 @@ def loadCRoom():
 
 
 
+print(colors.invisible)
 os.system("clear")
+print(colors.reset)
 print(colors.fg.lightred)
 print("===================================================".center(os.get_terminal_size().columns, "="))
 print("                 ,    , __   __                    ".center(os.get_terminal_size().columns, " "))
@@ -386,7 +391,9 @@ cRoom = loadCRoom()
 
 helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "take" : "take <object>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>", "map":"Prints a map of your surroundings. If you have the map achievement, it prints the whole world map."}
 
+print(colors.invisible)
 os.system("clear")
+print(colors.reset)
 print()
 print(("----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " "))
 print()
@@ -551,7 +558,9 @@ while True:
         #========= Map ==========#
 
         elif command in ["map", "where", "picture"]:
+            print(colors.invisible)
             os.system("clear")
+            print(colors.reset)
             mapL = []
             for o in roomL:
                 oCoord = o[4:]
@@ -679,7 +688,9 @@ while True:
             if len(splitIn) > 1:
                 if (splitIn[1][0].upper() + splitIn[1][1:]) in npcL:
                     attackMob = npc.loadNpc((splitIn[1][0].upper() + splitIn[1][1:]), "mob")
+                    print(colors.invisible)
                     os.system("clear")
+                    print(colors.reset)
                     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
                     loser = attack.fight(cChar, attackMob)
                     if loser == "mob":
