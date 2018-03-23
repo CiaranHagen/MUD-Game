@@ -2,6 +2,46 @@ import os, room
 from pickle import Pickler
 from pickle import Unpickler
 
+class colors:
+    '''Colors class:reset all colors with colors.reset; two
+    sub classes fg for foregroun
+    and bg for background; use as colors.subclass.colorname.
+    i.e. colors.fg.red or colors.bg.greenalso, the generic bold, disable,
+    underline, reverse, strike through,
+    and invisible work with the main class i.e. colors.bold'''
+    reset='\033[0m'
+    bold='\033[01m'
+    disable='\033[02m'
+    underline='\033[04m'
+    reverse='\033[07m'
+    strikethrough='\033[09m'
+    invisible='\033[08m'
+    class fg:
+        black='\033[30m'
+        red='\033[31m'
+        green='\033[32m'
+        orange='\033[33m'
+        blue='\033[34m'
+        purple='\033[35m'
+        cyan='\033[36m'
+        lightgrey='\033[37m'
+        darkgrey='\033[90m'
+        lightred='\033[91m'
+        lightgreen='\033[92m'
+        yellow='\033[93m'
+        lightblue='\033[94m'
+        pink='\033[95m'
+        lightcyan='\033[96m'
+    class bg:
+        black='\033[40m'
+        red='\033[41m'
+        green='\033[42m'
+        orange='\033[43m'
+        blue='\033[44m'
+        purple='\033[45m'
+        cyan='\033[46m'
+        lightgrey='\033[47m'
+
 class Character:
     def __init__(self, name):
         self.name = name
@@ -98,10 +138,24 @@ def loadCharacter(name, cPlayerName):
 
 def checkLevel(char):
     if char.xp >= 100 * (1 + char.level * 2) * (1 + char.level):
-        print('!!!!!!!!!!!!!!! TATATAAAAAAAAAAA !!!!!!!!!!! *INSERT TRUMPET-SOUND HERE*')
-        print()
-        print('Congraz, you have gained a level !')
-        print()
-        print('Your new level is ' + str(char.level+1))
         char.level += 1
         char.xp -= 100 * (1 + char.level * 2) * (1 + char.level)
+        print('!!!!!!!!!!!!!!! TATATAAAAAAAAAAA !!!!!!!!!!! *INSERT TRUMPET-SOUND HERE*')
+        time.sleep(1)
+        print()
+        print('Congraz, you have gained a level !')
+        time.sleep(1)
+        print()
+        print('Your '+ colors.fg.cyan + str(char.job) + colors.reset + ' is now level ' + colors.fg.cyan + str(char.level) + colors.reset, end='')
+        time.sleep(1)
+        print()
+        print('Your stats have improved !')
+        if char.job == 'warrior':
+            char.stats['strength'] += 2
+            print('you gained' + colors.fg.cyan + ' +2 strength' + colors.reset, end='')
+        if char.job == 'rogue':
+            char.stats['agility'] += 2
+            print('you gained' + colors.fg.cyan + ' +2 agility' + colors.reset, end='')
+        print()
+        time.sleep(1)
+        print(colors.fg.cyan + str(char.stats) + colors.reset, end='' )

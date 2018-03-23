@@ -45,8 +45,25 @@ def hit(attacker, defender):
     if type(attacker) == character.Character:
         attWeapon.health -= 1
         if ((attWeapon.kind == "dagger") and (attacker.job == "rogue")):
+            if (attacker.level >= 3):
+                chance = random.randint(0 + attacker.stats["luck"], 2 + attacker.stats["agility"])
+                if chance in range(1 + npc.level*2 - attacker.level, 2 + attacker.stats["agility"]):
+                    print()
+                    print('! Dubble Strike !')
+                    print()
+                    attWeaponV += attacker.stats['agility'] * 2
+            else:
             attWeaponV += attacker.stats['agility']
+
         if ((attWeapon.kind == "sword") and (attacker.job == "warrior")):
+            if (attacker.level >= 3):
+                chance = random.randint(0 + attacker.stats["luck"], 2 + attacker.stats["strength"])
+                if chance in range(1 + npc.level*2 - attacker.level, 2 + attacker.stats["strength"]):
+                    print()
+                    print('! Heavy Strike !')
+                    print()
+                    attWeaponV += attacker.stats['strength'] * 2
+            else:
             attWeaponV += attacker.stats['strength']
 
         ranDamage = random.randint(0 + attacker.stats["luck"], 51)
@@ -108,11 +125,21 @@ def fight(char, npc):
                 print("The enemy hit you back into the room.")
 
         elif action in ["dodge", "roll", "parry", "evade"]:
+            if char.job == 'rogue' and char.level >= 2: #(@lvl 2, rogue gains passive evasion buff)
+                chance = random.randint(0, 2 + char.stats["agility"])
+                if chance in range(1 + npc.level*2 - char.level, 2 + char.stats["agility"]):
+                    print("You evade the enemy's attack.")
+                    continue
+                else:
+                    chance = random.randint(0, 2 + char.stats["agility"])
+                    if chance in range(1 + npc.level*2 - char.level, 2 + char.stats["agility"]):
+                        print("You evade the enemy's attack.")
+                        continue
+                    else:
+                        print("Bad luck. The enemy hit you anyways.")
+            elif not char.job == 'rogue':
             chance = random.randint(0, 2 + char.stats["agility"])
             if chance in range(1 + npc.level*2 - char.level, 2 + char.stats["agility"]):
-
-# Needs to be revised (example: min ev needed = 1+ mob lvl + (moblvl - player lvl))
-
                 print("You evade the enemy's attack.")
                 continue
             else:
