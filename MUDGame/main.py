@@ -66,7 +66,7 @@ def getKey():
 ##========================================================================
 
 def onstart():
-    newPlayer = input("Register (r) or log in (l)." + colors.fg.orange)
+    newPlayer = input("Register (r) or log in (l)." + colors.fg.cyan)
     print(colors.reset , end = '')
 
     if newPlayer == "r":
@@ -78,16 +78,16 @@ def onstart():
         # I am just as lazy and followed in your footsteps xD (Faolin)
 
         while True:
-            charactername = input("Character name: " + colors.fg.orange)
+            charactername = input("Character name: " + colors.fg.cyan)
             print(colors.reset , end = '')
             raceList = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfling', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
             while charactername == '':
                 print("Only I am the one without name!!")
-                charactername = input("Character name: \n> " + colors.fg.orange)
+                charactername = input("Character name: \n> " + colors.fg.cyan)
                 print(colors.reset , end = '')
             charRace = ''
             while True:
-                charRace = input("What is your race?\nYou can choose from: orc, dwarf, elf, troll, succubus, gelfling, gockcobbler, shinigami and hickdead.\n> " + colors.fg.orange)
+                charRace = input("What is your race?\nYou can choose from: " + colors.fg.cyan + 'orc, dwarf, elf, troll, succubus, gelfling, gockcobbler, shinigami and hickdead' + colors.reset + ".\n> " + colors.fg.cyan)
                 print(colors.reset , end = '')
                 if charRace in raceList:
                     break
@@ -97,13 +97,13 @@ def onstart():
             print('\n'+charJob+'\n')
             while True:
                 print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.\n")
-                strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.orange)
+                strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
                 print(colors.reset , end = '')
-                agility = input("How " + colors.fg.cyan + "agile " + colors.reset + "are you?: \n> "+ colors.fg.orange)
+                agility = input("How " + colors.fg.cyan + "agile " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
                 print(colors.reset , end = '')
-                wit = input("How would you rate your " + colors.fg.cyan + "intelligence" + colors.reset + "?: \n> "+ colors.fg.orange)
+                wit = input("How would you rate your " + colors.fg.cyan + "intelligence" + colors.reset + "?: \n> "+ colors.fg.cyan)
                 print(colors.reset , end = '')
-                luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.orange)
+                luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.cyan)
                 print(colors.reset , end = '')
                 try:
                     if (int(strength) > 0) and (int(agility) > 0) and (int(wit) > 0) and (int(luck) > 0):
@@ -149,22 +149,22 @@ def onstart():
     else:
         currentPlayer = player.login()
         print ("------------------------------------------".center(os.get_terminal_size().columns, "-"))
-        newCharacter = input("Create new character (1) or use existing character (2)? " + colors.fg.orange) #or show list of characters?
+        newCharacter = input("Create new character (1) or use existing character (2)? " + colors.fg.cyan) #or show list of characters?
         print(colors.reset , end = '')
         if newCharacter == "1":
             print("Character creation \n")
             while True:
-                charactername = input("Character name: " + colors.fg.orange)
+                charactername = input("Character name: " + colors.fg.cyan)
                 print(colors.reset , end = '')
                 raceList = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfling', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
                 jobList = ['warrior', 'rogue', 'beggar']
                 while charactername == '':
                     print("Only I am the one without name!!")
-                    charactername = input("Character name: \n> " + colors.fg.orange)
+                    charactername = input("Character name: \n> " + colors.fg.cyan)
                     print(colors.reset , end = '')
                 charRace = ''
                 while True:
-                    charRace = input("What is your race?\nYou can choose from: orc, dwarf, elf, troll, succubus, gelfling, gockcobbler, shinigami and hickdead.\n> " + colors.fg.orange)
+                    charRace = input("What is your race?\nYou can choose from: " + colors.fg.cyan + "orc, dwarf, elf, troll, succubus, gelfling, gockcobbler, shinigami and hickdead" + colors.reset + ".\n> " + colors.fg.cyan)
                     print(colors.reset , end = '')
                     if charRace in raceList:
                         break
@@ -174,13 +174,13 @@ def onstart():
                 print('\n'+charJob+'\n')
                 while True:
                     print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.\n")
-                    strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.orange)
+                    strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
                     print(colors.reset , end = '')
-                    agility = input("How " + colors.fg.cyan + "agile " + colors.reset + "are you?: \n> "+ colors.fg.orange)
+                    agility = input("How " + colors.fg.cyan + "agile " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
                     print(colors.reset , end = '')
-                    wit = input("How would you rate your " + colors.fg.cyan + "intelligence" + colors.reset + "?: \n> "+ colors.fg.orange)
+                    wit = input("How would you rate your " + colors.fg.cyan + "intelligence" + colors.reset + "?: \n> "+ colors.fg.cyan)
                     print(colors.reset , end = '')
-                    luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.orange)
+                    luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.cyan)
                     print(colors.reset , end = '')
                     try:
                         if (int(strength) > 0) and (int(agility) > 0) and (int(wit) > 0) and (int(luck) > 0):
@@ -603,7 +603,7 @@ while True:
         #========= Quit Sequence ==========#
 
         elif command in ["quit", "leave", "abandon", "abort", "terminate"]:
-            sureMaker = input("Are you sure you want to quit? (y/n)" + colors.fg.orange)
+            sureMaker = input("Are you sure you want to quit? (y/n)" + colors.fg.cyan)
             print(colors.reset)
             if sureMaker == ("y" or "Y"):
                 print("Quitting game...")

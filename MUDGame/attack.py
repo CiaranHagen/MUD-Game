@@ -1,4 +1,46 @@
 import os, npc, random, time, item, character, room
+
+class colors:
+    '''Colors class:reset all colors with colors.reset; two
+    sub classes fg for foregroun
+    and bg for background; use as colors.subclass.colorname.
+    i.e. colors.fg.red or colors.bg.greenalso, the generic bold, disable,
+    underline, reverse, strike through,
+    and invisible work with the main class i.e. colors.bold'''
+    reset='\033[0m'
+    bold='\033[01m'
+    disable='\033[02m'
+    underline='\033[04m'
+    reverse='\033[07m'
+    strikethrough='\033[09m'
+    invisible='\033[08m'
+    class fg:
+        black='\033[30m'
+        red='\033[31m'
+        green='\033[32m'
+        orange='\033[33m'
+        blue='\033[34m'
+        purple='\033[35m'
+        cyan='\033[36m'
+        lightgrey='\033[37m'
+        darkgrey='\033[90m'
+        lightred='\033[91m'
+        lightgreen='\033[92m'
+        yellow='\033[93m'
+        lightblue='\033[94m'
+        pink='\033[95m'
+        lightcyan='\033[96m'
+    class bg:
+        black='\033[40m'
+        red='\033[41m'
+        green='\033[42m'
+        orange='\033[43m'
+        blue='\033[44m'
+        purple='\033[45m'
+        cyan='\033[46m'
+        lightgrey='\033[47m'
+
+
 """
 weaponDict = {
 
@@ -101,14 +143,38 @@ def fight(char, npc):
                 time.sleep(1)
                 if npc.health <= 0:
                     char.xp += npc.level * 50
+                    levelBefore = int(char.level)
                     character.checkLevel(char)
+                    drawDead(npc)
                     print('\033[08m')
                     os.system("clear")
                     print('\033[0m')
                     print("You are victorious!")
                     print()
                     print("Gained " + str(npc.level * 50) + " XP.")
-                    drawDead(npc)
+                    if char.level > levelBefore:
+                        print('!!!!!!!!!!!!!!! TADAAAAAAAAAAA !!!!!!!!!!!')
+                        time.sleep(1)
+                        print()
+                        print('Congraz, you have gained a level !')
+                        time.sleep(1)
+                        print()
+                        print('Your '+ colors.fg.cyan + str(char.job) + colors.reset + ' is now level ' + colors.fg.cyan + str(char.level) + colors.reset, end='')
+                        time.sleep(1)
+                        print()
+                        if not char.job == 'beggar':
+                            print('Your stats have improved !')
+                            print()
+                        if char.job == 'warrior':
+                            char.stats['strength'] += 2
+                            print('you gained' + colors.fg.cyan + ' +2 strength' + colors.reset, end='')
+                        if char.job == 'rogue':
+                            char.stats['agility'] += 2
+                            print('you gained' + colors.fg.cyan + ' +2 agility' + colors.reset, end='')
+                        print()
+                        time.sleep(1)
+                        print(colors.fg.cyan + str(char.stats) + colors.reset, end='' )
+                        print()
                     os.system("rm ../data/npcs/mob_" + npc.name + ".txt")
                     del npc
                     return "mob"

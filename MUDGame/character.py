@@ -1,4 +1,4 @@
-import os, room
+import os, room, time
 from pickle import Pickler
 from pickle import Unpickler
 
@@ -140,22 +140,3 @@ def checkLevel(char):
     if char.xp >= 100 * (1 + char.level * 2) * (1 + char.level):
         char.level += 1
         char.xp -= 100 * (1 + char.level * 2) * (1 + char.level)
-        print('!!!!!!!!!!!!!!! TATATAAAAAAAAAAA !!!!!!!!!!! *INSERT TRUMPET-SOUND HERE*')
-        time.sleep(1)
-        print()
-        print('Congraz, you have gained a level !')
-        time.sleep(1)
-        print()
-        print('Your '+ colors.fg.cyan + str(char.job) + colors.reset + ' is now level ' + colors.fg.cyan + str(char.level) + colors.reset, end='')
-        time.sleep(1)
-        print()
-        print('Your stats have improved !')
-        if char.job == 'warrior':
-            char.stats['strength'] += 2
-            print('you gained' + colors.fg.cyan + ' +2 strength' + colors.reset, end='')
-        if char.job == 'rogue':
-            char.stats['agility'] += 2
-            print('you gained' + colors.fg.cyan + ' +2 agility' + colors.reset, end='')
-        print()
-        time.sleep(1)
-        print(colors.fg.cyan + str(char.stats) + colors.reset, end='' )
