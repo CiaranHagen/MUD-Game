@@ -100,9 +100,12 @@ class Character:
 
 #-------------------------------------------------------------------------
 
-def newCharacter(name, cPlayerName):
+def newCharacter(name, cPlayerName, Race, Job, Stats):
     character = Character(name)
     character.player = cPlayerName
+    character.race = Race
+    character.job = Job
+    character.stats = Stats
     character.save()
     return loadCharacter(name, cPlayerName)
 

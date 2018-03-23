@@ -124,25 +124,24 @@ def onstart():
                 except Exception as e:
                     print(e)
                     print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
-            print(colors.reset , end = '')
-            currentChar = character.newCharacter(charactername, currentPlayer.username)
-            currentChar.race = charRace
-            currentChar.job = charJob
+                print(colors.reset , end = '')
+                
+            charStats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
 
-            currentChar.stats['strength'] = int(job.jobStrength(charJob,strength))
-            currentChar.stats['agility'] = int(job.jobAgility(charJob,agility))
-            currentChar.stats['wit'] = int(job.jobWit(charJob,wit))
-            currentChar.stats['luck'] = int(job.jobLuck(charJob,luck))
+            charStats['strength'] = int(job.jobStrength(charJob,strength))
+            charStats['agility'] = int(job.jobAgility(charJob,agility))
+            charStats['wit'] = int(job.jobWit(charJob,wit))
+            charStats['luck'] = int(job.jobLuck(charJob,luck))
 
             print()
             print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(charactername))
             print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(charRace))
             print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(charJob))
-            print(colors.fg.orange + 'Stats: '+ colors.fg.green + str(currentChar.stats))
+            print(colors.fg.orange + 'Stats: '+ colors.fg.green + str(charStats))
             break
 
         print(colors.reset , end = '')
-        currentChar = character.newCharacter(charactername, currentPlayer.username)
+        currentChar = character.newCharacter(charactername, currentPlayer.username, charRace, charJob, charStats)
         print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
         wait = input()
 
@@ -202,24 +201,23 @@ def onstart():
                         print(e)
                         print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
                 print(colors.reset , end = '')
-                currentChar = character.newCharacter(charactername, currentPlayer.username)
-                currentChar.race = charRace
-                currentChar.job = charJob
 
-                currentChar.stats['strength'] = int(job.jobStrength(charJob,strength))
-                currentChar.stats['agility'] = int(job.jobAgility(charJob,agility))
-                currentChar.stats['wit'] = int(job.jobWit(charJob,wit))
-                currentChar.stats['luck'] = int(job.jobLuck(charJob,luck))
+                charStats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
+
+                charStats['strength'] = int(job.jobStrength(charJob,strength))
+                charStats['agility'] = int(job.jobAgility(charJob,agility))
+                charStats['wit'] = int(job.jobWit(charJob,wit))
+                charStats['luck'] = int(job.jobLuck(charJob,luck))
 
                 print()
                 print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(charactername))
                 print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(charRace))
                 print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(charJob))
-                print(colors.fg.orange + 'Stats: '+ colors.fg.green + str(currentChar.stats))
+                print(colors.fg.orange + 'Stats: '+ colors.fg.green + str(charStats))
                 break
 
             print(colors.reset , end = '')
-            currentChar = character.newCharacter(charactername, currentPlayer.username)
+            currentChar = character.newCharacter(charactername, currentPlayer.username, charRace, charJob, charStats)
             print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
             wait = input()
         else:
@@ -481,6 +479,11 @@ while True:
                             print(items[key])
                     else:
                         print("Your inventory is empty")
+                elif splitIn[1] == "stats":
+                    print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(cChar.name))
+                    print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(cChar.race))
+                    print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(cChar.job))
+                    print(colors.fg.orange + 'Stats: '+ colors.fg.green + str(cChar.stats))
                 elif splitIn[1] in npcL:
                     print(npc.loadNpc(splitIn[1], "mob").description)
                 else:
@@ -602,7 +605,7 @@ while True:
 
         #========= Quit Sequence ==========#
 
-        elif command in ["quit", "leave", "abandon", "abort", "terminate"]:
+        elif command in ["quit", "leave", "abandon", "abort", "terminate", "exit"]:
             sureMaker = input("Are you sure you want to quit? (y/n)" + colors.fg.cyan)
             print(colors.reset)
             if sureMaker == ("y" or "Y"):
