@@ -58,6 +58,7 @@ class Character:
         self.health = 500
         self.stats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
         self.xp = 0
+        self.xpneed = 200
         return
 
     def addStatVal(self, key, value):
@@ -143,3 +144,4 @@ def checkLevel(char):
     if char.xp >= 200 * (1 + char.level * 3) * (1 + char.level):
         char.level += 1
         char.xp -= 200 * (1 + char.level * 3) * (1 + char.level)
+        char.xpneed = ((200 * (1 + char.level * 3) * (1 + char.level)) - char.exp)

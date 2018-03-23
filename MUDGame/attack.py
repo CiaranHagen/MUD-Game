@@ -153,28 +153,7 @@ def fight(char, npc):
                     print()
                     print("Gained " + str(npc.level * 50) + " XP.")
                     if char.level > levelBefore:
-                        print('!!!!!!!!!!!!!!! TADAAAAAAAAAAA !!!!!!!!!!!')
-                        time.sleep(1)
-                        print()
-                        print('Congraz, you have gained a level !')
-                        time.sleep(1)
-                        print()
-                        print('Your '+ colors.fg.cyan + str(char.job) + colors.reset + ' is now level ' + colors.fg.cyan + str(char.level) + colors.reset, end='')
-                        time.sleep(1)
-                        print()
-                        if not char.job == 'beggar':
-                            print('Your stats have improved !')
-                            print()
-                        if char.job == 'warrior':
-                            char.stats['strength'] += 2
-                            print('you gained' + colors.fg.cyan + ' +2 strength' + colors.reset, end='')
-                        if char.job == 'rogue':
-                            char.stats['agility'] += 2
-                            print('you gained' + colors.fg.cyan + ' +2 agility' + colors.reset, end='')
-                        print()
-                        time.sleep(1)
-                        print(colors.fg.cyan + str(char.stats) + colors.reset, end='' )
-                        print()
+                        job.jobLevelUp(char)
                     os.system("rm ../data/npcs/mob_" + npc.name + ".txt")
                     del npc
                     return "mob"

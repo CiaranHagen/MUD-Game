@@ -1,4 +1,4 @@
-import character, npc, player, attack, os, operator, random, item
+import character, npc, player, attack, os, operator, random, item, time
 
 class colors:
     '''Colors class:reset all colors with colors.reset; two
@@ -143,3 +143,40 @@ def jobLuck(charJob,luck):
         luck = int(luck)+2
         return str(luck)
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+def jobLevelUp(char):
+    print('!!!!!!!!!!!!!!! TADAAAAAAAAAAA !!!!!!!!!!!')
+    time.sleep(1)
+    print()
+    print('Congraz, you have gained a level !')
+    time.sleep(1)
+    print()
+    print('Your '+ colors.fg.cyan + str(char.job) + colors.reset + ' is now level ' + colors.fg.cyan + str(char.level) + colors.reset, end='')
+    time.sleep(1)
+    print()
+    if not char.job == 'beggar':
+        print('Your stats have improved !')
+        print()
+    if char.job == 'warrior' and char.level % 2 == 1:
+        char.stats['strength'] += 2
+        char.health += 120
+        print('you gained' + colors.fg.cyan + ' +2 strength' + colors.reset + ' / ' + colors.fg.cyan + '+120 health' + colors.reset, end='')
+    elif char.job == 'warrior' and char.level % 2 == 0:
+        char.stats['strength'] += 2
+        char.stats['agility'] += 1
+        char.health += 120
+        print('you gained' + colors.fg.cyan + ' +2 strength' + colors.reset + ' / ' + colors.fg.cyan + '+1 agility' + colors.reset + ' / ' + colors.fg.cyan + '+120 health' + colors.reset, end='')
+    if char.job == 'rogue' and char.level % 2 == 0:
+        char.stats['agility'] += 2
+        char.stats['strength'] += 1
+        char.health += 75
+        print('you gained' + colors.fg.cyan + ' +2 agility' + colors.reset + ' / ' + colors.fg.cyan + '+1 strength' + colors.reset + ' / ' + colors.fg.green + '+75 health' + colors.reset, end='')
+    elif char.job == 'rogue' and char.level % 2 == 1:
+        char.stats['agility'] += 2
+        char.health += 75
+        print('you gained' + colors.fg.cyan + ' +2 agility' + colors.reset + ' / ' + colors.fg.cyan + '+75 health' + colors.reset, end='')
+    print()
+    time.sleep(1)
+    print(colors.fg.cyan + str(char.stats) + colors.reset, end='' )
+    print(colors.fg.cyan + 'Health = ' + colors.fg.green + str(char.health) + colors.reset, end='')
+    print()

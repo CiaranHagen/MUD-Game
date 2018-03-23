@@ -125,7 +125,7 @@ def onstart():
                     print(e)
                     print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
                 print(colors.reset , end = '')
-                
+
             charStats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
 
             charStats['strength'] = int(job.jobStrength(charJob,strength))
@@ -483,7 +483,11 @@ while True:
                     print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(cChar.name))
                     print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(cChar.race))
                     print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(cChar.job))
-                    print(colors.fg.orange + 'Stats: '+ colors.fg.green + str(cChar.stats))
+                    print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
+                    print(colors.fg.orange + 'Health: '+ colors.fg.green + str(cChar.health))
+                    print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
+                    print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.xp) + colors.reset + " / " + colors.fg.purple + str(cChar.xp + cChar.xpneed) + colors.reset + "]")
+                    print(colors.reset, end='')
                 elif splitIn[1] in npcL:
                     print(npc.loadNpc(splitIn[1], "mob").description)
                 else:
@@ -606,7 +610,7 @@ while True:
         #========= Quit Sequence ==========#
 
         elif command in ["quit", "leave", "abandon", "abort", "terminate", "exit"]:
-            sureMaker = input("Are you sure you want to quit? (y/n)" + colors.fg.cyan)
+            sureMaker = input("Are you sure you want to quit? (y/n)\n>" + colors.fg.cyan)
             print(colors.reset)
             if sureMaker == ("y" or "Y"):
                 print("Quitting game...")
