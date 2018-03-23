@@ -468,8 +468,6 @@ while True:
                 break
         #=============================================================================
 
-        #inputter = input(colors.fg.red + "> " + colors.fg.orange)
-
         print(colors.reset , end = '')
         command = ""
         splitIn = inputter.split(" ")
@@ -632,7 +630,7 @@ while True:
                             print()
                             break
                         else:
-                            print("Possible commands are \"room\", \"mob\" and \"quit\".")
+                            print("Possible commands are \"room\", \"mob\", \"map\", \"item\" and \"quit\".")
 
                     except Exception as e:
                         print(e)
