@@ -53,7 +53,7 @@ def hit(attacker, defender):
                     print()
                     attWeaponV += attacker.stats['agility'] * 2
             else:
-            attWeaponV += attacker.stats['agility']
+                attWeaponV += attacker.stats['agility']
 
         if ((attWeapon.kind == "sword") and (attacker.job == "warrior")):
             if (attacker.level >= 3):
@@ -64,7 +64,7 @@ def hit(attacker, defender):
                     print()
                     attWeaponV += attacker.stats['strength'] * 2
             else:
-            attWeaponV += attacker.stats['strength']
+                attWeaponV += attacker.stats['strength']
 
         ranDamage = random.randint(0 + attacker.stats["luck"], 51)
         ranDamage += attacker.stats["strength"]
@@ -138,12 +138,12 @@ def fight(char, npc):
                     else:
                         print("Bad luck. The enemy hit you anyways.")
             elif not char.job == 'rogue':
-            chance = random.randint(0, 2 + char.stats["agility"])
-            if chance in range(1 + npc.level*2 - char.level, 2 + char.stats["agility"]):
-                print("You evade the enemy's attack.")
-                continue
-            else:
-                print("Bad luck. The enemy hit you anyways.")
+                chance = random.randint(0, 2 + char.stats["agility"])
+                if chance in range(1 + npc.level*2 - char.level, 2 + char.stats["agility"]):
+                    print("You evade the enemy's attack.")
+                    continue
+                else:
+                    print("Bad luck. The enemy hit you anyways.")
         else:
             print("That is not an option...")
             continue

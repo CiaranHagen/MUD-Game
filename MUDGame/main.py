@@ -106,7 +106,7 @@ def onstart():
                 luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.orange)
                 print(colors.reset , end = '')
                 try:
-                    if (int(strength) > 0) and (int(agility) > 0) and (int(wit) > 0) and (int(luck) > 0): 
+                    if (int(strength) > 0) and (int(agility) > 0) and (int(wit) > 0) and (int(luck) > 0):
                         if currentPlayer.admin == False:
                             if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
                                 if int(strength) > 4 or int(agility)>4 or int(wit)>4 or int(luck)>4:
@@ -183,7 +183,7 @@ def onstart():
                     luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.orange)
                     print(colors.reset , end = '')
                     try:
-                        if (int(strength) > 0) and (int(agility) > 0) and (int(wit) > 0) and (int(luck) > 0): 
+                        if (int(strength) > 0) and (int(agility) > 0) and (int(wit) > 0) and (int(luck) > 0):
                             if currentPlayer.admin == False:
                                 if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
                                     if int(strength) > 4 or int(agility)>4 or int(wit)>4 or int(luck)>4:
@@ -459,7 +459,7 @@ while True:
 
         #========= Look [object] ==========#
 
-    elif command in ["look", "watch", "observe", "see", "eye", "regard", "check"]:
+        elif command in ["look", "watch", "observe", "see", "eye", "regard", "check"]:
             if len(splitIn) == 1:
                 print(cRoom.description)
                 print("Also present: ", end="")
@@ -577,13 +577,13 @@ while True:
                                 item.newShield()
                             elif kind == "armor":
                                 item.newArmor()
-                        
+
                         elif commAdmin == "crown":
                             cPlayer.admin = True
                             cPlayer.save()
                             if cPlayer.admin:
                                 print("Player " + cPlayer.username + " is now admin.")
-                            
+
                         elif commAdmin == "quit":
                             print()
                             print("Returning to game...")
