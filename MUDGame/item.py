@@ -20,7 +20,7 @@ class Item:
         Pickler(f).dump(self)
         f.close()
         return
-        
+
 class Weapon(Item):
     def __init__(self, name, level, cost, description, attackValue, giver, handed, health, kind):
         Item.__init__(self, name, level, cost, description, giver, health)
@@ -87,8 +87,8 @@ def newArmor():
 
 def loadItem(name, kind):
         '''
-        takes the npc name and kind,
-        returns the npc object
+        takes the item name and kind,
+        returns the item object
         '''
         try:
             f = open("../data/items/" + kind + "_" + name + ".txt", "rb")
@@ -98,4 +98,3 @@ def loadItem(name, kind):
         item = Unpickler(f).load()
         f.close()
         return item
-    

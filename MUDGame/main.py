@@ -169,7 +169,7 @@ def onstart():
                         break
                     else:
                         print("This race is not known to me.. Try again.")
-                charJob = job.chooseJob()
+                charJob = job.chooseJob(currentPlayer)
                 print('\n'+charJob+'\n')
                 while True:
                     print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.\n")
@@ -540,7 +540,7 @@ while True:
             print(colors.reset , end = '')
             if (uName == "42") and (pwd == "42"):
                 print("Username and Password correct. (\"quit\" to exit)")
-                print("Commands are: room, mob, map, quit, item, crown <username>")
+                print("Commands are: room, mob, map, quit, item, add <itemname>, crown")
                 while True:
                     try:
                         admIn = input(colors.fg.red + ">> " + colors.fg.pink)
@@ -585,6 +585,20 @@ while True:
                             elif kind == "armor":
                                 item.newArmor()
 
+                        elif commAdmin == "add":
+                            kind = input("weapon, armor or shield: ")
+                            if kind == "weapon":
+                                kind = 'wpn'
+                            elif kind == "shield":
+                                kind = 'shd'
+                            elif kind == "armor":
+                                kind = 'arm'
+                            print('Input the name of the item')
+                            name = input('>')
+                            cChar.inventory[item] = item.loadItem(name, kind)
+                            print()
+                            print(cChar.inventory)
+
                         elif commAdmin == "crown":
                             cPlayer.admin = True
                             cPlayer.save()
@@ -606,6 +620,27 @@ while True:
             else:
                 print("Username or password incorrect.")
 
+        elif command in ["smite"]:
+            if cPlayer.admin == True:
+                if len(splitIn) > 1:
+                    if (splitIn[1][0].upper() + splitIn[1][1:]) in npcL:
+                        attackMob = npc.loadNpc((splitIn[1][0].upper() + splitIn[1][1:]), "mob")
+                        print(colors.invisible)
+                        os.system("clear")
+                        print(colors.reset)
+                        print("Omaiwa Mu Shindeiru !!!")
+                        loser = attack.smite(cChar, attackMob)
+                        if loser == "mob":
+                            newMob = npc.newMob()
+                            npcL = npc.loadNpcs()
+                            for c in npcL:
+                                npc.loadNpc(c, "mob")
+                    else:
+                        print("Everyone is cowering in fear .... hoping not to be named")
+                else:
+                    print("Lightning descends from the sky, but no-one was chosen to be punished")
+            else:
+                print('as if that would work ...')
 
         #========= Quit Sequence ==========#
 

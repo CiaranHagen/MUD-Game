@@ -74,6 +74,25 @@ armorDict = {
 "rayshielded suit":[10, 1000]
 }
 """
+
+def smite(char, npc):
+    char.xp += npc.level * 50
+    levelBefore = int(char.level)
+    character.checkLevel(char)
+    drawDead(npc)
+    print('\033[08m')
+    os.system("clear")
+    print('\033[0m')
+    print("You are victorious!")
+    print()
+    print("Gained " + str(npc.level * 50) + " XP.")
+    if char.level > levelBefore:
+        job.jobLevelUp(char)
+    os.system("rm ../data/npcs/mob_" + npc.name + ".txt")
+    del npc
+    return "mob"
+
+
 def hit(attacker, defender):
     attWeapon = item.loadItem(attacker.onPerson["weapon"], "wpn")
     defArmor = item.loadItem(defender.onPerson["armor"], "arm")
