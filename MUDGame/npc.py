@@ -90,6 +90,7 @@ class Npc:
 class Mob(Npc):
     def __init__(self, name):
         Npc.__init__(self, name)
+        self.angry = False
         return
 
     def attack():
@@ -137,6 +138,7 @@ def newMob():
     mob.location = [int(roomCoord[: len(roomCoord)//2]), int(roomCoord[(len(roomCoord)//2) + 1 :])]
     mob.level = random.randint(1, 5)
     mob.health = 100 * mob.level
+    mob.angry = random.choice([True, False])
     mob.save()
     return loadNpc(name, "mob")
 

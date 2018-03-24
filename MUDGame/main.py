@@ -68,7 +68,9 @@ def getKey():
 def onstart():
     newPlayer = input("Register (r) or log in (l)." + colors.fg.cyan)
     print(colors.reset , end = '')
-
+    charL = []
+    for fIterator in os.listdir("../data/characters/"):
+        charL.append(fIterator[:-4])
     if newPlayer == "r":
         currentPlayer = player.newPlayer()
         print("------------------------------------------".center(os.get_terminal_size().columns, "-"))
@@ -76,9 +78,12 @@ def onstart():
 
         #i am lazy and will just copy char creation twice, at clean up we make a function of this in char.py anyway
         # I am just as lazy and followed in your footsteps xD (Faolin)
-
         while True:
             charactername = input("Character name: " + colors.fg.cyan)
+            
+            if charactername in charL:
+                print("This name is already taken.")
+                continue
             print(colors.reset , end = '')
             raceList = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfling', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
             while charactername == '':
@@ -154,6 +159,16 @@ def onstart():
             print("Character creation \n")
             while True:
                 charactername = input("Character name: " + colors.fg.cyan)
+                if charactername in charL:
+                    if character.characterOwn:
+                        checker = input("Are you sure you want to delete your character? (y/n)")
+                        if checker == "y":
+                            pass
+                        else:
+                            continue
+                    else:
+                        print("You can only overwrite characters you own.")
+                        continue
                 print(colors.reset , end = '')
                 while charactername == '':
                     print("Only I am the one without name!!")
@@ -269,6 +284,7 @@ def mapper(litX, bigX, litY, bigY, mapL):
     print(dis*"=" + " MAP " + dis*"=")
     print()
 
+npcCRoom = []
 def loadCRoom():
     roomName = "room" + str(cChar.location[0]) + "_" + str(cChar.location[1])
     cRoom = room.loadRoom(roomName)
@@ -400,21 +416,33 @@ while True:
         if command in ["go", "walk", "move", "jump", "hop", "teleport", "translate", "commute"]:
             if len(splitIn) > 1:
                 if splitIn[1] in cRoom.possibleDirections:
-                    cChar.move(splitIn[1])
-                    cRoom.save()
-                    cRoom = loadCRoom()
-                    print("You go " + splitIn[1] + ".")
-
-                    # ------- Move mobs -------- #
-
+                    movePerm = True
+                    npcCRoom = []
                     for c in npcL:
-                        moveRan = random.randint(0,2)
-                        if moveRan == 0:
-                            mobber = npc.loadNpc(c, "mob")
-                            mobber.move()
-                            npc.loadNpc(c, "mob")
-                     # -------------------------- #
-                elif cPlayer.admin == True:
+                        if npc.loadNpc(c, "mob").location == cChar.location:
+                            npcCRoom.append(c)
+                    for c in npcCRoom:
+                        mob = npc.loadNpc(c, "mob")
+                        if mob.angry:
+                            movePerm = False
+                    if movePerm == False:
+                        print("At least one mob is blocking your way. You cannot leave here without defeating him...")
+                    elif movePerm == True:    
+                        cChar.move(splitIn[1])
+                        cRoom.save()
+                        cRoom = loadCRoom()
+                        print("You go " + splitIn[1] + ".")
+
+                        # ------- Move mobs -------- #
+
+                        for c in npcL:
+                            moveRan = random.randint(0,2)
+                            if moveRan == 0:
+                                mobber = npc.loadNpc(c, "mob")
+                                mobber.move()
+                                npc.loadNpc(c, "mob")
+                         # -------------------------- #
+                elif (cPlayer.admin == True) and (len(splitIn[1].split(" ")) > 1):
                     try:
                         coords = splitIn[1].split(" ")
                         if ("room" + coords[0] + "_" + coords[1]) in roomL:
@@ -450,12 +478,32 @@ while True:
 
         elif command in ["look", "watch", "observe", "see", "eye", "regard", "check"]:
             if len(splitIn) == 1:
-                print(cRoom.description)
-                print("Also present: ", end="")
+                npcCRoom = []
                 for c in npcL:
-                    if (npc.loadNpc(c, "mob").location[0] == cRoom.location[0]) and (npc.loadNpc(c, "mob").location[1] == cRoom.location[1]):
-                        print(npc.loadNpc(c, "mob").name , end=" ")
+                    if npc.loadNpc(c, "mob").location == cChar.location:
+                        npcCRoom.append(c)
+                print(cRoom.description)
+                if len(npcCRoom) > 0:
+                    print("Also present: ", end="")
+                for c in npcCRoom:
+                    mob = npc.loadNpc(c, "mob")
+                    if mob.angry:
+                        print(colors.fg.red + mob.name + colors.reset, end = "")
+                    elif not mob.angry:
+                        print(colors.fg.green + mob.name + colors.reset, end = "")
+                    if npcCRoom.index(mob.name) != len(npcCRoom):
+                        print(", ", end = "")
                 print()
+            elif splitIn[1] == "self":
+                print("Health: " + str(cChar.health))
+                print()
+                print("Equipment: ")
+                print("-----------")
+                for key in cChar.onPerson:
+                    print(key + " --> " + cChar.onPerson[key])
+                print()
+                if cPlayer.admin:
+                    print("You posess the power of the kitten. Use it in a pawsitive manner.")
             else:
                 if splitIn[1] in cRoom.stuffDescription:
                     print(cRoom.stuffDescription[splitIn[1]])

@@ -128,7 +128,7 @@ def hit(attacker, defender):
             else:
                 attWeaponV += attacker.stats['strength']
 
-        ranDamage = random.randint(0 + attacker.stats["luck"], 51)
+        ranDamage = random.randint(0 + attacker.stats["luck"], 51 + attacker.stats["luck"])
         ranDamage += attacker.stats["strength"]
     if type(defender) == character.Character:
         if defArmor.health == 0:
@@ -165,12 +165,12 @@ def fight(char, npc):
                     char.exp += npc.level * 50
                     levelBefore = char.level
                     character.checkLevel(char)
-                    drawDead(npc)
                     print('\033[08m')
                     os.system("clear")
                     print('\033[0m')
                     print("You are victorious!")
                     print()
+                    drawDead(npc)
                     print("Gained " + str(npc.level * 50) + " EXP.")
                     if char.level > levelBefore:
                         job.jobLevelUp(char)
