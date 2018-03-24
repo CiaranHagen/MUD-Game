@@ -93,7 +93,7 @@ def onstart():
                     break
                 else:
                     print("This race is not known to me.. Try again.")
-            charJob = job.chooseJob()
+            charJob = job.chooseJob(currentPlayer)
             print('\n'+charJob+'\n')
             while True:
                 print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.\n")

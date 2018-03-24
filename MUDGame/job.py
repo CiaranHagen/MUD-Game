@@ -58,7 +58,7 @@ def chooseJob(currentPlayer):
         else:
             print ("this is not a valid input, try again ... \n")
             return choice(charJob)
-    def Job():
+    def Job(currentPlayer):
         if currentPlayer.admin == False:
             charJob = str(input("What class do you choose? \n"
                         "You can choose from:  "+ colors.fg.cyan +"{}\n> ".format(jobList)).lower())
@@ -81,8 +81,8 @@ def chooseJob(currentPlayer):
                     return choice(charJob)
             else:
                 print("This class is not known to me.. Try again.\n")
-                return Job()
-        return Job()
+                return Job(currentPlayer)
+
         if currentPlayer.admin == True:
             charJob = str(input("What class do you choose? \n"
                         "You can choose from:  "+ colors.fg.cyan +"{}" + colors.fg.purple + " or ADMIN (anything else is fine too)" "\n> ".format(jobList)).lower())
@@ -105,7 +105,7 @@ def chooseJob(currentPlayer):
                 print('you get a non-existant bonus of ' + colors.fg.orange + '+999' + colors.reset + ' on everything,\n'
                     'proficiency in begging and an additional amount of ' + colors.fg.orange + 'self-pity' + colors.reset , end = '')
                 return choice(charJob)
-        return Job()
+    return Job(currentPlayer)
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
