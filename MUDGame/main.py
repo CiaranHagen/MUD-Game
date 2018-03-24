@@ -80,7 +80,7 @@ def onstart():
         # I am just as lazy and followed in your footsteps xD (Faolin)
         while True:
             charactername = input("Character name: " + colors.fg.cyan)
-            
+
             if charactername in charL:
                 print("This name is already taken.")
                 continue
@@ -90,14 +90,7 @@ def onstart():
                 print("Only I am the one without name!!")
                 charactername = input("Character name: \n> " + colors.fg.cyan)
                 print(colors.reset , end = '')
-            charRace = ''
-            while True:
-                charRace = input("What is your race?\nYou can choose from: " + colors.fg.cyan + 'orc, dwarf, elf, troll, succubus, gelfling, gockcobbler, shinigami and hickdead' + colors.reset + ".\n> " + colors.fg.cyan)
-                print(colors.reset , end = '')
-                if charRace in raceList:
-                    break
-                else:
-                    print("This race is not known to me.. Try again.")
+            charRace = race.chooseRace(currentPlayer)
             charJob = job.chooseJob(currentPlayer)
             print('\n'+charJob+'\n')
             while True:
@@ -427,7 +420,7 @@ while True:
                             movePerm = False
                     if movePerm == False:
                         print("At least one mob is blocking your way. You cannot leave here without defeating him...")
-                    elif movePerm == True:    
+                    elif movePerm == True:
                         cChar.move(splitIn[1])
                         cRoom.save()
                         cRoom = loadCRoom()
@@ -580,7 +573,7 @@ while True:
             print(colors.reset , end = '')
             if (uName == "42") and (pwd == "42"):
                 print("Username and Password correct. (\"quit\" to exit)")
-                print("Commands are: room, mob, map, quit, item, add, crown <charname>")
+                print("Commands are: room, mob, map, quit, item, add, crown <username>")
                 while True:
                     try:
                         admIn = input(colors.fg.red + ">> " + colors.fg.pink)
