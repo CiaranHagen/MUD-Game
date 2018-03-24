@@ -669,7 +669,7 @@ while True:
             #then a list of commands can be automatically compiled and it would look cleaner
 
         #========= Attack ==========#
-
+        #need to display remaining player HP after getting dmg
         elif command in ["attack", "strike", "kill", "engage", "challenge", 'fight']:
             if len(splitIn) > 1:
                 if (splitIn[1][0].upper() + splitIn[1][1:]) in npcL:

@@ -140,7 +140,7 @@ def jobStrength(charJob,strength):
         return str(strength)
 
     else:
-        strength = int(strength)
+        strength = int(strength) + random.randint(0,10)
         return str(strength)
 
 def jobAgility(charJob,agility):
@@ -162,7 +162,7 @@ def jobAgility(charJob,agility):
         return str(agility)
 
     else:
-        agility = int(agility)
+        agility = int(agility) + random.randint(0,10)
         return str(agility)
 
 def jobWit(charJob,wit):
@@ -184,7 +184,7 @@ def jobWit(charJob,wit):
         return str(wit)
 
     else:
-        wit = int(wit)
+        wit = int(wit) + random.randint(0,3)
         return str(wit)
 
 def jobLuck(charJob,luck):
@@ -206,7 +206,7 @@ def jobLuck(charJob,luck):
         return str(luck)
 
     else:
-        luck = int(luck)
+        luck = int(luck) + random.randint(0,3)
         return str(luck)
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -236,7 +236,7 @@ def jobLevelUp(char):
         char.stats['agility'] += int(agiBonus)
         char.stats['wit'] += int(witBonus)
         char.stats['luck'] += int(luckBonus)
-        char.maxhealth = hpBonus
+        char.maxhealth += hpBonus
         char.health = char.maxhealth
         print('you gained :\n'
               + colors.fg.cyan + ' +' + str(strBonus) + ' strength' + colors.reset + '\n'
@@ -260,7 +260,7 @@ def jobLevelUp(char):
         char.stats['agility'] += int(agiBonus)
         char.stats['wit'] += int(witBonus)
         char.stats['luck'] += int(luckBonus)
-        char.maxhealth = hpBonus
+        char.maxhealth += hpBonus
         char.health = char.maxhealth
         print('you gained :\n'
               + colors.fg.cyan + ' +' + str(strBonus) + ' strength' + colors.reset + '\n'
@@ -280,7 +280,7 @@ def jobLevelUp(char):
         char.stats['agility'] += int(agiBonus)
         char.stats['wit'] += int(witBonus)
         char.stats['luck'] += int(luckBonus)
-        char.maxhealth = hpBonus
+        char.maxhealth += hpBonus
         char.health = char.maxhealth
         print('you gained :\n'
               + colors.fg.cyan + ' +' + str(strBonus) + ' strength' + colors.reset + '\n'
@@ -288,7 +288,7 @@ def jobLevelUp(char):
               + colors.fg.cyan + ' +' + str(witBonus) + ' wit' + colors.reset + '\n'
               + colors.fg.cyan + ' +' + str(luckBonus) + ' luck' + colors.reset + '\n'
               + colors.fg.cyan + '+' + str(hpBonus) + ' maxhealth' + colors.reset, end='')
-    else:
+    if char.job not in ['warrior', 'rogue', 'beggar', 'admin']:
         print('Your random class will gain random stat bonuses')
         print()
         strBonus = random.randint(0,10)
@@ -300,7 +300,7 @@ def jobLevelUp(char):
         char.stats['agility'] += int(agiBonus)
         char.stats['wit'] += int(witBonus)
         char.stats['luck'] += int(luckBonus)
-        char.maxhealth = hpBonus
+        char.maxhealth += hpBonus
         char.health = char.maxhealth
         print('you gained :\n'
               + colors.fg.cyan + ' +' + str(strBonus) + ' strength' + colors.reset + '\n'
@@ -310,6 +310,7 @@ def jobLevelUp(char):
               + colors.fg.cyan + '+' + str(hpBonus) + ' maxhealth' + colors.reset, end='')
     print()
     time.sleep(1)
-    print(colors.fg.cyan + str(char.stats) + colors.reset, end='' )
+    print('Your upgraded stats are:\n')
+    print(colors.fg.cyan + str(char.stats) + colors.reset, end = '' '\n')
     print(colors.fg.cyan + 'Health = ' + colors.fg.green + str(char.health) + colors.reset, end='')
     print()
