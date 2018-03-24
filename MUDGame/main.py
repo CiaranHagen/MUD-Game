@@ -442,7 +442,7 @@ while True:
                                 mobber.move()
                                 npc.loadNpc(c, "mob")
                          # -------------------------- #
-                elif cPlayer.admin == True:
+                elif (cPlayer.admin == True) and (len(splitIn[1].split(" ")) > 1):
                     try:
                         coords = splitIn[1].split(" ")
                         if ("room" + coords[0] + "_" + coords[1]) in roomL:
@@ -494,6 +494,16 @@ while True:
                     if npcCRoom.index(mob.name) != len(npcCRoom):
                         print(", ", end = "")
                 print()
+            elif splitIn[1] == "self":
+                print("Health: " + str(cChar.health))
+                print()
+                print("Equipment: ")
+                print("-----------")
+                for key in cChar.onPerson:
+                    print(key + " --> " + cChar.onPerson[key])
+                print()
+                if cPlayer.admin:
+                    print("You posess the power of the kitten. Use it in a pawsitive manner.")
             else:
                 if splitIn[1] in cRoom.stuffDescription:
                     print(cRoom.stuffDescription[splitIn[1]])
