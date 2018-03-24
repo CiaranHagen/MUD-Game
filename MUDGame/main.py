@@ -92,7 +92,7 @@ def onstart():
                 print(colors.reset , end = '')
             charRace = race.chooseRace(currentPlayer)
             charJob = job.chooseJob(currentPlayer)
-            print('\n'+charJob+'\n')
+            #print('\n'+charJob+'\n')
             while True:
                 print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.\n")
                 strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
@@ -104,7 +104,7 @@ def onstart():
                 luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.cyan)
                 print(colors.reset , end = '')
                 try:
-                    if (int(strength) > 0) and (int(agility) > 0) and (int(wit) > 0) and (int(luck) > 0):
+                    if (int(strength) >= 0) and (int(agility) >= 0) and (int(wit) >= 0) and (int(luck) >= 0):
                         if currentPlayer.admin == False:
                             if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
                                 if int(strength) > 4 or int(agility)>4 or int(wit)>4 or int(luck)>4:

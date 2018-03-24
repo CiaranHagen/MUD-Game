@@ -54,21 +54,21 @@ def chooseJob(currentPlayer):
 
             if charJob in jobList:
                 if charJob == "warrior":
-                    print('warriors are a heavy class known for their strength and proficiency with swords & shields\n')
-                    print('you get a bonus of ' + colors.fg.cyan + '+5 on strength' + colors.reset , end = '' + ', proficiency with swords & shields and bonus on any armor')
-                    print('but as a heavy skullmasher you have ' + colors.fg.red + '-1 wit and -1 agility' + colors.reset , end = '')
+                    print('Warriors are a heavy class known for their strength and proficiency with swords & shields.\n')
+                    print('You get a bonus of ' + colors.fg.cyan + '+5 on strength' + colors.reset + ', proficiency with swords & shields and bonus on any armor.')
+                    print('But, as a heavy skullmasher you have ' + colors.fg.red + '-1 wit and -1 agility.' + colors.reset)
                     choice = 1
                 if charJob == "rogue":
-                    print('rogues are a nimble class known for their agility and proficiency with daggers\n')
-                    print('you get a bonus of ' + colors.fg.cyan + '+3 on agility ' + colors.reset , end = '' + ', proficiency with daggers and bonus on light armor')
+                    print('Rogues are a nimble class known for their agility and proficiency with daggers.\n')
+                    print('You get a bonus of ' + colors.fg.cyan + '+3 on agility ' + colors.reset + ', proficiency with daggers and bonus on light armor.')
                     choice = 1
                 if charJob == "beggar":
-                    print('beggars are beggars, nothing special .... what did you expect ?\n')
-                    print('you get a non-existant bonus of ' + colors.fg.orange + '+999' + colors.reset + ' on everything,\n'
-                          'proficiency in begging and an additional amount of ' + colors.fg.orange + 'self-pity' + colors.reset , end = '')
+                    print('Beggars are beggars, nothing special .... what did you expect ?\n')
+                    print('You get a non-existant bonus of ' + colors.fg.orange + '+999' + colors.reset + ' on everything,\n'
+                          'proficiency in begging and an additional amount of ' + colors.fg.orange + 'self-pity.' + colors.reset)
                     choice = 1
-                else:
-                    print("This class is not known to me.. Try again.\n")
+            else:
+                print("This class is not known to me.. Try again.\n")
 
 
         elif currentPlayer.admin == True:
@@ -80,37 +80,37 @@ def chooseJob(currentPlayer):
                 print('ADMIN gets an existant bonus of +666 on all stats ... is there any need to say more ?')
                 choice = 1
             if charJob == "warrior":
-                print('warriors are a heavy class known for their strength and proficiency with swords & shields\n')
-                print('you get a bonus of ' + colors.fg.cyan + '+5 on strength' + colors.reset , end = '' + ', proficiency with swords & shields and bonus on any armor')
-                print('but as a heavy skullmasher you have ' + colors.fg.red + '-1 wit and -1 agility' + colors.reset , end = '')
+                print('Warriors are a heavy class known for their strength and proficiency with swords & shields\n')
+                print('you get a bonus of ' + colors.fg.cyan + '+5 on strength' + colors.reset + ', proficiency with swords & shields and bonus on any armor.')
+                print('But, as a heavy skullmasher you have ' + colors.fg.red + '-1 wit and -1 agility.' + colors.reset)
                 choice = 1
             if charJob == "rogue":
                 print('rogues are a nimble class known for their agility and proficiency with daggers\n')
-                print('you get a bonus of ' + colors.fg.cyan + '+3 on agility ' + colors.reset , end = '' + ', proficiency with daggers and bonus on light armor')
+                print('you get a bonus of ' + colors.fg.cyan + '+3 on agility ' + colors.reset + ', \nproficiency with daggers and bonus on light armor.')
                 choice = 1
             if charJob == "beggar":
                 print('beggars are beggars, nothing special .... what did you expect ?\n')
                 print('you get a non-existant bonus of ' + colors.fg.orange + '+999' + colors.reset + ' on everything,\n'
-                    'proficiency in begging and an additional amount of ' + colors.fg.orange + 'self-pity' + colors.reset , end = '')
+                    'proficiency in begging and an additional amount of ' + colors.fg.orange + 'self-pity.' + colors.reset)
                 choice = 1
             else:
                 choice = 1
 
         while choice == 1:
             print(colors.reset + "Do you wish to choose " + colors.fg.cyan + str(charJob.upper()) + colors.reset + " as your class ? \n["
-                    + colors.fg.green + "yes" + colors.reset + "/" + colors.fg.red + "no" + colors.reset , end = ''  + "]\n")
+                    + colors.fg.green + "yes" + colors.reset + "/" + colors.fg.red + "no" + colors.reset + "]\n")
             answer = input('> ' + colors.fg.cyan).lower()
             print(colors.reset , end = '')
             if answer in ['y', 'yes']:
                 print()
-                print('congraz, you are now officialy a ' + colors.fg.cyan + str(charJob.upper()) + colors.reset)
+                print('Congraz, you are now officialy a ' + colors.fg.cyan + str(charJob.upper()) + colors.reset)
                 choice = 0
                 job = 0
             elif answer in ['n', 'no']:
                 choice = 0
                 job = 1
             elif answer not in ['y', 'yes', 'n', 'no']:
-                print ("this is not a valid input, try again ... \n")
+                print ("This is not a valid input, try again ... \n")
                 choice = 1
                 job = 0
 
