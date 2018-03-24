@@ -540,7 +540,7 @@ while True:
             print(colors.reset , end = '')
             if (uName == "42") and (pwd == "42"):
                 print("Username and Password correct. (\"quit\" to exit)")
-                print("Commands are: room, mob, map, quit, item, add <itemname>, crown")
+                print("Commands are: room, mob, map, quit, item, add, crown <charname>")
                 while True:
                     try:
                         admIn = input(colors.fg.red + ">> " + colors.fg.pink)
