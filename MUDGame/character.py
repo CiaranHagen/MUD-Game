@@ -141,6 +141,20 @@ def loadCharacter(name, cPlayerName):
             return "new"
         else:
             return loadCharacter(name, cPlayerName)
+def characterOwn(name):
+    try:
+        f = open("../data/characters/"+ name + ".txt", "rb")
+    except FileNotFoundError:
+        print("Character file not found. Unable to load progress. \n")
+    character = Unpickler(f).load()
+    if character.player == cPlayerName:
+        f.close()
+        return True
+    else:
+        print("Character does not belong to you. Please choose one of your own characters.")
+        f.close
+        return False
+        
 
 def checkLevel(char):
     if char.exp >= (200 * (1 + char.level * 3) * (1 + char.level)):
