@@ -258,10 +258,6 @@ def drawDead(mob):
     print("                   (._.  /")
     print("                   \___,/")
     print()
-    print()
-    print()
-    print()
-
     print("\033[31m                      . .")
     print("                     ` ' `")
     print("                 .'''. ' .'''.")
