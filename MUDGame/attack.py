@@ -1,4 +1,4 @@
-import os, npc, random, time, item, character, room
+import os, npc, random, time, item, character, room, job, race, time
 
 class colors:
     '''Colors class:reset all colors with colors.reset; two
@@ -76,16 +76,17 @@ armorDict = {
 """
 
 def smite(char, npc):
-    char.xp += npc.level * 50
+    char.exp += npc.level * 50
     levelBefore = int(char.level)
     character.checkLevel(char)
     drawDead(npc)
+    time.sleep(2)
     print('\033[08m')
     os.system("clear")
     print('\033[0m')
     print("You are victorious!")
     print()
-    print("Gained " + str(npc.level * 50) + " XP.")
+    print("Gained " + str(npc.level * 50) + " EXP.")
     if char.level > levelBefore:
         job.jobLevelUp(char)
     os.system("rm ../data/npcs/mob_" + npc.name + ".txt")
@@ -161,8 +162,8 @@ def fight(char, npc):
                 damageToll += hit(char, npc)
                 time.sleep(1)
                 if npc.health <= 0:
-                    char.xp += npc.level * 50
-                    levelBefore = int(char.level)
+                    char.exp += npc.level * 50
+                    levelBefore = char.level
                     character.checkLevel(char)
                     drawDead(npc)
                     print('\033[08m')
@@ -170,7 +171,7 @@ def fight(char, npc):
                     print('\033[0m')
                     print("You are victorious!")
                     print()
-                    print("Gained " + str(npc.level * 50) + " XP.")
+                    print("Gained " + str(npc.level * 50) + " EXP.")
                     if char.level > levelBefore:
                         job.jobLevelUp(char)
                     os.system("rm ../data/npcs/mob_" + npc.name + ".txt")

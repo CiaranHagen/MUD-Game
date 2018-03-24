@@ -56,9 +56,10 @@ class Character:
         self.player = ''
         self.achievements = {"map":False}
         self.health = 500
+        self.maxhealth = 500
         self.stats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
-        self.xp = 0
-        self.xpneed = 200
+        self.exp = 0
+        self.expneed = ((200 * (1 + self.level * 3) * (1 + self.level)) - self.exp)
         return
 
     def addStatVal(self, key, value):
@@ -89,6 +90,7 @@ class Character:
         return
 
     def save(self):
+        
         try:
             f = open("../data/characters/"+ self.name + ".txt", "wb")
         except FileNotFoundError:
@@ -141,7 +143,9 @@ def loadCharacter(name, cPlayerName):
             return loadCharacter(name, cPlayerName)
 
 def checkLevel(char):
-    if char.xp >= 200 * (1 + char.level * 3) * (1 + char.level):
+    if char.exp >= (200 * (1 + char.level * 3) * (1 + char.level)):
+        char.exp -= (200 * (1 + char.level * 3) * (1 + char.level))
+        if char.exp < 0:
+            char.exp = 0
         char.level += 1
-        char.xp -= 200 * (1 + char.level * 3) * (1 + char.level)
-        char.xpneed = ((200 * (1 + char.level * 3) * (1 + char.level)) - char.exp)
+        char.expneed = ((200 * (1 + char.level * 3) * (1 + char.level)) - char.exp)

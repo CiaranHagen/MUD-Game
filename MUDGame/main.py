@@ -1,4 +1,4 @@
-import character, room, npc, player, attack, os, operator, random, item, job
+import character, room, npc, player, attack, os, operator, random, item, job, race, time
 import sys,tty,termios
 
 class colors:
@@ -155,20 +155,11 @@ def onstart():
             while True:
                 charactername = input("Character name: " + colors.fg.cyan)
                 print(colors.reset , end = '')
-                raceList = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfling', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
-                jobList = ['warrior', 'rogue', 'beggar']
                 while charactername == '':
                     print("Only I am the one without name!!")
                     charactername = input("Character name: \n> " + colors.fg.cyan)
                     print(colors.reset , end = '')
-                charRace = ''
-                while True:
-                    charRace = input("What is your race?\nYou can choose from: " + colors.fg.cyan + "orc, dwarf, elf, troll, succubus, gelfling, gockcobbler, shinigami and hickdead" + colors.reset + ".\n> " + colors.fg.cyan)
-                    print(colors.reset , end = '')
-                    if charRace in raceList:
-                        break
-                    else:
-                        print("This race is not known to me.. Try again.")
+                charRace = race.chooseRace(currentPlayer)
                 charJob = job.chooseJob(currentPlayer)
                 print('\n'+charJob+'\n')
                 while True:
@@ -182,7 +173,7 @@ def onstart():
                     luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.cyan)
                     print(colors.reset , end = '')
                     try:
-                        if (int(strength) > 0) and (int(agility) > 0) and (int(wit) > 0) and (int(luck) > 0):
+                        if (int(strength) >= 0) and (int(agility) >= 0) and (int(wit) >= 0) and (int(luck) >= 0):
                             if currentPlayer.admin == False:
                                 if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
                                     if int(strength) > 4 or int(agility)>4 or int(wit)>4 or int(luck)>4:
@@ -480,13 +471,14 @@ while True:
                     else:
                         print("Your inventory is empty")
                 elif splitIn[1] == "stats":
+                    character.checkLevel(cChar)
                     print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(cChar.name))
                     print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(cChar.race))
                     print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(cChar.job))
                     print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
                     print(colors.fg.orange + 'Health: '+ colors.fg.green + str(cChar.health))
                     print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
-                    print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.xp) + colors.reset + " / " + colors.fg.purple + str(cChar.xp + cChar.xpneed) + colors.reset + "]")
+                    print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.exp + cChar.expneed) + colors.reset + "]")
                     print(colors.reset, end='')
                 elif splitIn[1] in npcL:
                     print(npc.loadNpc(splitIn[1], "mob").description)
@@ -620,7 +612,7 @@ while True:
             else:
                 print("Username or password incorrect.")
 
-        elif command in ["smite"]:
+        elif command in ["smite", "punish", "execute", "behead"]:
             if cPlayer.admin == True:
                 if len(splitIn) > 1:
                     if (splitIn[1][0].upper() + splitIn[1][1:]) in npcL:
@@ -628,7 +620,8 @@ while True:
                         print(colors.invisible)
                         os.system("clear")
                         print(colors.reset)
-                        print("Omaiwa Mu Shindeiru !!!")
+                        print("Omae Wa Mu Shindeiru !!!")
+                        time.sleep(1)
                         loser = attack.smite(cChar, attackMob)
                         if loser == "mob":
                             newMob = npc.newMob()
