@@ -157,7 +157,7 @@ def characterOwn(name):
         
 
 def checkLevel(char):
-    if char.exp >= (200 * (1 + char.level * 3) * (1 + char.level)):
+    if (char.exp >= (200 * (1 + char.level * 3) * (1 + char.level))) and (char.level > 0):
         char.exp -= (200 * (1 + char.level * 3) * (1 + char.level))
         if char.exp < 0:
             char.exp = 0

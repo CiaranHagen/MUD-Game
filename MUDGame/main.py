@@ -222,7 +222,7 @@ def onstart():
         else:
             charactername = input("Which character do you want to load? ")
             currentChar = character.loadCharacter(charactername, currentPlayer.username)
-
+                
     roomL = room.loadRooms()
 
     npcL = npc.loadNpcs()
@@ -254,6 +254,7 @@ def mapper(litX, bigX, litY, bigY, mapL):
             else:
                 print(colors.fg.cyan, end='')
             print(drawL[j + distY][i + distX], end='')
+            print(colors.fg.cyan, end='')
             if (drawL[j + distY][i + distX] == "O") and ((i + distX) != (len(drawL[j+distY])-1)):
                 if "east" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
                     print(colors.fg.cyan + "--", end='')
@@ -304,6 +305,8 @@ cRoom = loadCRoom()
 
 helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "take" : "take <object>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>", "map":"Prints a map of your surroundings. If you have the map achievement, it prints the whole world map."}
 
+raceDescriptions = {"orc":"Orc. A brustish ugly humanoid being. Not nice.", "dwarf":"Dwarf. Short stockish and bad-tempered with a distinct lack of hygiene. Don't mess with his hammer.", "elf":"Elf. Gracefully and elegantly deadly. Easily offended.", "troll":"Troll. Big, indescribably ugly and as dumb as he is strong.", "succubus":"Succubus.", "gelfling":"Gelfling. Small humanoid being with a bald head and a weird accent.", "gockcobbler":"GockCobbler. Shinigami.", "hickdead":"Hickdead. Annoying with an a**h*** attitude.", "thraal":"Thraal. Even dumber than a troll. It believes that if you can't see it, it can't see you."}
+
 print(colors.invisible)
 os.system("clear")
 print(colors.reset)
@@ -313,8 +316,8 @@ print(("----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_s
 print()
 if cPlayer.admin:
     print("You are logged in as admin. Remember that you are not limited to cardinal directions when moving. Just write \"go <x> <y>\". Also: The key to the magical admin-part of the game is the same as the username and they are both the answer to life the universe and everything. Vi?")
-    print()
-
+print()
+print(("--------------" + len(cPlayer.username)*"-" + "-------").center(os.get_terminal_size().columns, " "))
 commandL = ["help"]
 while True:
     print()
@@ -443,6 +446,7 @@ while True:
                             print()
                             cChar.location[0] = int(coords[0])
                             cChar.location[1] = int(coords[1])
+                            cChar.health += 100
                             cRoom.save()
                             cRoom = loadCRoom()
                             for c in npcL:
@@ -456,21 +460,37 @@ while True:
                     except Exception as e:
                         print(e)
                         print("Apparently you are too stupid to use coordinates. Do... you... need... help... ? (Tries using sign language...)")
-
+                elif ("key" in cChar.inventory) and (cRoom.location == (2,1)) and (splitIn[1] == "east"):
+                    movePerm = True
+                    npcCRoom = []
+                    for c in npcL:
+                        if npc.loadNpc(c, "mob").location == cChar.location:
+                            npcCRoom.append(c)
+                    for c in npcCRoom:
+                        mob = npc.loadNpc(c, "mob")
+                        if mob.angry:
+                            movePerm = False
+                    if movePerm == False:
+                        print("At least one mob is blocking your way. You cannot leave here without defeating him...")
+                    elif movePerm == True:
+                        cChar.location = [3,1]
+                        cRoom.save()
+                        cRoom = loadCRoom()
+                        print("You go " + splitIn[1] + ".")
+                        if cChar.level == 0:
+                            cChar.level = 1
+                            print()
+                            print("Congratulations. You have completed the tutorial dungeon and reached level 1.") 
                 else:
-                    print()
                     print("You cannot go " + splitIn[1] + ". Possible directions are: ", end = '')
                     for key in cRoom.possibleDirections:
                         print(key , end = ' ')
-                    print("\n")
-                    print()
+                    print("")
             else:
-                print()
                 print("Where do you want to go? Add a cardinal direction behind 'go'! Possible directions are: ", end = '')
                 for key in cRoom.possibleDirections:
                     print(key , end = ' ')
-                print("\n")
-                print()
+                print("")
 
         #========= Look [object] ==========#
 
@@ -496,14 +516,17 @@ while True:
                 if splitIn[1] in cRoom.stuffDescription:
                     print(cRoom.stuffDescription[splitIn[1]])
                 elif splitIn[1] in cRoom.inventory:
-                    print(cRoom.inventory[splitIn[1]])
+                    print(splitIn[1][0].upper() + splitIn[1][1:] + "--> " + cRoom.inventory[splitIn[1]])
                 elif splitIn[1] in cChar.inventory:
-                    print(cChar.inventory[splitIn[1]])
-                elif splitIn[1] == "inventory":
+                    print(splitIn[1][0].upper() + splitIn[1][1:] + "--> " + cChar.inventory[splitIn[1]])
+                elif splitIn[1] in ["inventory", "inv", "backpack", "sack"]:
                     if len(cChar.inventory) > 0:
                         items = cChar.inventory
+                        print(colors.fg.orange + "Inventory: ")
+                        print("-----------"+ colors.fg.cyan)
                         for key in items:
-                            print(items[key])
+                            print(str(key)[0].upper() + str(key)[1:])
+                        print(colors.reset, end='')
                     else:
                         print("Your inventory is empty")
                 elif splitIn[1] in [cChar.name.lower(), "self"]:
@@ -526,13 +549,14 @@ while True:
                     print(colors.reset, end='')
                 elif splitIn[1] in ['name']:
                     character.checkLevel(cChar)
-                    print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(cChar.name))
+                    print(colors.fg.orange + 'Name: '+ colors.fg.cyan + cChar.name)
                     print(colors.reset, end='')
                 elif splitIn[1] in ['race', 'origin']:
-                    print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(cChar.race))
+                    print(colors.fg.orange + 'Race: ' + colors.fg.cyan + cChar.race)
+                    print(raceDescriptions[cChar.race])
                     print(colors.reset, end='')
                 elif splitIn[1] in ['job', 'occupation', 'class']:
-                    print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(cChar.job))
+                    print(colors.fg.orange + 'Job: '+ colors.fg.cyan + cChar.job)
                     print(colors.reset, end='')
                 elif splitIn[1] in ['stats']:
                     print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
@@ -579,8 +603,6 @@ while True:
                 if splitIn[1] in cRoom.inventory:
                     print(cRoom.inventory[splitIn[1]] + "\n You acquired " + splitIn[1])
                     cChar.inventory[splitIn[1]] = cRoom.inventory[splitIn[1]]
-                    # cRoom.inventory.pop(splitIn[1])
-
                 else:
                     print("There is no such thing here, " + random.choice(["weirdo", "nutter", "whippersnapper", "beavus", "butthead", "you Thraal", "whacko"]) + ".")
 
@@ -593,7 +615,7 @@ while True:
                 x = oCoord.split("_")[0]
                 y = oCoord.split("_")[1]
                 mapL.append((int(x),int(y)))
-            if cChar.achievements["map"] == True:
+            if (cChar.achievements["map"] == True) or cPlayer.admin:
                 bigY = max(mapL,key=operator.itemgetter(1))[1]
                 bigX = max(mapL,key=operator.itemgetter(0))[0]
                 litY = min(mapL,key=operator.itemgetter(1))[1]
