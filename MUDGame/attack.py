@@ -111,7 +111,7 @@ def hit(attacker, defender):
                 chance = random.randint(0 + attacker.stats["luck"], 2 + attacker.stats["agility"])
                 if chance in range(1 + npc.level*2 - attacker.level, 2 + attacker.stats["agility"]):
                     print()
-                    print('! Dubble Strike !')
+                    print('! Double Strike !')
                     print()
                     attWeaponV += attacker.stats['agility'] * 2
             else:
@@ -148,8 +148,23 @@ def hit(attacker, defender):
     Damage = ranDamage * attWeaponV - defArmorV - defShieldV
     if Damage < 0:
         Damage = 0
+
+    oldHP = defender.health
     defender.health -= Damage
     print(attacker.name + " hit " + defender.name + " for " + str(Damage) + " damage. \n")
+
+    if type(attacker) == npc.Mob and defender.health > 0 :
+        if ((Damage *100)/oldHP) > 80:
+            print("Dang!! That bastard almost killed you! Consider retreat weakling.")
+        if ((Damage *100)/oldHP) <= 80 and ((Damage *100)/oldHP) > 50:
+            print("Oh man, that was a hard hit. One more like this and you kick the bucket.")
+        if ((Damage *100)/oldHP) <= 50 and ((Damage *100)/oldHP) > 30:
+            print("Outch!! A big scratch for a big boy")
+        if ((Damage *100)/oldHP) <= 30 and ((Damage *100)/oldHP) > 10:
+            print("You're bleeding here and there, but nothing that could stop a proud "+defender.race+".")
+        if ((Damage *100)/oldHP) <= 10:
+            print("You didn't even flinch. Your enemy looks at you in shock. Kill that impotent whim.")
+
     return Damage
 
 def fight(char, npc):
