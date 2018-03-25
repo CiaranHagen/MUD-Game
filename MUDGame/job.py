@@ -240,11 +240,11 @@ def jobLevelUp(char):
         char.maxhealth += hpBonus
         char.health = char.maxhealth
         print('you gained :\n'
-              + colors.fg.cyan + ' +' + str(strBonus) + ' strength' + colors.reset + '\n'
-              + colors.fg.cyan + ' +' + str(agiBonus) + ' agility' + colors.reset + '\n'
-              + colors.fg.cyan + ' +' + str(witBonus) + ' wit' + colors.reset + '\n'
-              + colors.fg.cyan + ' +' + str(luckBonus) + ' luck' + colors.reset + '\n'
-              + colors.fg.cyan + '+' + str(hpBonus) + ' maxhealth' + colors.reset, end='')
+              + colors.fg.purple + ' +' + str(strBonus) + colors.fg.cyan + ' strength' + colors.reset + '\n'
+              + colors.fg.purple + ' +' + str(agiBonus) + colors.fg.cyan + ' agility' + colors.reset + '\n'
+              + colors.fg.purple + ' +' + str(witBonus) + colors.fg.cyan + ' wit' + colors.reset + '\n'
+              + colors.fg.purple + ' +' + str(luckBonus) + colors.fg.cyan + ' luck' + colors.reset + '\n'
+              + colors.fg.green + '+' + str(hpBonus) + colors.fg.cyan + ' maxhealth' + colors.reset, end='' + '\n ')
     if char.job == 'rogue':
         print('Your stats have improved !')
         print()
@@ -264,11 +264,11 @@ def jobLevelUp(char):
         char.maxhealth += hpBonus
         char.health = char.maxhealth
         print('you gained :\n'
-              + colors.fg.cyan + ' +' + str(strBonus) + ' strength' + colors.reset + '\n'
-              + colors.fg.cyan + ' +' + str(agiBonus) + ' agility' + colors.reset + '\n'
-              + colors.fg.cyan + ' +' + str(witBonus) + ' wit' + colors.reset + '\n'
-              + colors.fg.cyan + ' +' + str(luckBonus) + ' luck' + colors.reset + '\n'
-              + colors.fg.cyan + '+' + str(hpBonus) + ' maxhealth' + colors.reset, end='')
+              + colors.fg.purple + ' +' + str(strBonus) + colors.fg.cyan + ' strength' + colors.reset + '\n'
+              + colors.fg.purple + ' +' + str(agiBonus) + colors.fg.cyan + ' agility' + colors.reset + '\n'
+              + colors.fg.purple + ' +' + str(witBonus) + colors.fg.cyan + ' wit' + colors.reset + '\n'
+              + colors.fg.purple + ' +' + str(luckBonus) + colors.fg.cyan + ' luck' + colors.reset + '\n'
+              + colors.fg.green + '+' + str(hpBonus) + colors.fg.cyan + ' maxhealth' + colors.reset, end='' + '\n ')
     if char.job == "admin":
         print('You have become even more awesome and undying !')
         print()
@@ -284,11 +284,11 @@ def jobLevelUp(char):
         char.maxhealth += hpBonus
         char.health = char.maxhealth
         print('you gained :\n'
-              + colors.fg.cyan + ' +' + str(strBonus) + ' strength' + colors.reset + '\n'
-              + colors.fg.cyan + ' +' + str(agiBonus) + ' agility' + colors.reset + '\n'
-              + colors.fg.cyan + ' +' + str(witBonus) + ' wit' + colors.reset + '\n'
-              + colors.fg.cyan + ' +' + str(luckBonus) + ' luck' + colors.reset + '\n'
-              + colors.fg.cyan + '+' + str(hpBonus) + ' maxhealth' + colors.reset, end='')
+              + colors.fg.purple + ' +' + str(strBonus) + colors.fg.cyan + ' strength' + colors.reset + '\n'
+              + colors.fg.purple + ' +' + str(agiBonus) + colors.fg.cyan + ' agility' + colors.reset + '\n'
+              + colors.fg.purple + ' +' + str(witBonus) + colors.fg.cyan + ' wit' + colors.reset + '\n'
+              + colors.fg.purple + ' +' + str(luckBonus) + colors.fg.cyan + ' luck' + colors.reset + '\n'
+              + colors.fg.green + '+' + str(hpBonus) + colors.fg.cyan + ' maxhealth' + colors.reset, end='' + '\n ')
     if char.job not in ['warrior', 'rogue', 'beggar', 'admin']:
         print('Your random class will gain random stat bonuses')
         print()
@@ -304,14 +304,15 @@ def jobLevelUp(char):
         char.maxhealth += hpBonus
         char.health = char.maxhealth
         print('you gained :\n'
-              + colors.fg.cyan + ' +' + str(strBonus) + ' strength' + colors.reset + '\n'
-              + colors.fg.cyan + ' +' + str(agiBonus) + ' agility' + colors.reset + '\n'
-              + colors.fg.cyan + ' +' + str(witBonus) + ' wit' + colors.reset + '\n'
-              + colors.fg.cyan + ' +' + str(luckBonus) + ' luck' + colors.reset + '\n'
-              + colors.fg.cyan + '+' + str(hpBonus) + ' maxhealth' + colors.reset, end='')
-    print()
+              + colors.fg.purple + ' +' + str(strBonus) + colors.fg.cyan + ' strength' + colors.reset + '\n'
+              + colors.fg.purple + ' +' + str(agiBonus) + colors.fg.cyan + ' agility' + colors.reset + '\n'
+              + colors.fg.purple + ' +' + str(witBonus) + colors.fg.cyan + ' wit' + colors.reset + '\n'
+              + colors.fg.purple + ' +' + str(luckBonus) + colors.fg.cyan + ' luck' + colors.reset + '\n'
+              + colors.fg.green + '+' + str(hpBonus) + colors.fg.cyan + ' maxhealth' + colors.reset, end='' + '\n ')
     time.sleep(1)
-    print('Your upgraded stats are:\n')
-    print(colors.fg.cyan + str(char.stats) + colors.reset, end = '' '\n')
-    print(colors.fg.cyan + 'Health = ' + colors.fg.green + str(char.health) + colors.reset, end='')
-    print()
+    print('Your upgraded stats are:\n'
+          + colors.fg.cyan + ' strength: ' + colors.fg.purple + str(char.stats['strength']) + colors.reset + '\n'
+          + colors.fg.cyan + ' agility: ' + colors.fg.purple + str(char.stats['agility']) + colors.reset + '\n'
+          + colors.fg.cyan + ' wit: ' + colors.fg.purple + str(char.stats['wit']) + colors.reset + '\n'
+          + colors.fg.cyan + ' luck: ' + colors.fg.purple + str(char.stats['luck']) + colors.reset + '\n'
+          + colors.fg.cyan + ' maxhealth: ' + colors.fg.green + str(char.maxhealth) + colors.reset, end='' + '\n ')

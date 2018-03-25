@@ -72,7 +72,7 @@ def onstart():
     for fIterator in os.listdir("../data/characters/"):
         charL.append(fIterator[:-4])
     if newPlayer == "r":
-        currentPlayer = player.newPlayer()
+        currentPlayer = player.newPlayer(),
         print("------------------------------------------".center(os.get_terminal_size().columns, "-"))
         print("Character creation \n")
 
@@ -516,7 +516,7 @@ while True:
                             print(items[key])
                     else:
                         print("Your inventory is empty")
-                elif splitIn[1] == "stats":
+                elif splitIn[1] in [str(cChar.name), str(cChar.name).lower()]:
                     character.checkLevel(cChar)
                     print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(cChar.name))
                     print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(cChar.race))
@@ -524,6 +524,40 @@ while True:
                     print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
                     print(colors.fg.orange + 'Health: '+ colors.fg.green + str(cChar.health))
                     print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
+                    print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.exp + cChar.expneed) + colors.reset + "]")
+                    print(colors.reset, end='')
+                elif splitIn[1].lower() in ['name']:
+                    character.checkLevel(cChar)
+                    print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(cChar.name))
+                    print(colors.reset, end='')
+                elif splitIn[1].lower() in ['race', 'origin']:
+                    print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(cChar.race))
+                    print(colors.reset, end='')
+                elif splitIn[1].lower() in ['job', 'occupation', 'class']:
+                    print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(cChar.job))
+                    print(colors.reset, end='')
+                elif splitIn[1].lower() in ['stats']:
+                    print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
+                    print(colors.reset, end='')
+                elif splitIn[1].lower() in ['str', 'strength']:
+                    print(colors.fg.orange + 'Strength: '+ colors.fg.cyan + str(cChar.stats['strength']))
+                    print(colors.reset, end='')
+                elif splitIn[1].lower() in ['wits', 'wit', 'intelligence', 'int', 'brains']:
+                    print(colors.fg.orange + 'Wit: '+ colors.fg.cyan + str(cChar.stats['wit']))
+                    print(colors.reset, end='')
+                elif splitIn[1].lower() in ['agi', 'agility']:
+                    print(colors.fg.orange + 'Agility: '+ colors.fg.cyan + str(cChar.stats['agility']))
+                    print(colors.reset, end='')
+                elif splitIn[1].lower() in ['luck']:
+                    print(colors.fg.orange + 'Luck: '+ colors.fg.cyan + str(cChar.stats['luck']))
+                    print(colors.reset, end='')
+                elif splitIn[1].lower() in ['hp', 'health']:
+                    print(colors.fg.orange + 'Health: '+ colors.fg.green + str(cChar.health))
+                    print(colors.reset, end='')
+                elif splitIn[1].lower() in ['lvl', 'level']:
+                    print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
+                    print(colors.reset, end='')
+                elif splitIn[1].lower() in ['exp', 'xp', 'experience']:
                     print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.exp + cChar.expneed) + colors.reset + "]")
                     print(colors.reset, end='')
                 elif splitIn[1] in npcL:
