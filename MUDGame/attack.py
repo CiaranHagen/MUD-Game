@@ -171,7 +171,9 @@ def fight(char, npc):
     draw(npc)
     damageToll = 0
     while True:
+        print()
         action = input("\033[31mo\033[33m-\033[90m(\033[37m==> ")
+        print()
         if action in ["hit", "slash", "lunge", "stab"]:
             if item.loadItem(char.onPerson["weapon"], "wpn").health > 0:
                 damageToll += hit(char, npc)
@@ -183,6 +185,7 @@ def fight(char, npc):
                     print('\033[08m')
                     os.system("clear")
                     print('\033[0m')
+                    print()
                     print("You are victorious!")
                     print()
                     drawDead(npc)

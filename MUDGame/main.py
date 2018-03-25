@@ -243,7 +243,6 @@ def mapper(litX, bigX, litY, bigY, mapL):
     dis = (bigX - litX - 2)//2
     if dis < 2:
         dis = 2
-    print()
     print(dis*"=" + " MAP " + dis*"=")
     print()
     for j in range(bigY, litY-1, -1):
@@ -275,7 +274,6 @@ def mapper(litX, bigX, litY, bigY, mapL):
         print(spaceLine)
     print(colors.reset , end = '')
     print(dis*"=" + " MAP " + dis*"=")
-    print()
 
 npcCRoom = []
 def loadCRoom():
@@ -309,17 +307,17 @@ helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "take"
 print(colors.invisible)
 os.system("clear")
 print(colors.reset)
-if not cPlayer.admin:
-    print()
-    print(("----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " "))
-    print()
-elif cPlayer.admin:
-    print()
-    print("You are logged in as admin. Remember that you are not limited to cardinal directions when moving. Just write \"go <x> <y>\".")
+
+print()
+print(("----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " "))
+print()
+if cPlayer.admin:
+    print("You are logged in as admin. Remember that you are not limited to cardinal directions when moving. Just write \"go <x> <y>\". Also: The key to the magical admin-part of the game is the same as the username and they are both the answer to life the universe and everything. Vi?")
     print()
 
 commandL = ["help"]
 while True:
+    print()
     try:
 
         #===============Key input part==================
@@ -403,6 +401,7 @@ while True:
         for w in splitIn:
             w = w.lower()
         command = splitIn[0]
+        print()
 
         #========= Go [direction] ==========#
 
@@ -439,7 +438,9 @@ while True:
                     try:
                         coords = splitIn[1].split(" ")
                         if ("room" + coords[0] + "_" + coords[1]) in roomL:
+                            print()
                             print("You've teleported to "+ coords[0] + ", " + coords[1])
+                            print()
                             cChar.location[0] = int(coords[0])
                             cChar.location[1] = int(coords[1])
                             cRoom.save()
@@ -457,15 +458,19 @@ while True:
                         print("Apparently you are too stupid to use coordinates. Do... you... need... help... ? (Tries using sign language...)")
 
                 else:
+                    print()
                     print("You cannot go " + splitIn[1] + ". Possible directions are: ", end = '')
                     for key in cRoom.possibleDirections:
                         print(key , end = ' ')
                     print("\n")
+                    print()
             else:
+                print()
                 print("Where do you want to go? Add a cardinal direction behind 'go'! Possible directions are: ", end = '')
                 for key in cRoom.possibleDirections:
                     print(key , end = ' ')
                 print("\n")
+                print()
 
         #========= Look [object] ==========#
 
@@ -478,15 +483,15 @@ while True:
                 print(cRoom.description)
                 if len(npcCRoom) > 0:
                     print("Also present: ", end="")
-                for c in npcCRoom:
-                    mob = npc.loadNpc(c, "mob")
-                    if mob.angry:
-                        print(colors.fg.red + mob.name + colors.reset, end = "")
-                    elif not mob.angry:
-                        print(colors.fg.green + mob.name + colors.reset, end = "")
-                    if npcCRoom.index(mob.name) != len(npcCRoom):
-                        print(", ", end = "")
-                print()
+                    for c in npcCRoom:
+                        mob = npc.loadNpc(c, "mob")
+                        if mob.angry:
+                            print(colors.fg.red + mob.name + colors.reset, end = "")
+                        elif not mob.angry:
+                            print(colors.fg.green + mob.name + colors.reset, end = "")
+                        if npcCRoom.index(mob.name) != len(npcCRoom):
+                            print(", ", end = "") 
+                    print("")   
             elif splitIn[1] == "self":
                 print("Health: " + str(cChar.health))
                 print()
@@ -525,7 +530,6 @@ while True:
                     print(npc.loadNpc(splitIn[1], "mob").description)
                 else:
                     print("There is no "+ splitIn[1] + " here.")
-
         #========= take [object] ==========#
 
         elif command in ["take", "grab", "borrow"]:
@@ -543,9 +547,6 @@ while True:
         #========= Map ==========#
 
         elif command in ["map", "where", "picture"]:
-            print(colors.invisible)
-            os.system("clear")
-            print(colors.reset)
             mapL = []
             for o in roomL:
                 oCoord = o[4:]
@@ -573,8 +574,10 @@ while True:
             print(colors.reset , end = '')
             if (uName == "42") and (pwd == "42"):
                 print("Username and Password correct. (\"quit\" to exit)")
+                print()
                 print("Commands are: room, mob, map, quit, item, add, crown <username>")
                 while True:
+                    print()
                     try:
                         admIn = input(colors.fg.red + ">> " + colors.fg.pink)
                         print(colors.reset , end = '')
@@ -583,7 +586,7 @@ while True:
                         for w in splitMin:
                             w = w.lower()
                         commAdmin = splitMin[0]
-
+                        print()
                         if commAdmin == "room":
                             coord = input("Please enter the coordinates (seperate by space): ")
                             room.newRoom(int(coord.split(' ')[0]), int(coord.split(' ')[1]))
@@ -679,7 +682,7 @@ while True:
         #========= Quit Sequence ==========#
 
         elif command in ["quit", "leave", "abandon", "abort", "terminate", "exit"]:
-            sureMaker = input("Are you sure you want to quit? (y/n)\n>" + colors.fg.cyan)
+            sureMaker = input("Are you sure you want to quit? (y/n)\n\n>" + colors.fg.cyan)
             print(colors.reset)
             if sureMaker == ("y" or "Y"):
                 print("Quitting game...")
@@ -701,8 +704,7 @@ while True:
                 print("Possible commands are: go, look, take, attack, map and quit (and help)")
             else:
                 if splitIn[1] in helpText:
-                    print()
-                    print(helpText[splitIn[1]] + "\n")
+                    print(helpText[splitIn[1]])
                 else:
                     print("There is no such command.")
             #at some point there should rather exist a dictionary of commands where the loop
