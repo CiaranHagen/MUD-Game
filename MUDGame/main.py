@@ -702,9 +702,11 @@ while True:
                             itemName = input("Item-name: ").lower()
                             descr = input("Enter a description: ")
                             addToInv = input("Add to inventory (y/n): ")
-                            room.loadRoom("room" + rom.split(" ")[:(len(rom)//2)] + "_" + rom.split(" ")[(len(rom)//2)+1:]).stuffDescription[itemName] = descr
+                            coords = rom.split(" ")
+                            room.loadRoom("room" + coords[0] + "_" + coords[1]).stuffDescription[itemName] = descr
                             if addToInv == "y":
-                                room.loadRoom("room" + rom.split(" ")[:(len(rom)//2)] + "_" + rom.split(" ")[(len(rom)//2)+1:]).inventory[itemName] = descr
+                                room.loadRoom("room" + coords[0] + "_" + coords[1]).inventory[itemName] = descr
+                            print("Added " + itemname + " to " + "room" + coords[0] + "_" + coords[1] + ".")
                             
                         elif commAdmin == "crown":
                             cPlayer.admin = True
