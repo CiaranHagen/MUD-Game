@@ -90,7 +90,7 @@ class Character:
         return
 
     def save(self):
-        
+
         try:
             f = open("../data/characters/"+ self.name + ".txt", "wb")
         except FileNotFoundError:
@@ -154,12 +154,13 @@ def characterOwn(name):
         print("Character does not belong to you. Please choose one of your own characters.")
         f.close
         return False
-        
+
 
 def checkLevel(char):
-    if (char.exp >= (200 * (1 + char.level * 3) * (1 + char.level))) and (char.level > 0):
-        char.exp -= (200 * (1 + char.level * 3) * (1 + char.level))
-        if char.exp < 0:
-            char.exp = 0
-        char.level += 1
-        char.expneed = ((200 * (1 + char.level * 3) * (1 + char.level)) - char.exp)
+    if char.level > 0:
+        if (char.exp >= (200 * (1 + char.level * 3) * (1 + char.level))) and (char.level > 0):
+            char.exp -= (200 * (1 + char.level * 3) * (1 + char.level))
+            if char.exp < 0:
+                char.exp = 0
+            char.level += 1
+            char.expneed = ((200 * (1 + char.level * 3) * (1 + char.level)) - char.exp)

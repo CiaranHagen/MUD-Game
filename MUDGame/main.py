@@ -222,7 +222,7 @@ def onstart():
         else:
             charactername = input("Which character do you want to load? ")
             currentChar = character.loadCharacter(charactername, currentPlayer.username)
-                
+
     roomL = room.loadRooms()
 
     npcL = npc.loadNpcs()
@@ -480,7 +480,9 @@ while True:
                         if cChar.level == 0:
                             cChar.level = 1
                             print()
-                            print("Congratulations. You have completed the tutorial dungeon and reached level 1.") 
+                            print("Congratulations. You have completed the tutorial dungeon and reached level 1.")
+                            time.sleep(1)
+                            job.jobLevelUp(cChar)
                 else:
                     print("You cannot go " + splitIn[1] + ". Possible directions are: ", end = '')
                     for key in cRoom.possibleDirections:
@@ -510,8 +512,8 @@ while True:
                         elif not mob.angry:
                             print(colors.fg.green + mob.name + colors.reset, end = "")
                         if npcCRoom.index(mob.name) != len(npcCRoom):
-                            print(", ", end = "") 
-                    print("")   
+                            print(", ", end = "")
+                    print("")
             else:
                 if splitIn[1] in cRoom.stuffDescription:
                     print(cRoom.stuffDescription[splitIn[1]])
@@ -707,7 +709,7 @@ while True:
                             if addToInv == "y":
                                 room.loadRoom("room" + coords[0] + "_" + coords[1]).inventory[itemName] = descr
                             print("Added " + itemname + " to " + "room" + coords[0] + "_" + coords[1] + ".")
-                            
+
                         elif commAdmin == "crown":
                             cPlayer.admin = True
                             cPlayer.save()
