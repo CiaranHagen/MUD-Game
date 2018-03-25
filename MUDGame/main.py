@@ -637,7 +637,7 @@ while True:
             if (uName == "42") and (pwd == "42"):
                 print("Username and Password correct. (\"quit\" to exit)")
                 print()
-                print("Commands are: room, mob, map, quit, item, add, crown <username>")
+                print("Commands are: room, mob, map, quit, item, add, addtoroom, crown <username>")
                 while True:
                     print()
                     try:
@@ -693,10 +693,19 @@ while True:
                                 kind = 'arm'
                             print('Input the name of the item')
                             name = input('>')
-                            cChar.inventory[item] = item.loadItem(name, kind)
+                            cChar.inventory[name] = item.loadItem(name, kind).description
                             print()
                             print(cChar.inventory)
 
+                        elif commAdmin == "addtoroom":
+                            rom = input("Room coords (<x> <y>): ")
+                            itemName = input("Item-name: ").lower()
+                            descr = input("Enter a description: ")
+                            addToInv = input("Add to inventory (y/n): ")
+                            room.loadRoom("room" + rom.split(" ")[:(len(rom)//2)] + "_" + rom.split(" ")[(len(rom)//2)+1:]).stuffDescription[itemName] = descr
+                            if addToInv == "y":
+                                room.loadRoom("room" + rom.split(" ")[:(len(rom)//2)] + "_" + rom.split(" ")[(len(rom)//2)+1:]).inventory[itemName] = descr
+                            
                         elif commAdmin == "crown":
                             cPlayer.admin = True
                             cPlayer.save()
