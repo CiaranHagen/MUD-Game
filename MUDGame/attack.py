@@ -186,6 +186,7 @@ def fight(char, npc):
                     print("You are victorious!")
                     print()
                     drawDead(npc)
+                    time.sleep(1)
                     print("Gained " + str(npc.level * 50) + " EXP.")
                     if char.level > levelBefore:
                         job.jobLevelUp(char)
