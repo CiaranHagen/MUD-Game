@@ -303,7 +303,7 @@ for c in npcL:
 
 cRoom = loadCRoom()
 
-helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "take" : "take <object>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>", "map":"Prints a map of your surroundings. If you have the map achievement, it prints the whole world map."}
+helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "take" : "take <object>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>", "map":"Prints a map of your surroundings. If you have the map achievement, it prints the whole world map.", "wear":"wear <\"weapon\", \"shield\" or \"armor\"> <item name>"}
 
 raceDescriptions = {"orc":"Orc. A brustish ugly humanoid being. Not nice.", "dwarf":"Dwarf. Short stockish and bad-tempered with a distinct lack of hygiene. Don't mess with his hammer.", "elf":"Elf. Gracefully and elegantly deadly. Easily offended.", "troll":"Troll. Big, indescribably ugly and as dumb as he is strong.", "succubus":"Succubus.", "gelfling":"Gelfling. Small humanoid being with a bald head and a weird accent.", "gockcobbler":"GockCobbler. Shinigami.", "hickdead":"Hickdead. Annoying with an a**h*** attitude.", "thraal":"Thraal. Even dumber than a troll. It believes that if you can't see it, it can't see you."}
 
@@ -401,8 +401,8 @@ while True:
         splitIn = inputter.split(" ")
         if len(splitIn) != 1:
             splitIn[1:] = [' '.join(splitIn[1:])]
-        for w in splitIn:
-            w = w.lower()
+        for i in range(0,len(splitIn)):
+            splitIn[i] = splitIn[i].lower()
         command = splitIn[0]
         print()
 
@@ -605,6 +605,57 @@ while True:
                     cChar.inventory[splitIn[1]] = cRoom.inventory[splitIn[1]]
                 else:
                     print("There is no such thing here, " + random.choice(["weirdo", "nutter", "whippersnapper", "beavus", "butthead", "you Thraal", "whacko"]) + ".")
+        
+        #========= wear ==========#
+        
+        elif command in ["wear", "don", "mount"]:
+            if (len(splitIn) == 1) or ((len(splitIn) >1) and (splitIn[1] == " ")):
+                print("You take off everything and stand naked in the middle of the room, wondering why. (Put your clothes back on!)")
+            else:
+                kindItem = splitIn[1].split(" ")
+                if len(kindItem) >1:
+                    itemName = kindItem[1]
+                    if len(kindItem) > 2:
+                        for c in kindItem[2:]:
+                            itemName += (" " + c)
+                    if (len(kindItem) > 1) and (kindItem[1] != " "):
+                        if kindItem[0] == "weapon":
+                            kind = "wpn"
+                        elif kindItem[0] == "armor":
+                            kind = "arm"
+                        elif kindItem[0] == "shield":
+                            kind = "shd"
+                        else:
+                            print("C\'mon! Read the f****** help instructions.")
+                            continue
+                        if itemName in cChar.inventory:
+                            newItem = item.loadItem(itemName, kind)
+                            oldItem = item.loadItem(cChar.onPerson[kindItem[0]], kind)
+                            cChar.onPerson[kindItem[0]] = newItem.name
+                            if oldItem.name != "default":
+                                cChar.inventory[oldItem.name] = oldItem.description
+                        else:
+                            print("You either don't have this item or misssppeled its name or type.")
+                    else: 
+                        print("You take off everything and stand naked in the middle of the room, wondering why. (Put your clothes back on!)") 
+                else:
+                    print("C\'mon! Read the f****** help instructions.")
+        
+        #========= throw away ==========#
+
+        elif command in ["trash", "rm", "discard"]:
+            if len(splitIn) > 1:
+                if splitIn[1] in cChar.inventory:
+                    prompter = input("Are you sure you want to throw away this item (y/n)? ")
+                    if prompter == "y":
+                        cRoom.inventory[splitIn[1]] = cChar.inventory[splitIn[1]]
+                        cChar.inventory.pop(splitIn[1])
+                elif splitIn[1] in cChar.onPerson.values():
+                    print("You need to put something else on before you take this off. Nudity is NOT an option!")
+                else:
+                    print("You can't throw away what you don't have. It's mine! Get it? MIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIINNNNNNNEEEEEEEEEEEEEEEEEEEE!!!")
+            else:    
+                print("Well... ok that was productive... You threw away nothing?")
 
         #========= Map ==========#
 
@@ -769,12 +820,43 @@ while True:
 
         elif command == "fizz":
             print("buzz")
+        #========= Speeke Rattus Rattus =========#
+        
+        elif command in ["say", "speek", "speeke"]:
+            if len(splitIn) > 1:
+                print(splitIn[1][0].upper() + splitIn[1][1:])
+            else:
+                print("Silence... my favorite kind of discussion.")
 
+        #========= Speeke Rattus Rattus =========#
+        
+        elif command in ["yell", "scream", "holler"]:
+            if len(splitIn) > 1:
+                print(splitIn[1].upper())
+            else:
+                print(" - inhales... -")
+                time.sleep(1)
+                for i in range(0, 200):
+                    print("A", end="")
+                    time.sleep(0.01)
+                    sys.stdout.flush()
+                for i in range(0, 50):
+                    print("H", end="")
+                    time.sleep(0.01)
+                    sys.stdout.flush()
+                for i in range(0, 10):
+                    print("!", end="")
+                    time.sleep(0.01)
+                    sys.stdout.flush()
+                print("")
+                print()
+                time.sleep(1)
+                print("Feel better?")
         #========= help [with commands] =========#
 
         elif command in ["help", "halp", "", "eehm", "?", "??", "???"]:
             if len(splitIn) == 1:
-                print("Possible commands are: go, look, take, attack, map and quit (and help)")
+                print("Possible commands are: go, look, take, attack, map, wear, trash and quit (and help)")
             else:
                 if splitIn[1] in helpText:
                     print(helpText[splitIn[1]])
