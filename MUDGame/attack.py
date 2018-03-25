@@ -186,9 +186,9 @@ def fight(char, npc):
                     print("You are victorious!")
                     print()
                     drawDead(npc)
-                    time.sleep(1)
                     print("Gained " + str(npc.level * 50) + " EXP.")
                     if char.level > levelBefore:
+                        time.sleep(1)
                         job.jobLevelUp(char)
                     os.system("rm ../data/npcs/mob_" + npc.name + ".txt")
                     del npc
