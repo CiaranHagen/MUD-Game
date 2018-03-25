@@ -481,8 +481,20 @@ while True:
                             cChar.level = 1
                             print()
                             print("Congratulations. You have completed the tutorial dungeon and reached level 1.")
-                            time.sleep(1)
+                            time.sleep(0.5)
                             job.jobLevelUp(cChar)
+                            time.sleep(0.5)
+                            print('Calculating accumulated EXP ...')
+                            time.sleep(0.5)
+                            character.checkLevel(cChar)
+                            if cChar.level == 2:
+                                job.jobLevelUp(cChar)
+                                time.sleep(0.5)
+                                character.checkLevel(cChar)
+                                if cChar.level == 3:
+                                    job.jobLevelUp(cChar)
+                            else:
+                                print('you do not seem to have accumulated enough EXP to further increase your level')
                 else:
                     print("You cannot go " + splitIn[1] + ". Possible directions are: ", end = '')
                     for key in cRoom.possibleDirections:
@@ -607,9 +619,9 @@ while True:
                     cChar.inventory[splitIn[1]] = cRoom.inventory[splitIn[1]]
                 else:
                     print("There is no such thing here, " + random.choice(["weirdo", "nutter", "whippersnapper", "beavus", "butthead", "you Thraal", "whacko"]) + ".")
-        
+
         #========= wear ==========#
-        
+
         elif command in ["wear", "don", "mount"]:
             if (len(splitIn) == 1) or ((len(splitIn) >1) and (splitIn[1] == " ")):
                 print("You take off everything and stand naked in the middle of the room, wondering why. (Put your clothes back on!)")
@@ -638,11 +650,11 @@ while True:
                                 cChar.inventory[oldItem.name] = oldItem.description
                         else:
                             print("You either don't have this item or misssppeled its name or type.")
-                    else: 
-                        print("You take off everything and stand naked in the middle of the room, wondering why. (Put your clothes back on!)") 
+                    else:
+                        print("You take off everything and stand naked in the middle of the room, wondering why. (Put your clothes back on!)")
                 else:
                     print("C\'mon! Read the f****** help instructions.")
-        
+
         #========= throw away ==========#
 
         elif command in ["trash", "rm", "discard"]:
@@ -656,7 +668,7 @@ while True:
                     print("You need to put something else on before you take this off. Nudity is NOT an option!")
                 else:
                     print("You can't throw away what you don't have. It's mine! Get it? MIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIINNNNNNNEEEEEEEEEEEEEEEEEEEE!!!")
-            else:    
+            else:
                 print("Well... ok that was productive... You threw away nothing?")
 
         #========= Map ==========#
@@ -823,7 +835,7 @@ while True:
         elif command == "fizz":
             print("buzz")
         #========= Speeke Rattus Rattus =========#
-        
+
         elif command in ["say", "speek", "speeke"]:
             if len(splitIn) > 1:
                 print(splitIn[1][0].upper() + splitIn[1][1:])
@@ -831,7 +843,7 @@ while True:
                 print("Silence... my favorite kind of discussion.")
 
         #========= Speeke Rattus Rattus =========#
-        
+
         elif command in ["yell", "scream", "holler"]:
             if len(splitIn) > 1:
                 print(splitIn[1].upper())
