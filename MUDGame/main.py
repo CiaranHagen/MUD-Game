@@ -492,16 +492,6 @@ while True:
                         if npcCRoom.index(mob.name) != len(npcCRoom):
                             print(", ", end = "") 
                     print("")   
-            elif splitIn[1] == "self":
-                print("Health: " + str(cChar.health))
-                print()
-                print("Equipment: ")
-                print("-----------")
-                for key in cChar.onPerson:
-                    print(key + " --> " + cChar.onPerson[key])
-                print()
-                if cPlayer.admin:
-                    print("You posess the power of the kitten. Use it in a pawsitive manner.")
             else:
                 if splitIn[1] in cRoom.stuffDescription:
                     print(cRoom.stuffDescription[splitIn[1]])
@@ -516,7 +506,7 @@ while True:
                             print(items[key])
                     else:
                         print("Your inventory is empty")
-                elif splitIn[1] in [str(cChar.name), str(cChar.name).lower()]:
+                elif splitIn[1] in [cChar.name.lower(), "self"]:
                     character.checkLevel(cChar)
                     print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(cChar.name))
                     print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(cChar.race))
@@ -525,39 +515,55 @@ while True:
                     print(colors.fg.orange + 'Health: '+ colors.fg.green + str(cChar.health))
                     print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
                     print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.exp + cChar.expneed) + colors.reset + "]")
+                    print()
+                    print(colors.fg.orange + "Equipment: ")
+                    print("-----------")
+                    for key in cChar.onPerson:
+                        print(colors.fg.orange + key + " --> "+ colors.fg.cyan + cChar.onPerson[key])
+                    print()
+                    if cPlayer.admin:
+                        print(colors.fg.orange + "You posess the power of the kitten. Use it in a pawsitive manner.")
                     print(colors.reset, end='')
-                elif splitIn[1].lower() in ['name']:
+                elif splitIn[1] in ['name']:
                     character.checkLevel(cChar)
                     print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(cChar.name))
                     print(colors.reset, end='')
-                elif splitIn[1].lower() in ['race', 'origin']:
+                elif splitIn[1] in ['race', 'origin']:
                     print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(cChar.race))
                     print(colors.reset, end='')
-                elif splitIn[1].lower() in ['job', 'occupation', 'class']:
+                elif splitIn[1] in ['job', 'occupation', 'class']:
                     print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(cChar.job))
                     print(colors.reset, end='')
-                elif splitIn[1].lower() in ['stats']:
+                elif splitIn[1] in ['stats']:
                     print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
                     print(colors.reset, end='')
-                elif splitIn[1].lower() in ['str', 'strength']:
+                elif splitIn[1] in ['str', 'strength']:
                     print(colors.fg.orange + 'Strength: '+ colors.fg.cyan + str(cChar.stats['strength']))
+                elif splitIn[1] in ['equipment', 'on person', 'on me', 'worn']:
+                    print(colors.fg.orange + "Equipment: ")
+                    print("-----------")
+                    for key in cChar.onPerson:
+                        print(colors.fg.orange + key + " --> "+ colors.fg.cyan + cChar.onPerson[key])
+                    print()
+                    if cPlayer.admin:
+                        print(colors.fg.orange + "You posess the power of the kitten. Use it in a pawsitive manner.")
                     print(colors.reset, end='')
-                elif splitIn[1].lower() in ['wits', 'wit', 'intelligence', 'int', 'brains']:
+                elif splitIn[1] in ['wits', 'wit', 'intelligence', 'int', 'brains']:
                     print(colors.fg.orange + 'Wit: '+ colors.fg.cyan + str(cChar.stats['wit']))
                     print(colors.reset, end='')
-                elif splitIn[1].lower() in ['agi', 'agility']:
+                elif splitIn[1] in ['agi', 'agility']:
                     print(colors.fg.orange + 'Agility: '+ colors.fg.cyan + str(cChar.stats['agility']))
                     print(colors.reset, end='')
-                elif splitIn[1].lower() in ['luck']:
+                elif splitIn[1] in ['luck']:
                     print(colors.fg.orange + 'Luck: '+ colors.fg.cyan + str(cChar.stats['luck']))
                     print(colors.reset, end='')
-                elif splitIn[1].lower() in ['hp', 'health']:
+                elif splitIn[1] in ['hp', 'health']:
                     print(colors.fg.orange + 'Health: '+ colors.fg.green + str(cChar.health))
                     print(colors.reset, end='')
-                elif splitIn[1].lower() in ['lvl', 'level']:
+                elif splitIn[1] in ['lvl', 'level']:
                     print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
                     print(colors.reset, end='')
-                elif splitIn[1].lower() in ['exp', 'xp', 'experience']:
+                elif splitIn[1] in ['exp', 'xp', 'experience']:
                     print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.exp + cChar.expneed) + colors.reset + "]")
                     print(colors.reset, end='')
                 elif splitIn[1] in npcL:
