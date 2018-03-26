@@ -548,21 +548,22 @@ while True:
                     print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(cChar.name))
                     print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(cChar.race))
                     print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(cChar.job))
-                    print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
-                    print(colors.fg.orange + 'Health: '+ colors.fg.green + str(cChar.health))
                     print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
                     print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.expneed) + colors.reset + "]")
+                    print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
+                    print(colors.fg.orange + 'Health: ['+ colors.fg.green + str(cChar.health) + colors.reset + ' / ' + colors.fg.green + str(cChar.maxhealth) + colors.reset + ']')
                     print()
                     if len(cChar.inventory) > 0:
                         items = cChar.inventory
                         print(colors.fg.orange + "Inventory: ")
-                        print("-----------"+ colors.fg.cyan)
+                        print("-----------" + colors.fg.cyan)
                         for key in items:
                             print(str(key)[0].upper() + str(key)[1:])
-                            print(colors.reset, end='')
-                        else:
-                            print("Your inventory is empty")
-                            print()
+                        print(colors.reset, end='')
+                        print()
+                    else:
+                        print("Your inventory is empty")
+                        print()
                     print(colors.fg.orange + "Equipment: ")
                     print("-----------")
                     for key in cChar.onPerson:
@@ -582,11 +583,6 @@ while True:
                 elif splitIn[1] in ['job', 'occupation', 'class']:
                     print(colors.fg.orange + 'Job: '+ colors.fg.cyan + cChar.job)
                     print(colors.reset, end='')
-                elif splitIn[1] in ['stats']:
-                    print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
-                    print(colors.reset, end='')
-                elif splitIn[1] in ['str', 'strength']:
-                    print(colors.fg.orange + 'Strength: '+ colors.fg.cyan + str(cChar.stats['strength']))
                 elif splitIn[1] in ['equipment', 'on person', 'on me', 'worn']:
                     print(colors.fg.orange + "Equipment: ")
                     print("-----------")
@@ -595,6 +591,12 @@ while True:
                     print()
                     if cPlayer.admin:
                         print(colors.fg.orange + "You posess the power of the kitten. Use it in a pawsitive manner.")
+                    print(colors.reset, end='')
+                elif splitIn[1] in ['stats']:
+                    print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
+                    print(colors.reset, end='')
+                elif splitIn[1] in ['str', 'strength']:
+                    print(colors.fg.orange + 'Strength: '+ colors.fg.cyan + str(cChar.stats['strength']))
                     print(colors.reset, end='')
                 elif splitIn[1] in ['wits', 'wit', 'intelligence', 'int', 'brains']:
                     print(colors.fg.orange + 'Wit: '+ colors.fg.cyan + str(cChar.stats['wit']))
@@ -606,7 +608,7 @@ while True:
                     print(colors.fg.orange + 'Luck: '+ colors.fg.cyan + str(cChar.stats['luck']))
                     print(colors.reset, end='')
                 elif splitIn[1] in ['hp', 'health']:
-                    print(colors.fg.orange + 'Health: '+ colors.fg.green + str(cChar.health))
+                    print(colors.fg.orange + 'Health: ['+ colors.fg.green + str(cChar.health) + colors.reset + ' / ' + colors.fg.green + str(cChar.maxhealth) + colors.reset + ']')
                     print(colors.reset, end='')
                 elif splitIn[1] in ['lvl', 'level']:
                     print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
@@ -761,8 +763,12 @@ while True:
                         elif commAdmin == "changestats":
                             changestats = 1
                             while changestats == 1:
+                                print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
+                                print(colors.fg.orange + 'MaxHealth: '+ colors.fg.green + str(cChar.maxhealth))
+                                print()
+                                print(colors.reset, end='')
                                 print ('what stat do you wish to modify ? (' + colors.fg.orange + 'strength' + colors.reset + ' / ' + colors.fg.orange + 'agility' + colors.reset + ' / '
-                                       + colors.fg.orange + 'wit' + colors.reset + ' / ' + colors.fg.orange + 'luck' + colors.reset + ' / ' + colors.fg.green + 'health' + colors.reset + ')')
+                                       + colors.fg.orange + 'wit' + colors.reset + ' / ' + colors.fg.orange + 'luck' + colors.reset + ' / ' + colors.fg.green + 'maxhealth' + colors.reset + ')')
                                 choice = input('>').lower()
 
                                 if choice in ['strength', 'agility', 'wit', 'luck']:
@@ -795,7 +801,7 @@ while True:
                                             print(e)
                                             print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
 
-                                if choice in ['health']:
+                                if choice in ['maxhealth']:
                                     confirm = 1
                                     while confirm == 1:
                                         print('your ' + colors.fg.orange + str(choice) + colors.reset + ' is: '+ colors.fg.cyan + str(cChar.maxhealth) + colors.reset)
