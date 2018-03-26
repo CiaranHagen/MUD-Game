@@ -80,7 +80,7 @@ def smite(char, npc):
     levelBefore = int(char.level)
     character.checkLevel(char)
     drawDead(npc)
-    time.sleep(2)
+    time.sleep(1)
     print('\033[08m')
     os.system("clear")
     print('\033[0m')
