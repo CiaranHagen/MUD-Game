@@ -232,7 +232,7 @@ def jobLevelUp(char):
         luckBonus = random.randint(-10,2)
         if luckBonus < 0:
             luckBonus = 0
-        hpBonus = random.randint(0,201)
+        hpBonus = random.randint(100,201)
         char.stats['strength'] += int(strBonus)
         char.stats['agility'] += int(agiBonus)
         char.stats['wit'] += int(witBonus)
@@ -256,7 +256,7 @@ def jobLevelUp(char):
         luckBonus = random.randint(-10,2)
         if luckBonus < 0:
             luckBonus = 0
-        hpBonus = random.randint(0,101)
+        hpBonus = random.randint(50,101)
         char.stats['strength'] += int(strBonus)
         char.stats['agility'] += int(agiBonus)
         char.stats['wit'] += int(witBonus)
@@ -272,11 +272,11 @@ def jobLevelUp(char):
     if char.job == "admin":
         print('You have become even more awesome and undying !')
         print()
-        strBonus = random.randint(0,10)
-        agiBonus = random.randint(0,10)
-        witBonus = random.randint(0,10)
-        luckBonus = random.randint(0,10)
-        hpBonus = random.randint(0,1001)
+        strBonus = random.randint(5,10)
+        agiBonus = random.randint(5,10)
+        witBonus = random.randint(5,10)
+        luckBonus = random.randint(5,10)
+        hpBonus = random.randint(500,1001)
         char.stats['strength'] += int(strBonus)
         char.stats['agility'] += int(agiBonus)
         char.stats['wit'] += int(witBonus)

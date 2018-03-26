@@ -551,7 +551,7 @@ while True:
                     print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
                     print(colors.fg.orange + 'Health: '+ colors.fg.green + str(cChar.health))
                     print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
-                    print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.exp + cChar.expneed) + colors.reset + "]")
+                    print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.expneed) + colors.reset + "]")
                     print()
                     if len(cChar.inventory) > 0:
                         items = cChar.inventory
@@ -761,8 +761,10 @@ while True:
                         elif commAdmin == "changestats":
                             changestats = 1
                             while changestats == 1:
-                                print ('what stat do you wish to modify ? (' + colors.fg.orange + 'strength' + colors.reset + ' / ' + colors.fg.orange + 'agility' + colors.reset + ' / ' + colors.fg.orange + 'wit' + colors.reset + ' / ' + colors.fg.orange + 'luck' + colors.reset +')')
+                                print ('what stat do you wish to modify ? (' + colors.fg.orange + 'strength' + colors.reset + ' / ' + colors.fg.orange + 'agility' + colors.reset + ' / '
+                                       + colors.fg.orange + 'wit' + colors.reset + ' / ' + colors.fg.orange + 'luck' + colors.reset + ' / ' + colors.fg.green + 'health' + colors.reset + ')')
                                 choice = input('>').lower()
+
                                 if choice in ['strength', 'agility', 'wit', 'luck']:
                                     confirm = 1
                                     while confirm == 1:
@@ -783,16 +785,48 @@ while True:
                                                     if answer in ['y', 'yes']:
                                                         changestats = 1
                                                         confirm = 0
-                                                    if answer in ['n', 'no']:
+                                                    elif answer in ['n', 'no']:
                                                         changestats = 0
                                                         confirm = 0
                                                         Print('Quitting ...')
-                                                    if answer not in ['y', 'yes','n', 'no']:
+                                                    elif answer not in ['y', 'yes','n', 'no']:
                                                         print(str(answer) + ' is not a valid input, try again :')
                                         except Exception as e:
                                             print(e)
                                             print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
-                                if choice in ['q', 'quit']:
+
+                                if choice in ['health']:
+                                    confirm = 1
+                                    while confirm == 1:
+                                        print('your ' + colors.fg.orange + str(choice) + colors.reset + ' is: '+ colors.fg.cyan + str(cChar.maxhealth) + colors.reset)
+                                        print()
+                                        print('input new value')
+                                        value = input('>')
+                                        try:
+                                            if (int(value) >= 0):
+                                                cChar.maxhealth = int(value)
+                                                cChar.health = cChar.maxhealth
+                                                print('your new ' + colors.fg.orange + str(choice) + colors.reset + ' is: '+ colors.fg.cyan + str(cChar.maxhealth) + colors.reset)
+                                                answer = ''
+                                                while answer not in ['y', 'yes','n', 'no']:
+                                                    print()
+                                                    print('do you wish to continue modifying your stats ?')
+                                                    print("[" + colors.fg.green + "yes" + colors.reset + "/" + colors.fg.red + "no" + colors.reset + "]")
+                                                    answer = input('>').lower()
+                                                    if answer in ['y', 'yes']:
+                                                        changestats = 1
+                                                        confirm = 0
+                                                    elif answer in ['n', 'no']:
+                                                        changestats = 0
+                                                        confirm = 0
+                                                        Print('Quitting ...')
+                                                    elif answer not in ['y', 'yes','n', 'no']:
+                                                        print(str(answer) + ' is not a valid input, try again :')
+                                        except Exception as e:
+                                            print(e)
+                                            print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
+
+                                elif choice in ['q', 'quit']:
                                     quit = 1
                                     while quit == 1:
                                         print('Are you sure you wish to quit ?')
@@ -804,13 +838,13 @@ while True:
                                             changestats = 0
                                             confirm = 0
                                             continue
-                                        if answer in ['n', 'no']:
+                                        elif answer in ['n', 'no']:
                                             quit = 0
                                             changestats = 1
                                             confirm = 0
                                             continue
 
-                                if choice not in ['q', 'quit', 'strength', 'agility', 'wit', 'luck']:
+                                elif choice not in ['q', 'quit', 'strength', 'agility', 'wit', 'luck', 'health']:
                                     print('The status ' + colors.fg.orange + str(choice) + colors.reset + ' is not known to me or the game ... try again or enter' + colors.fg.orange + ' quit' + colors.reset + ' to abort')
                                     continue
 
@@ -967,9 +1001,8 @@ while True:
                         for c in npcL:
                             npc.loadNpc(c, "mob")
                     elif loser == "char":
-                        for c in cChar.inventory:
-                            cRoom.inventory.append(c)
-                        cChar.inventory = []
+                        cRoom.inventory.update(cChar.inventory)
+                        cChar.inventory = {}
                         cRoom = loadCRoom()
                 else:
                     print("You let loose a war-cry, incoherently screaming random names. Anyone present looks at you in confusion. No-one here seems to go by that name.")
