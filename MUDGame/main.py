@@ -612,7 +612,7 @@ while True:
                     print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
                     print(colors.reset, end='')
                 elif splitIn[1] in ['exp', 'xp', 'experience']:
-                    print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.exp + cChar.expneed) + colors.reset + "]")
+                    print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.expneed) + colors.reset + "]")
                     print(colors.reset, end='')
                 elif splitIn[1] in npcL:
                     print(npc.loadNpc(splitIn[1], "mob").description)

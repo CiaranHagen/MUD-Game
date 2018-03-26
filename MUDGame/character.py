@@ -162,4 +162,4 @@ def checkLevel(char):
         if char.exp < 0:
             char.exp = 0
         char.level += 1
-        char.expneed = ((200 * (1 + char.level * 3) * (1 + char.level)) - char.exp)
+        char.expneed = ((200 * (1 + char.level * 3) * (1 + char.level)))
