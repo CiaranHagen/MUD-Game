@@ -55,8 +55,8 @@ class Character:
 #Character level follows: [lvl / Exp to next lvl / Total Exp] // [1 / 200 / 200] // [2 / 1600 / 1800] // [3 / 4200 / 6000] // [4 / 8000 / 14000] // [5 / 13000 / 27000]
         self.player = ''
         self.achievements = {"map":False}
-        self.health = 500
-        self.maxhealth = 500
+        self.health = 0
+        self.maxhealth = 0
         self.stats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
         self.exp = 0
         self.expneed = ((200 * (1 + self.level * 3) * (1 + self.level)) - self.exp)
@@ -103,12 +103,14 @@ class Character:
 
 #-------------------------------------------------------------------------
 
-def newCharacter(name, cPlayerName, Race, Job, Stats):
+def newCharacter(name, cPlayerName, Race, Job, Stats, Health):
     character = Character(name)
     character.player = cPlayerName
     character.race = Race
     character.job = Job
     character.stats = Stats
+    character.health = Health
+    character.maxhealth = Health
     character.save()
     return loadCharacter(name, cPlayerName)
 
@@ -157,9 +159,10 @@ def characterOwn(name):
 
 
 def checkLevel(char):
-    if (char.exp >= (200 * (1 + char.level * 3) * (1 + char.level))) and (char.level > 0):
-        char.exp -= (200 * (1 + char.level * 3) * (1 + char.level))
-        if char.exp < 0:
-            char.exp = 0
-        char.level += 1
-        char.expneed = ((200 * (1 + char.level * 3) * (1 + char.level)))
+    if not char.level == 0:
+        if char.exp >= char.expneed:
+            char.exp -= char.expneed
+            if char.exp < 0:
+                char.exp = 0
+            char.level += 1
+            char.expneed = ((200 * (1 + char.level * 3) * (1 + char.level)))

@@ -130,16 +130,18 @@ def onstart():
             charStats['agility'] = int(job.jobAgility(charJob,agility))
             charStats['wit'] = int(job.jobWit(charJob,wit))
             charStats['luck'] = int(job.jobLuck(charJob,luck))
+            charHealth = int(job.jobHealth(charJob))
 
             print()
             print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(charactername))
             print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(charRace))
             print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(charJob))
-            print(colors.fg.orange + 'Stats: '+ colors.fg.green + str(charStats))
+            print(colors.fg.orange + 'Stats: '+ colors.fg.purple + str(charStats))
+            print(colors.fg.orange + 'Health: '+ colors.fg.green + str(charHealth))
             break
 
         print(colors.reset , end = '')
-        currentChar = character.newCharacter(charactername, currentPlayer.username, charRace, charJob, charStats)
+        currentChar = character.newCharacter(charactername, currentPlayer.username, charRace, charJob, charStats, charHealth)
         print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
         wait = input()
 
@@ -207,16 +209,18 @@ def onstart():
                 charStats['agility'] = int(job.jobAgility(charJob,agility))
                 charStats['wit'] = int(job.jobWit(charJob,wit))
                 charStats['luck'] = int(job.jobLuck(charJob,luck))
+                charHealth = int(job.jobHealth(charJob))
 
                 print()
                 print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(charactername))
                 print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(charRace))
                 print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(charJob))
-                print(colors.fg.orange + 'Stats: '+ colors.fg.green + str(charStats))
+                print(colors.fg.orange + 'Stats: '+ colors.fg.purple + str(charStats))
+                print(colors.fg.orange + 'Health: '+ colors.fg.green + str(charHealth))
                 break
 
             print(colors.reset , end = '')
-            currentChar = character.newCharacter(charactername, currentPlayer.username, charRace, charJob, charStats)
+            currentChar = character.newCharacter(charactername, currentPlayer.username, charRace, charJob, charStats, charHealth)
             print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
             wait = input()
         else:
@@ -713,7 +717,7 @@ while True:
             if (uName == "42") and (pwd == "42"):
                 print("Username and Password correct. (\"quit\" to exit)")
                 print()
-                print("Commands are: room, mob, map, quit, item, add, addtoroom, changestats, crown <username>")
+                print("Commands are: room, mob, map, quit, createitem, additem, addtoroom, changestats, crown <username>")
                 while True:
                     print()
                     try:
@@ -853,7 +857,7 @@ while True:
                                     print('The status ' + colors.fg.orange + str(choice) + colors.reset + ' is not known to me or the game ... try again or enter' + colors.fg.orange + ' quit' + colors.reset + ' to abort')
                                     continue
 
-                        elif commAdmin == "add":
+                        elif commAdmin == "additem":
                             kind = input("weapon, armor or shield: ")
                             if kind == "weapon":
                                 kind = 'wpn'
@@ -865,7 +869,17 @@ while True:
                             name = input('>')
                             cChar.inventory[name] = item.loadItem(name, kind).description
                             print()
-                            print(cChar.inventory)
+                            if len(cChar.inventory) > 0:
+                                items = cChar.inventory
+                                print(colors.fg.orange + "Inventory: ")
+                                print("-----------" + colors.fg.cyan)
+                                for key in items:
+                                    print(str(key)[0].upper() + str(key)[1:])
+                                print(colors.reset, end='')
+                                print()
+                            else:
+                                print("Your inventory is empty")
+                                print()
 
                         elif commAdmin == "addtoroom":
                             rom = input("Room coords (<x> <y>): ")
@@ -890,7 +904,7 @@ while True:
                             print()
                             break
                         else:
-                            print("Possible commands are \"room\", \"mob\", \"map\", \"createitem\", \"add\", \"addtoroom\", \"changestats\", \"crown <username>\" and \"quit\".")
+                            print("Possible commands are \"room\", \"mob\", \"map\", \"createitem\", \"additem\", \"addtoroom\", \"changestats\", \"crown <username>\" and \"quit\".")
                     except Exception as e:
                         print(e)
                         print("Weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee... Samfing diiidn't wörk.")
@@ -924,7 +938,7 @@ while True:
                 print("Omae Wa Mou Shindeiru !!!")
                 time.sleep(0.5)
                 print()
-                print('Hah, nice try. As if that would work ...')
+                print('Haha, nice try. As if that would work ...')
 
         #========= Quit Sequence ==========#
 
@@ -945,7 +959,7 @@ while True:
             print("buzz")
         #========= Speeke Rattus Rattus =========#
 
-        elif command in ["say", "speek", "speeke"]:
+        elif command in ["say", "speek", "speeke", 'speak', 'tell']:
             if len(splitIn) > 1:
                 print(splitIn[1][0].upper() + splitIn[1][1:])
             else:

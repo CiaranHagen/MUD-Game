@@ -209,6 +209,27 @@ def jobLuck(charJob,luck):
     else:
         luck = int(luck) + random.randint(0,3)
         return str(luck)
+def jobHealth(charJob):
+
+    if charJob == "admin":
+        hp = 6666
+        return str(hp)
+
+    if charJob == 'warrior':
+        hp = 2000
+        return str(hp)
+
+    if charJob == 'rogue':
+        hp = 1000
+        return str(hp)
+
+    if charJob == 'beggar':
+        hp = 1500
+        return str(hp)
+
+    else:
+        hp = random.randint(500,2001)
+        return str(hp)
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def jobLevelUp(char):
