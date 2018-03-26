@@ -64,13 +64,13 @@ class Npc:
         direction = random.choice(possibleDirections)
         if direction in possibleDirections:
             if direction == ('north' or 'n'):
-                self.location = (self.location[0], self.location[1] + 1)
+                self.location = [self.location[0], self.location[1] + 1]
             elif direction == ('south' or 's'):
-                self.location = (self.location[0], self.location[1] - 1)
+                self.location = [self.location[0], self.location[1] - 1]
             elif direction == ('east' or 'e'):
-                self.location = (self.location[0] + 1, self.location[1])
+                self.location = [self.location[0] + 1, self.location[1]]
             elif direction == ('west' or 'w'):
-                self.location = (self.location[0] - 1, self.location[1])
+                self.location = [self.location[0] - 1, self.location[1]]
         self.save()
         return
 

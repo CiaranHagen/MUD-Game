@@ -80,13 +80,13 @@ class Character:
         if direction in cRoom.possibleDirections:
             direction = cRoom.possibleDirections[direction]
             if direction == ('north' or 'n'):
-                self.location = (self.location[0], self.location[1] + 1)
+                self.location = [self.location[0], self.location[1] + 1]
             elif direction == ('south' or 's'):
-                self.location = (self.location[0], self.location[1] - 1)
+                self.location = [self.location[0], self.location[1] - 1]
             elif direction == ('east' or 'e'):
-                self.location = (self.location[0] + 1, self.location[1])
+                self.location = [self.location[0] + 1, self.location[1]]
             elif direction == ('west' or 'w'):
-                self.location = (self.location[0] - 1, self.location[1])
+                self.location = [self.location[0] - 1, self.location[1]]
         return
 
     def save(self):

@@ -261,7 +261,7 @@ def mapper(litX, bigX, litY, bigY, mapL):
                 else:
                     print("  ", end='')
             else:
-                print(" ", end='')
+                print("  ", end='')
 
             if (drawL[j + distY][i + distX] == "O") and ((j + distY) != 0):
                 if "south" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
@@ -269,7 +269,7 @@ def mapper(litX, bigX, litY, bigY, mapL):
                 else:
                     spaceLine += "   "
             else:
-                spaceLine += "  "
+                spaceLine += "   "
 
         print("", end="\n")
         print(spaceLine)
@@ -444,8 +444,7 @@ while True:
                             print()
                             print("You've teleported to "+ coords[0] + ", " + coords[1])
                             print()
-                            cChar.location[0] = int(coords[0])
-                            cChar.location[1] = int(coords[1])
+                            cChar.location = [int(coords[0]), int(coords[1])]
                             cChar.health += 100
                             cRoom.save()
                             cRoom = loadCRoom()
