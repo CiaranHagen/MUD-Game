@@ -104,11 +104,11 @@ def adminer(cPlayer, cChar, cRoom, roomL):
             if commAdmin == "room":
                 coord = input("Please enter the coordinates (seperate by space): ")
                 room.newRoom(int(coord.split(' ')[0]), int(coord.split(' ')[1]))
-            """
-            elif commAdmin == "mob":
-                print("Creating new mob...")
-                npc.newMob()
-            """
+                """
+                elif commAdmin == "mob":
+                    print("Creating new mob...")
+                    npc.newMob()
+                """
             elif commAdmin == "map":
                 mapL = []
                 for o in roomL:
