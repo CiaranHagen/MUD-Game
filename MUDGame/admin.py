@@ -120,7 +120,7 @@ def adminer(cPlayer, cChar, cRoom, roomL):
                 bigX = max(mapL,key=operator.itemgetter(0))[0]
                 litY = min(mapL,key=operator.itemgetter(1))[1]
                 litX = min(mapL,key=operator.itemgetter(0))[0]
-                main.mapper(litX, bigX, litY, bigY, mapL)
+                mapper(litX, bigX, litY, bigY, mapL)
 
             elif commAdmin == "createitem":
                 kind = input("weapon, armor or shield: ").lower()
@@ -287,4 +287,3 @@ def adminer(cPlayer, cChar, cRoom, roomL):
         except Exception as e:
             print(e)
             print("Weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee... Samfing diiidn't wörk.")
-            return
