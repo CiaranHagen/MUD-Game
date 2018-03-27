@@ -89,7 +89,7 @@ def mapper(litX, bigX, litY, bigY, mapL):
 
 
 def adminer(cPlayer, cChar, cRoom, roomL):
-    print("Commands are: room, mob, map, quit, createitem, additem, addtoroom, changestats, crown <username>")
+    print("Commands are: room, mob, map, quit, createitem, additem, addtoroom, addroomdir , changestats, crown <username>")
     while True:
         print()
         try:
