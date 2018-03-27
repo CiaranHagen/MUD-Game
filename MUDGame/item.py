@@ -39,8 +39,8 @@ class Armor(Item):
         self.defenceValue = defenceValue
 
 def newWeapon():
-    name = input("Name: ")
-    kind = input("Kind: ")
+    name = input("Name: ").lower()
+    kind = input("Kind (dagger, axe, sword, etc.): ").lower()
     level = int(input("Level: "))
     cost = int(input("Cost: "))
     description = input("Description: ")
@@ -56,7 +56,7 @@ def newWeapon():
     print("New weapon created.")
 
 def newShield():
-    name = input("Name: ")
+    name = input("Name: ").lower()
     level = int(input("Level: "))
     cost = int(input("Cost: "))
     description = input("Description: ")
@@ -71,7 +71,7 @@ def newShield():
     print("New shield created.")
 
 def newArmor():
-    name = input("Name: ")
+    name = input("Name: ").lower()
     level = int(input("Level: "))
     cost = int(input("Cost: "))
     description = input("Description: ")

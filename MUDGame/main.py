@@ -641,34 +641,23 @@ while True:
             if (len(splitIn) == 1) or ((len(splitIn) >1) and (splitIn[1] == " ")):
                 print("You take off everything and stand naked in the middle of the room, wondering why. (Put your clothes back on!)")
             else:
-                kindItem = splitIn[1].split(" ")
-                if len(kindItem) >1:
-                    itemName = kindItem[1]
-                    if len(kindItem) > 2:
-                        for c in kindItem[2:]:
-                            itemName += (" " + c)
-                    if (len(kindItem) > 1) and (kindItem[1] != " "):
-                        if kindItem[0] == "weapon":
-                            kind = "wpn"
-                        elif kindItem[0] == "armor":
-                            kind = "arm"
-                        elif kindItem[0] == "shield":
-                            kind = "shd"
-                        else:
-                            print("C\'mon! Read the f****** help instructions.")
-                            continue
-                        if itemName in cChar.inventory:
-                            newItem = item.loadItem(itemName, kind)
-                            oldItem = item.loadItem(cChar.onPerson[kindItem[0]], kind)
-                            cChar.onPerson[kindItem[0]] = newItem.name
-                            if oldItem.name != "default":
-                                cChar.inventory[oldItem.name] = oldItem.description
-                        else:
-                            print("You either don't have this item or misssppeled its name or type.")
-                    else:
-                        print("You take off everything and stand naked in the middle of the room, wondering why. (Put your clothes back on!)")
+                itemName = splitIn[1]
+                if itemName in cChar.inventory:
+                    for fIterator in s.listdir("../data/items/"):
+                        if fIterator[5:-4] == itemName:
+                            newItem = item.loadItem(itemName, fIterator[:4])
+                            if fIterator[:4] == "wpn":
+                                kind = "weapon"
+                            elif fIterator[:4] == "arm":
+                                kind = "armor"
+                            elif fIterator[:4] == "shd":
+                                kind = "shield"
+                            oldItem = item.loadItem(cChar.onPerson[kind], fIterator[:4])
+                            cChar.onPerson[kind] = newItem.name
+                    if oldItem.name != "default":
+                        cChar.inventory[oldItem.name] = oldItem.description
                 else:
-                    print("C\'mon! Read the f****** help instructions.")
+                    print("You either don't have this item or misssppeled its name or type.")
 
         #========= throw away ==========#
 
@@ -755,7 +744,7 @@ while True:
                             mapper(litX, bigX, litY, bigY, mapL)
 
                         elif commAdmin == "createitem":
-                            kind = input("weapon, armor or shield: ")
+                            kind = input("weapon, armor or shield: ").lower()
                             if kind == "weapon":
                                 item.newWeapon()
                             elif kind == "shield":
