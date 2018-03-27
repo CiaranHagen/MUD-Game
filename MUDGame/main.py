@@ -286,13 +286,59 @@ def loadCRoom():
     cRoom = room.loadRoom(roomName)
     return cRoom
 
+#just to test
+banner = "===================================================\n                                 ,    ,   __     __                    \n================ |\  /|   |_\   /  _ ==================\n================ | \/ |   | \   \__/ ==================\n                                                             \n==================================================="
+
+# ================ pygame init ====================
 pygame.init()
+pygame.display.quit()
+pygame.display.init()
+print("display initialized")
 pygame.display.set_mode()
-pygame.FULLSCREEN
-pygame.REZISABLE
+pygame.display.set_caption("Most Random Game")
+mainSurf = pygame.display.get_surface()
+bgr = pygame.Rect((0,0),mainSurf.get_size())
+commLine = pygame.Rect((0,mainSurf.get_size()[1]-100),mainSurf.get_size())
+pygame.draw.rect(mainSurf, pygame.Color(31, 4, 23), bgr, 0)
+pygame.draw.rect(mainSurf, pygame.Color(0, 255, 0), commLine, 0)
+normfont = pygame.font.SysFont(None,25)
+#handle this one with care
+#pygame.event.set_grab(True)
 
-mainFrame = pygame.display.get_surface()
+pastText = ["hi","ola"]
+pastComms = []
+# ============== new pygame print func ================
+def realprint(text, ppos = [10,10], textList = pastText):
+    pygame.draw.rect(mainSurf, pygame.Color(31, 4, 23), bgr, 0)
+    pygame.draw.rect(mainSurf, pygame.Color(0, 255, 0), commLine, 0)
+    x = ppos[0]
+    y = ppos[1]
+    lines = text.split("\n")
+    for line in lines:
+        textList.append(line)
 
+    for thing in textList:
+        aLine = normfont.render(thing, True, pygame.Color(255, 255, 255))
+        mainSurf.blit(aLine,(x,y))
+        y+= 15
+    pygame.display.flip()
+
+# ============== input for pygame =================
+def realinput():
+    word = ''
+    while True:
+        for event in pygame.event.get() :
+          if event.type == pygame.KEYDOWN :
+            if event.key == pygame.K_RETURN :
+              break
+            else:
+                word += pygame.key.name(event.key)
+    return word
+
+
+realprint(banner)
+realprint("hi")
+pygame.display.flip()
 
 print(colors.invisible)
 os.system("clear")
@@ -313,7 +359,7 @@ for c in npcL:
 
 cRoom = loadCRoom()
 
-helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "take" : "take <object>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>", "map":"Prints a map of your surroundings. If you have the map achievement, it prints the whole world map.", "wear":"wear <\"weapon\", \"shield\" or \"armor\"> <item name>"}
+helpText = {"go" : "go <direction>", "look" : "look <object (optional)>", "take" : "take <object>", "quit" : "Write this if you think you have better things to do...", "help" : "Seriously? I mean ...", "attack" : "attack <attackable npc>", "map":"Prints a map of your surroundings. If you have the map achievement, it prints the whole world map.", "wear":"wear <item name>"}
 
 raceDescriptions = {"orc":"Orc. A brustish ugly humanoid being. Not nice.", "dwarf":"Dwarf. Short stockish and bad-tempered with a distinct lack of hygiene. Don't mess with his hammer.", "elf":"Elf. Gracefully and elegantly deadly. Easily offended.", "troll":"Troll. Big, indescribably ugly and as dumb as he is strong.", "succubus":"Succubus.", "gelfling":"Gelfling. Small humanoid being with a bald head and a weird accent.", "gockcobbler":"GockCobbler. Shinigami.", "hickdead":"Hickdead. Annoying with an a**h*** attitude.", "thraal":"Thraal. Even dumber than a troll. It believes that if you can't see it, it can't see you."}
 
@@ -333,6 +379,8 @@ while True:
     mainFrame.flip()
     print()
     try:
+
+        realprint(realinput(),[10,mainSurf.get_size()[1]-90],pastComms)
 
         #===============Key input part==================
         """
@@ -650,19 +698,20 @@ while True:
             else:
                 itemName = splitIn[1]
                 if itemName in cChar.inventory:
-                    for fIterator in s.listdir("../data/items/"):
-                        if fIterator[5:-4] == itemName:
-                            newItem = item.loadItem(itemName, fIterator[:4])
-                            if fIterator[:4] == "wpn":
+                    for fIterator in os.listdir("../data/items/"):
+                        if fIterator[4:-4] == itemName:
+                            newItem = item.loadItem(itemName, fIterator[:3])
+                            if fIterator[:3] == "wpn":
                                 kind = "weapon"
-                            elif fIterator[:4] == "arm":
+                            elif fIterator[:3] == "arm":
                                 kind = "armor"
-                            elif fIterator[:4] == "shd":
+                            elif fIterator[:3] == "shd":
                                 kind = "shield"
-                            oldItem = item.loadItem(cChar.onPerson[kind], fIterator[:4])
+                            oldItem = item.loadItem(cChar.onPerson[kind], fIterator[:3])
                             cChar.onPerson[kind] = newItem.name
                     if oldItem.name != "default":
                         cChar.inventory[oldItem.name] = oldItem.description
+                    print("You put on " + newItem.name + " and take off " + oldItem.name + ".")
                 else:
                     print("You either don't have this item or misssppeled its name or type.")
 
@@ -945,6 +994,7 @@ while True:
                 print("Quitting game...")
                 cChar.save()
                 cRoom.save()
+                mainFrame.quit()
                 break
             else:
                 print("Returning to the game...")
