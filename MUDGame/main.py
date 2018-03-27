@@ -1,4 +1,4 @@
-import character, room, npc, player, attack, os, operator, random, item, job, race, time
+import character, room, npc, player, attack, os, operator, random, item, job, race, time, pygame
 import sys,tty,termios
 
 class colors:
@@ -286,6 +286,12 @@ def loadCRoom():
     cRoom = room.loadRoom(roomName)
     return cRoom
 
+pygame.init()
+pygame.display.set_mode()
+pygame.FULLSCREEN
+pygame.REZISABLE
+
+mainFrame = pygame.display.get_surface()
 
 
 print(colors.invisible)
@@ -324,6 +330,7 @@ print()
 print(("--------------" + len(cPlayer.username)*"-" + "-------").center(os.get_terminal_size().columns, " "))
 commandL = ["help"]
 while True:
+    mainFrame.flip()
     print()
     try:
 
