@@ -1,4 +1,5 @@
 import character, room, npc, player, attack, os, operator, random, item, job, race, time, pygame
+from admin import adminer
 import sys,tty,termios
 
 class colors:
@@ -608,7 +609,12 @@ while True:
                     print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(cChar.job))
                     print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
                     print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.expneed) + colors.reset + "]")
-                    print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
+                    print(colors.fg.orange + 'Character Stats: '+ colors.fg.cyan + str(cChar.stats))
+                    weapon = item.loadItem(cChar.onPerson['weapon'],"wpn")
+                    armor = item.loadItem(cChar.onPerson['armor'],"arm")
+                    shield = item.loadItem(cChar.onPerson['shield'],"shd")
+                    print(colors.fg.orange + 'Equipment StatBonus: '+ colors.fg.cyan + '{wit: '+str(weapon.giver['wit']+armor.giver['wit']+shield.giver['wit'])+', strength: '+str(weapon.giver['strength']+armor.giver['strength']+shield.giver['strength'])+
+                          ', agility: '+str(weapon.giver['agility']+armor.giver['agility']+shield.giver['agility'])+', luck: '+str(weapon.giver['luck']+armor.giver['luck']+shield.giver['luck'])+'}')
                     print(colors.fg.orange + 'Health: ['+ colors.fg.green + str(cChar.health) + colors.reset + ' / ' + colors.fg.green + str(cChar.maxhealth) + colors.reset + ']')
                     print()
                     if len(cChar.inventory) > 0:
@@ -626,6 +632,15 @@ while True:
                     print("-----------")
                     for key in cChar.onPerson:
                         print(colors.fg.orange + key + " --> "+ colors.fg.cyan + cChar.onPerson[key])
+                        if key == 'weapon':
+                            c = 'wpn'
+                        if key == 'armor':
+                            c = 'arm'
+                        if key == 'shield':
+                            c = 'shd'
+                        if not key == 'bag':
+                            equip = item.loadItem(cChar.onPerson[key],c)
+                            print(colors.fg.orange + 'StatBonus: '+ colors.fg.cyan + str(equip.giver))
                     print()
                     if cPlayer.admin:
                         print(colors.fg.orange + "You posess the power of the kitten. Use it in a pawsitive manner.")
@@ -646,13 +661,27 @@ while True:
                     print("-----------")
                     for key in cChar.onPerson:
                         print(colors.fg.orange + key + " --> "+ colors.fg.cyan + cChar.onPerson[key])
+                        if key == 'weapon':
+                            c = 'wpn'
+                        if key == 'armor':
+                            c = 'arm'
+                        if key == 'shield':
+                            c = 'shd'
+                        if not key == 'bag':
+                            equip = item.loadItem(cChar.onPerson[key],c)
+                            print(colors.fg.orange + 'StatBonus: '+ colors.fg.cyan + str(equip.giver))
                     print()
                     if cPlayer.admin:
                         print(colors.fg.orange + "You posess the power of the kitten. Use it in a pawsitive manner.")
                     print(colors.reset, end='')
                 elif splitIn[1] in ['stats']:
                     print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
-                    print(colors.reset, end='')
+                    weapon = item.loadItem(cChar.onPerson['weapon'],"wpn")
+                    armor = item.loadItem(cChar.onPerson['armor'],"arm")
+                    shield = item.loadItem(cChar.onPerson['shield'],"shd")
+                    print(colors.fg.orange + 'Equipment StatBonus: '+ colors.fg.cyan + '{wit: '+str(weapon.giver['wit']+armor.giver[wit]+shield.giver['wit'])+', strength: '+str(weapon.giver['strength']+armor.giver['strength']+shield.giver['strength'])+
+                          ', agility: '+str(weapon.giver['agility']+armor.giver['agility']+shield.giver['agility'])+', luck: '+str(weapon.giver['luck']+armor.giver[luck]+shield.giver['luck'])+'}')
+                    print(colors.fg.orange + 'Health: ['+ colors.fg.green + str(cChar.health) + colors.reset + ' / ' + colors.fg.green + str(cChar.maxhealth) + colors.reset + ']')
                 elif splitIn[1] in ['str', 'strength']:
                     print(colors.fg.orange + 'Strength: '+ colors.fg.cyan + str(cChar.stats['strength']))
                     print(colors.reset, end='')
@@ -762,200 +791,16 @@ while True:
             if (uName == "42") and (pwd == "42"):
                 print("Username and Password correct. (\"quit\" to exit)")
                 print()
-                print("Commands are: room, mob, map, quit, createitem, additem, addtoroom, changestats, crown <username>")
-                while True:
-                    print()
-                    try:
-                        admIn = input(colors.fg.red + ">> " + colors.fg.pink)
-                        print(colors.reset , end = '')
-                        commAdmin = ""
-                        splitMin = admIn.split(" ")
-                        for w in splitMin:
-                            w = w.lower()
-                        commAdmin = splitMin[0]
-                        print()
-                        if commAdmin == "room":
-                            coord = input("Please enter the coordinates (seperate by space): ")
-                            room.newRoom(int(coord.split(' ')[0]), int(coord.split(' ')[1]))
-                            roomL = room.loadRooms()
-
-                        elif commAdmin == "mob":
-                            print("Creating new mob...")
-                            npc.newMob()
-                            npcL = npc.loadNpcs()
-                            for c in npcL:
-                                npc.loadNpc(c, "mob")
-
-                        elif commAdmin == "map":
-                            mapL = []
-                            for o in roomL:
-                                oCoord = o[4:]
-                                x = oCoord.split("_")[0]
-                                y = oCoord.split("_")[1]
-                                mapL.append((int(x),int(y)))
-                            bigY = max(mapL,key=operator.itemgetter(1))[1]
-                            bigX = max(mapL,key=operator.itemgetter(0))[0]
-                            litY = min(mapL,key=operator.itemgetter(1))[1]
-                            litX = min(mapL,key=operator.itemgetter(0))[0]
-                            mapper(litX, bigX, litY, bigY, mapL)
-
-                        elif commAdmin == "createitem":
-                            kind = input("weapon, armor or shield: ").lower()
-                            if kind == "weapon":
-                                item.newWeapon()
-                            elif kind == "shield":
-                                item.newShield()
-                            elif kind == "armor":
-                                item.newArmor()
-
-                        elif commAdmin == "changestats":
-                            changestats = 1
-                            while changestats == 1:
-                                print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
-                                print(colors.fg.orange + 'MaxHealth: '+ colors.fg.green + str(cChar.maxhealth))
-                                print()
-                                print(colors.reset, end='')
-                                print ('what stat do you wish to modify ? (' + colors.fg.orange + 'strength' + colors.reset + ' / ' + colors.fg.orange + 'agility' + colors.reset + ' / '
-                                       + colors.fg.orange + 'wit' + colors.reset + ' / ' + colors.fg.orange + 'luck' + colors.reset + ' / ' + colors.fg.green + 'maxhealth' + colors.reset + ')')
-                                choice = input('>').lower()
-
-                                if choice in ['strength', 'agility', 'wit', 'luck']:
-                                    confirm = 1
-                                    while confirm == 1:
-                                        print('your ' + colors.fg.orange + str(choice) + colors.reset + ' is: '+ colors.fg.cyan + str(cChar.stats[str(choice)]) + colors.reset)
-                                        print()
-                                        print('input new value')
-                                        value = input('>')
-                                        try:
-                                            if (int(value) >= 0):
-                                                cChar.stats[str(choice)] = int(value)
-                                                print('your new ' + colors.fg.orange + str(choice) + colors.reset + ' is: '+ colors.fg.cyan + str(cChar.stats[str(choice)]) + colors.reset)
-                                                answer = ''
-                                                while answer not in ['y', 'yes','n', 'no']:
-                                                    print()
-                                                    print('do you wish to continue modifying your stats ?')
-                                                    print("[" + colors.fg.green + "yes" + colors.reset + "/" + colors.fg.red + "no" + colors.reset + "]")
-                                                    answer = input('>').lower()
-                                                    if answer in ['y', 'yes']:
-                                                        changestats = 1
-                                                        confirm = 0
-                                                    elif answer in ['n', 'no']:
-                                                        changestats = 0
-                                                        confirm = 0
-                                                        Print('Quitting ...')
-                                                    elif answer not in ['y', 'yes','n', 'no']:
-                                                        print(str(answer) + ' is not a valid input, try again :')
-                                        except Exception as e:
-                                            print(e)
-                                            print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
-
-                                if choice in ['maxhealth']:
-                                    confirm = 1
-                                    while confirm == 1:
-                                        print('your ' + colors.fg.orange + str(choice) + colors.reset + ' is: '+ colors.fg.cyan + str(cChar.maxhealth) + colors.reset)
-                                        print()
-                                        print('input new value')
-                                        value = input('>')
-                                        try:
-                                            if (int(value) >= 0):
-                                                cChar.maxhealth = int(value)
-                                                cChar.health = cChar.maxhealth
-                                                print('your new ' + colors.fg.orange + str(choice) + colors.reset + ' is: '+ colors.fg.cyan + str(cChar.maxhealth) + colors.reset)
-                                                answer = ''
-                                                while answer not in ['y', 'yes','n', 'no']:
-                                                    print()
-                                                    print('do you wish to continue modifying your stats ?')
-                                                    print("[" + colors.fg.green + "yes" + colors.reset + "/" + colors.fg.red + "no" + colors.reset + "]")
-                                                    answer = input('>').lower()
-                                                    if answer in ['y', 'yes']:
-                                                        changestats = 1
-                                                        confirm = 0
-                                                    elif answer in ['n', 'no']:
-                                                        changestats = 0
-                                                        confirm = 0
-                                                        Print('Quitting ...')
-                                                    elif answer not in ['y', 'yes','n', 'no']:
-                                                        print(str(answer) + ' is not a valid input, try again :')
-                                        except Exception as e:
-                                            print(e)
-                                            print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
-
-                                elif choice in ['q', 'quit']:
-                                    quit = 1
-                                    while quit == 1:
-                                        print('Are you sure you wish to quit ?')
-                                        print("[" + colors.fg.green + "yes" + colors.reset + "/" + colors.fg.red + "no" + colors.reset + "]")
-                                        answer = input('>').lower()
-                                        if answer in ['y', 'yes']:
-                                            print('Quitting ...')
-                                            quit = 0
-                                            changestats = 0
-                                            confirm = 0
-                                            continue
-                                        elif answer in ['n', 'no']:
-                                            quit = 0
-                                            changestats = 1
-                                            confirm = 0
-                                            continue
-
-                                elif choice not in ['q', 'quit', 'strength', 'agility', 'wit', 'luck', 'health']:
-                                    print('The status ' + colors.fg.orange + str(choice) + colors.reset + ' is not known to me or the game ... try again or enter' + colors.fg.orange + ' quit' + colors.reset + ' to abort')
-                                    continue
-
-                        elif commAdmin == "additem":
-                            kind = input("weapon, armor or shield: ")
-                            if kind == "weapon":
-                                kind = 'wpn'
-                            elif kind == "shield":
-                                kind = 'shd'
-                            elif kind == "armor":
-                                kind = 'arm'
-                            print('Input the name of the item')
-                            name = input('>')
-                            cChar.inventory[name] = item.loadItem(name, kind).description
-                            print()
-                            if len(cChar.inventory) > 0:
-                                items = cChar.inventory
-                                print(colors.fg.orange + "Inventory: ")
-                                print("-----------" + colors.fg.cyan)
-                                for key in items:
-                                    print(str(key)[0].upper() + str(key)[1:])
-                                print(colors.reset, end='')
-                                print()
-                            else:
-                                print("Your inventory is empty")
-                                print()
-
-                        elif commAdmin == "addtoroom":
-                            rom = input("Room coords (<x> <y>): ")
-                            itemName = input("Item-name: ").lower()
-                            descr = input("Enter a description: ")
-                            addToInv = input("Add to inventory (y/n): ")
-                            coords = rom.split(" ")
-                            room.loadRoom("room" + coords[0] + "_" + coords[1]).stuffDescription[itemName] = descr
-                            if addToInv == "y":
-                                room.loadRoom("room" + coords[0] + "_" + coords[1]).inventory[itemName] = descr
-                            print("Added " + itemname + " to " + "room" + coords[0] + "_" + coords[1] + ".")
-
-                        elif commAdmin == "crown":
-                            cPlayer.admin = True
-                            cPlayer.save()
-                            if cPlayer.admin:
-                                print("Player " + cPlayer.username + " is now admin.")
-
-                        elif commAdmin == "quit":
-                            print()
-                            print("Returning to game...")
-                            print()
-                            break
-                        else:
-                            print("Possible commands are \"room\", \"mob\", \"map\", \"createitem\", \"additem\", \"addtoroom\", \"changestats\", \"crown <username>\" and \"quit\".")
-                    except Exception as e:
-                        print(e)
-                        print("Weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee... Samfing diiidn't wörk.")
-
+                adminer(cPlayer, cChar, cRoom, roomL)
             else:
                 print("Username or password incorrect.")
+            #reload all items, to make sure game is uptodate
+            npcL = npc.loadNpcs()
+            for c in npcL:
+                npc.loadNpc(c, "mob")
+            roomL = room.loadRooms()
+
+        #========= Smite ==========#
 
         elif command in ["smite", "punish", "execute", "behead", 'kill']:
             if cPlayer.admin == True:
@@ -994,8 +839,7 @@ while True:
                 print("Quitting game...")
                 cChar.save()
                 cRoom.save()
-                mainFrame.quit()
-                break
+                sys.exit()
             else:
                 print("Returning to the game...")
 
