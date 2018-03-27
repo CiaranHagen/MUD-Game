@@ -49,7 +49,7 @@ def chooseJob(currentPlayer):
 
         if currentPlayer.admin == False:
             charJob = str(input("What class do you choose? \n"
-                        "You can choose from:  "+ colors.fg.cyan +"{}\n> ".format(jobList)).lower())
+                        "You can choose from:  "+ colors.fg.cyan +"{}\n> ".format(jobList)).lower()).lower()
             print(colors.reset , end = '')
 
             if charJob in jobList:
@@ -253,7 +253,7 @@ def jobLevelUp(char):
         luckBonus = random.randint(-10,2)
         if luckBonus < 0:
             luckBonus = 0
-        hpBonus = random.randint(100,201)
+        hpBonus = random.randint(200,501)
         char.stats['strength'] += int(strBonus)
         char.stats['agility'] += int(agiBonus)
         char.stats['wit'] += int(witBonus)
@@ -277,7 +277,7 @@ def jobLevelUp(char):
         luckBonus = random.randint(-10,2)
         if luckBonus < 0:
             luckBonus = 0
-        hpBonus = random.randint(50,101)
+        hpBonus = random.randint(100,301)
         char.stats['strength'] += int(strBonus)
         char.stats['agility'] += int(agiBonus)
         char.stats['wit'] += int(witBonus)
@@ -317,7 +317,7 @@ def jobLevelUp(char):
         agiBonus = random.randint(0,10)
         witBonus = random.randint(0,6)
         luckBonus = random.randint(0,3)
-        hpBonus = random.randint(0,501)
+        hpBonus = random.randint(0,751)
         char.stats['strength'] += int(strBonus)
         char.stats['agility'] += int(agiBonus)
         char.stats['wit'] += int(witBonus)
