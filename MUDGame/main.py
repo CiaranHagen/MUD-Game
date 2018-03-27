@@ -643,19 +643,20 @@ while True:
             else:
                 itemName = splitIn[1]
                 if itemName in cChar.inventory:
-                    for fIterator in s.listdir("../data/items/"):
-                        if fIterator[5:-4] == itemName:
-                            newItem = item.loadItem(itemName, fIterator[:4])
-                            if fIterator[:4] == "wpn":
+                    for fIterator in os.listdir("../data/items/"):
+                        if fIterator[4:-4] == itemName:
+                            newItem = item.loadItem(itemName, fIterator[:3])
+                            if fIterator[:3] == "wpn":
                                 kind = "weapon"
-                            elif fIterator[:4] == "arm":
+                            elif fIterator[:3] == "arm":
                                 kind = "armor"
-                            elif fIterator[:4] == "shd":
+                            elif fIterator[:3] == "shd":
                                 kind = "shield"
-                            oldItem = item.loadItem(cChar.onPerson[kind], fIterator[:4])
+                            oldItem = item.loadItem(cChar.onPerson[kind], fIterator[:3])
                             cChar.onPerson[kind] = newItem.name
                     if oldItem.name != "default":
                         cChar.inventory[oldItem.name] = oldItem.description
+                    print("You put on " + newItem.name + " and take off " + oldItem.name + ".")
                 else:
                     print("You either don't have this item or misssppeled its name or type.")
 
