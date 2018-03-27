@@ -104,11 +104,11 @@ def adminer(cPlayer, cChar, cRoom, roomL):
             if commAdmin == "room":
                 coord = input("Please enter the coordinates (seperate by space): ")
                 room.newRoom(int(coord.split(' ')[0]), int(coord.split(' ')[1]))
-
+            """
             elif commAdmin == "mob":
                 print("Creating new mob...")
                 npc.newMob()
-
+            """
             elif commAdmin == "map":
                 mapL = []
                 for o in roomL:
@@ -261,7 +261,16 @@ def adminer(cPlayer, cChar, cRoom, roomL):
                     rom.inventory[itemName] = descr
                     rom.save()
                 print("Added " + itemName + " to " + "room" + coords[0] + "_" + coords[1] + ".")
-
+            
+            elif commAdmin == "addroomdir":
+                rom = input("Room coords (<x> <y>): ")
+                pointerDir = input("Direction: ")
+                actualDir = input("Whereto: ")
+                coords = rom.split(" ")
+                rom = room.loadRoom("room" + coords[0] + "_" + coords[1])
+                rom.possibleDirections[pointerDir] = actualDir
+                rom.save()
+            
             elif commAdmin == "crown":
                 cPlayer.admin = True
                 cPlayer.save()
