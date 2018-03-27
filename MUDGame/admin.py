@@ -40,7 +40,7 @@ class colors:
         cyan='\033[46m'
         lightgrey='\033[47m'
 
-def mapper(litX, bigX, litY, bigY, mapL):
+def mapper(litX, bigX, litY, bigY, mapL, cRoom):
     drawL = []
     distX = (-1) * litX
     distY = (-1) * litY
@@ -104,6 +104,7 @@ def adminer(cPlayer, cChar, cRoom, roomL):
             if commAdmin == "room":
                 coord = input("Please enter the coordinates (seperate by space): ")
                 room.newRoom(int(coord.split(' ')[0]), int(coord.split(' ')[1]))
+                roomL = room.loadRooms()
                 """
                 elif commAdmin == "mob":
                     print("Creating new mob...")
@@ -120,7 +121,7 @@ def adminer(cPlayer, cChar, cRoom, roomL):
                 bigX = max(mapL,key=operator.itemgetter(0))[0]
                 litY = min(mapL,key=operator.itemgetter(1))[1]
                 litX = min(mapL,key=operator.itemgetter(0))[0]
-                mapper(litX, bigX, litY, bigY, mapL)
+                mapper(litX, bigX, litY, bigY, mapL, cRoom)
 
             elif commAdmin == "createitem":
                 kind = input("weapon, armor or shield: ").lower()
