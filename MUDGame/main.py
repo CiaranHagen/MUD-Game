@@ -554,7 +554,12 @@ while True:
                     print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(cChar.job))
                     print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
                     print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.expneed) + colors.reset + "]")
-                    print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
+                    print(colors.fg.orange + 'Character Stats: '+ colors.fg.cyan + str(cChar.stats))
+                    weapon = item.loadItem(cChar.onPerson['weapon'],"wpn")
+                    armor = item.loadItem(cChar.onPerson['armor'],"arm")
+                    shield = item.loadItem(cChar.onPerson['shield'],"shd")
+                    print(colors.fg.orange + 'Equipment StatBonus: '+ colors.fg.cyan + '{wit: '+str(weapon.giver['wit']+armor.giver['wit']+shield.giver['wit'])+', strength: '+str(weapon.giver['strength']+armor.giver['strength']+shield.giver['strength'])+
+                          ', agility: '+str(weapon.giver['agility']+armor.giver['agility']+shield.giver['agility'])+', luck: '+str(weapon.giver['luck']+armor.giver['luck']+shield.giver['luck'])+'}')
                     print(colors.fg.orange + 'Health: ['+ colors.fg.green + str(cChar.health) + colors.reset + ' / ' + colors.fg.green + str(cChar.maxhealth) + colors.reset + ']')
                     print()
                     if len(cChar.inventory) > 0:
@@ -572,6 +577,15 @@ while True:
                     print("-----------")
                     for key in cChar.onPerson:
                         print(colors.fg.orange + key + " --> "+ colors.fg.cyan + cChar.onPerson[key])
+                        if key == 'weapon':
+                            c = 'wpn'
+                        if key == 'armor':
+                            c = 'arm'
+                        if key == 'shield':
+                            c = 'shd'
+                        if not key == 'bag':
+                            equip = item.loadItem(cChar.onPerson[key],c)
+                            print(colors.fg.orange + 'StatBonus: '+ colors.fg.cyan + str(equip.giver))
                     print()
                     if cPlayer.admin:
                         print(colors.fg.orange + "You posess the power of the kitten. Use it in a pawsitive manner.")
@@ -592,13 +606,27 @@ while True:
                     print("-----------")
                     for key in cChar.onPerson:
                         print(colors.fg.orange + key + " --> "+ colors.fg.cyan + cChar.onPerson[key])
+                        if key == 'weapon':
+                            c = 'wpn'
+                        if key == 'armor':
+                            c = 'arm'
+                        if key == 'shield':
+                            c = 'shd'
+                        if not key == 'bag':
+                            equip = item.loadItem(cChar.onPerson[key],c)
+                            print(colors.fg.orange + 'StatBonus: '+ colors.fg.cyan + str(equip.giver))
                     print()
                     if cPlayer.admin:
                         print(colors.fg.orange + "You posess the power of the kitten. Use it in a pawsitive manner.")
                     print(colors.reset, end='')
                 elif splitIn[1] in ['stats']:
                     print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
-                    print(colors.reset, end='')
+                    weapon = item.loadItem(cChar.onPerson['weapon'],"wpn")
+                    armor = item.loadItem(cChar.onPerson['armor'],"arm")
+                    shield = item.loadItem(cChar.onPerson['shield'],"shd")
+                    print(colors.fg.orange + 'Equipment StatBonus: '+ colors.fg.cyan + '{wit: '+str(weapon.giver['wit']+armor.giver[wit]+shield.giver['wit'])+', strength: '+str(weapon.giver['strength']+armor.giver['strength']+shield.giver['strength'])+
+                          ', agility: '+str(weapon.giver['agility']+armor.giver['agility']+shield.giver['agility'])+', luck: '+str(weapon.giver['luck']+armor.giver[luck]+shield.giver['luck'])+'}')
+                    print(colors.fg.orange + 'Health: ['+ colors.fg.green + str(cChar.health) + colors.reset + ' / ' + colors.fg.green + str(cChar.maxhealth) + colors.reset + ']')
                 elif splitIn[1] in ['str', 'strength']:
                     print(colors.fg.orange + 'Strength: '+ colors.fg.cyan + str(cChar.stats['strength']))
                     print(colors.reset, end='')
