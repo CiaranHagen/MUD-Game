@@ -1,4 +1,5 @@
-import character, room, npc, player, attack, os, operator, random, item, job, race, time, admin
+import character, room, npc, player, attack, os, operator, random, item, job, race, time
+from admin import adminer
 import sys,tty,termios
 
 class colors:
@@ -707,7 +708,7 @@ while True:
             if (uName == "42") and (pwd == "42"):
                 print("Username and Password correct. (\"quit\" to exit)")
                 print()
-                admin.admin()
+                adminer(cPlayer, cChar, cRoom, roomL)
             else:
                 print("Username or password incorrect.")
             #reload all items, to make sure game is uptodate
@@ -755,7 +756,7 @@ while True:
                 print("Quitting game...")
                 cChar.save()
                 cRoom.save()
-                break
+                sys.exit()
             else:
                 print("Returning to the game...")
 

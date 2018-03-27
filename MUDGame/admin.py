@@ -40,9 +40,55 @@ class colors:
         cyan='\033[46m'
         lightgrey='\033[47m'
 
+def mapper(litX, bigX, litY, bigY, mapL):
+    drawL = []
+    distX = (-1) * litX
+    distY = (-1) * litY
+    for j in range(litY, bigY+1):
+        drawL.append([])
+        for i in range(litX, bigX+1):
+            if (i,j) in mapL:
+                drawL[j + distY].append("O")
+            else:
+                drawL[j + distY].append(" ")
+    dis = (bigX - litX - 2)//2
+    if dis < 2:
+        dis = 2
+    print(dis*"=" + " MAP " + dis*"=")
+    print()
+    for j in range(bigY, litY-1, -1):
+        spaceLine = " "
+        print(" ", end="")
+        for i in range(litX, bigX+1):
+            if cRoom.location == (i,j):
+                print(colors.fg.red, end='')
+            else:
+                print(colors.fg.cyan, end='')
+            print(drawL[j + distY][i + distX], end='')
+            print(colors.fg.cyan, end='')
+            if (drawL[j + distY][i + distX] == "O") and ((i + distX) != (len(drawL[j+distY])-1)):
+                if "east" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
+                    print(colors.fg.cyan + "--", end='')
+                else:
+                    print("  ", end='')
+            else:
+                print("  ", end='')
+
+            if (drawL[j + distY][i + distX] == "O") and ((j + distY) != 0):
+                if "south" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
+                    spaceLine += "|  "
+                else:
+                    spaceLine += "   "
+            else:
+                spaceLine += "   "
+
+        print("", end="\n")
+        print(spaceLine)
+    print(colors.reset , end = '')
+    print(dis*"=" + " MAP " + dis*"=")
 
 
-def admin():
+def adminer(cPlayer, cChar, cRoom, roomL):
     print("Commands are: room, mob, map, quit, createitem, additem, addtoroom, changestats, crown <username>")
     while True:
         print()
@@ -74,7 +120,7 @@ def admin():
                 bigX = max(mapL,key=operator.itemgetter(0))[0]
                 litY = min(mapL,key=operator.itemgetter(1))[1]
                 litX = min(mapL,key=operator.itemgetter(0))[0]
-                mapper(litX, bigX, litY, bigY, mapL)
+                main.mapper(litX, bigX, litY, bigY, mapL)
 
             elif commAdmin == "createitem":
                 kind = input("weapon, armor or shield: ").lower()
@@ -232,3 +278,4 @@ def admin():
         except Exception as e:
             print(e)
             print("Weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee... Samfing diiidn't wörk.")
+            return
