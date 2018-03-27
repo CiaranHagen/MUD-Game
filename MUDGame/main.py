@@ -1,4 +1,4 @@
-import character, room, npc, player, attack, os, operator, random, item, job, race, time, pygame
+import character, room, npc, player, attack, os, operator, random, item, job, race, time, pygame, string
 from admin import adminer
 import sys,tty,termios
 
@@ -6,7 +6,7 @@ class colors:
     '''Colors class:reset all colors with colors.reset; two
     sub classes fg for foregroun
     and bg for background; use as colors.subclass.colorname.
-    i.e. colors.fg.red or colors.bg.greenalso, the generic bold, disable,
+    i.e. colors.fg.red or colors.bg.green also, the generic bold, disable,
     underline, reverse, strike through,
     and invisible work with the main class i.e. colors.bold'''
     reset='\033[0m'
@@ -303,43 +303,77 @@ commLine = pygame.Rect((0,mainSurf.get_size()[1]-100),mainSurf.get_size())
 pygame.draw.rect(mainSurf, pygame.Color(31, 4, 23), bgr, 0)
 pygame.draw.rect(mainSurf, pygame.Color(0, 255, 0), commLine, 0)
 normfont = pygame.font.SysFont(None,25)
+pygame.key.set_repeat()
 #handle this one with care
 #pygame.event.set_grab(True)
 
-pastText = ["hi","ola"]
-pastComms = []
+pastText = [] #a list of tuples > (text, color) < right now there is only pc and user color
+pastComms = ["help","me","please"]
+
 # ============== new pygame print func ================
-def realprint(text, ppos = [10,10], textList = pastText):
-    pygame.draw.rect(mainSurf, pygame.Color(31, 4, 23), bgr, 0)
-    pygame.draw.rect(mainSurf, pygame.Color(0, 255, 0), commLine, 0)
+def realprint(text, ppos = [10,10], textList = pastText, who = "pc"):
+    colorDict = {"pc": pygame.Color(255, 255, 255), "user": pygame.Color(100, 0, 0)}
     x = ppos[0]
     y = ppos[1]
-    lines = text.split("\n")
-    for line in lines:
-        textList.append(line)
+    if not text == "":
+        lines = text.split("\n")
+        for line in lines:
+            textList.append((line, who))
+            if len(textList)>25:
+                textList.pop(0)
 
     for thing in textList:
-        aLine = normfont.render(thing, True, pygame.Color(255, 255, 255))
+        aLine = normfont.render(thing[0], True, colorDict[thing[1]])
         mainSurf.blit(aLine,(x,y))
-        y+= 15
+        y+= 20
     pygame.display.flip()
 
 # ============== input for pygame =================
-def realinput():
-    word = ''
-    while True:
+def realinput(pastComms, pastText):
+    comm = ''
+    enter = True
+    junk = []
+    commPos = 0
+    while enter:
         for event in pygame.event.get() :
-          if event.type == pygame.KEYDOWN :
-            if event.key == pygame.K_RETURN :
-              break
-            else:
-                word += pygame.key.name(event.key)
-    return word
+            if event.type == pygame.KEYDOWN :
 
+                if event.key == pygame.K_RETURN :
+                    pastComms.append(comm)
+                    pastText.append((comm, "user"))
+                    enter = False
+                elif event.key == pygame.K_BACKSPACE:
+                    comm = comm[:-1]
+                elif event.key == pygame.K_SPACE:
+                    comm += ' '
+                elif event.key == pygame.K_UP:
+                    commPos += 1
+                    if commPos > len(pastComms):
+                        commPos = len(pastComms)-1
+                    comm = pastComms[len(pastComms)-1-commPos]
+                elif event.key == pygame.K_DOWN:
+                    commPos -= 1
+                    if commPos>0:
+                        comm = pastComms[len(pastComms)-1-commPos]
+                    else:
+                        commPos = 0
+                        comm = pastComms[len(pastComms)-1-commPos]
+                else:
+                    if pygame.key.name(event.key) in string.ascii_letters or pygame.key.name(event.key) in string.digits:
+                        comm += pygame.key.name(event.key)
 
-realprint(banner)
-realprint("hi")
-pygame.display.flip()
+                junk.clear()
+                pygame.draw.rect(mainSurf, pygame.Color(0, 255, 0), commLine, 0)
+                realprint(comm, [10, mainSurf.get_size()[1]-90], junk, "user")
+
+    return comm
+
+def updateView(pPastText):
+    pygame.draw.rect(mainSurf, pygame.Color(31, 4, 23), bgr, 0)
+    pygame.draw.rect(mainSurf, pygame.Color(0, 255, 0), commLine, 0)
+    realprint("")
+    pygame.display.flip()
+
 
 print(colors.invisible)
 os.system("clear")
@@ -352,6 +386,7 @@ print("================ | \/ | | \ \__/ ==================".center(os.get_termin
 print("                                                   ".center(os.get_terminal_size().columns, " "))
 print("===================================================".center(os.get_terminal_size().columns, "="))
 print(colors.reset)
+
 
 cPlayer, cChar, roomL, npcL = onstart()
 
@@ -370,6 +405,7 @@ print(colors.reset)
 
 print()
 print(("----- Welcome " + cPlayer.username + "! -----").center(os.get_terminal_size().columns, " "))
+realprint("----- Welcome " + cPlayer.username + "! -----")
 print()
 if cPlayer.admin:
     print("You are logged in as admin. Remember that you are not limited to cardinal directions when moving. Just write \"go <x> <y>\". Also: The key to the magical admin-part of the game is the same as the username and they are both the answer to life the universe and everything. Vi?")
@@ -377,16 +413,13 @@ print()
 print(("--------------" + len(cPlayer.username)*"-" + "-------").center(os.get_terminal_size().columns, " "))
 commandL = ["help"]
 while True:
-    mainFrame.flip()
     print()
     try:
-
-        realprint(realinput(),[10,mainSurf.get_size()[1]-90],pastComms)
 
         #===============Key input part==================
         """
         I have NO idea how or why this works... but it does. DO NOT change ANYTHING!!! This took me 5 to 6 hours to make!!!!!!!
-        """
+
         inputter = ''
         if len(commandL)>0:
             i = len(commandL)
@@ -455,10 +488,12 @@ while True:
             except BreakIt:
                 break
         #=============================================================================
-
+        """
         print(colors.reset , end = '')
         command = ""
-        splitIn = inputter.split(" ")
+
+        #splitIn = inputter.split(" ")
+        splitIn = realinput(pastComms, pastText).split(" ")
         if len(splitIn) != 1:
             splitIn[1:] = [' '.join(splitIn[1:])]
         for i in range(0,len(splitIn)):
