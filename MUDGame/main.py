@@ -74,7 +74,6 @@ def onstart():
         charL.append(fIterator[:-4])
     if newPlayer == "r":
         currentPlayer = player.newPlayer(),
-
         currentChar = character.makeChar(charL, currentPlayer)
 
     else:
