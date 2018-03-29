@@ -1,4 +1,4 @@
-import os, room, time
+import os, room, time, job, race
 from pickle import Pickler
 from pickle import Unpickler
 
@@ -47,6 +47,10 @@ class Character:
                 self.location = [self.location[0] + 1, self.location[1]]
             elif direction == ('west' or 'w'):
                 self.location = [self.location[0] - 1, self.location[1]]
+            elif direction == "":
+                return
+            else:
+                print("The creators of this game have f***** up and entered a non-existent actual direction. Go complain...")
         return
 
     def save(self):
@@ -103,13 +107,13 @@ def loadCharacter(name, cPlayerName):
             return "new"
         else:
             return loadCharacter(name, cPlayerName)
-def characterOwn(name):
+def characterOwn(name, cPlayername):
     try:
         f = open("../data/characters/"+ name + ".txt", "rb")
     except FileNotFoundError:
         print("Character file not found. Unable to load progress. \n")
     character = Unpickler(f).load()
-    if character.player == cPlayerName:
+    if character.player == cPlayername:
         f.close()
         return True
     else:
@@ -126,3 +130,79 @@ def checkLevel(char):
                 char.exp = 0
             char.level += 1
             char.expneed = ((200 * (1 + char.level * 3) * (1 + char.level)))
+
+def makeChar(charL, currentPlayer):
+    print("------------------------------------------".center(os.get_terminal_size().columns, "-"))
+    print("Character creation \n")
+    while True:
+        charactername = input("Character name: " + colors.fg.cyan)
+        if charactername in charL:
+            if characterOwn(charactername, currentPlayer.username):
+                checker = input("Are you sure you want to delete your character? (y/n)")
+                if checker == "y":
+                    pass
+                else:
+                    continue
+            else:
+                print("You can only overwrite characters you own.")
+                continue
+        print(colors.reset , end = '')
+        while charactername == '':
+            print("Only I am the one without name!!")
+            charactername = input("Character name: \n> " + colors.fg.cyan)
+            print(colors.reset , end = '')
+        charRace = race.chooseRace(currentPlayer)
+        charJob = job.chooseJob(currentPlayer)
+        print('\n'+charJob+'\n')
+        while True:
+            print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.\n")
+            strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
+            print(colors.reset , end = '')
+            agility = input("How " + colors.fg.cyan + "agile " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
+            print(colors.reset , end = '')
+            wit = input("How would you rate your " + colors.fg.cyan + "intelligence" + colors.reset + "?: \n> "+ colors.fg.cyan)
+            print(colors.reset , end = '')
+            luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.cyan)
+            print(colors.reset , end = '')
+            try:
+                if (int(strength) >= 0) and (int(agility) >= 0) and (int(wit) >= 0) and (int(luck) >= 0):
+                    if currentPlayer.admin == False:
+                        if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
+                            if int(strength) > 4 or int(agility)>4 or int(wit)>4 or int(luck)>4:
+                                print("What the hell should this be? Well, I don't really care...")
+                            elif int(wit) < 3:
+                                print("Go and have fun in the dungeons you dumdum, I bet you will have at least one peer down there.")
+                            else:
+                                print("Ok, that looks pretty solid. Have fun...")
+                            break
+                        else:
+                            print("Do you even math?")
+                    elif currentPlayer.admin == True:
+                        print("Well I can't really tell you what to do, so I'm not even gonna look at what you wrote...")
+                        break
+            except Exception as e:
+                print(e)
+                print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
+        print(colors.reset , end = '')
+
+        charStats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
+
+        charStats['strength'] = int(job.jobStrength(charJob,strength))
+        charStats['agility'] = int(job.jobAgility(charJob,agility))
+        charStats['wit'] = int(job.jobWit(charJob,wit))
+        charStats['luck'] = int(job.jobLuck(charJob,luck))
+        charHealth = int(job.jobHealth(charJob))
+
+        print()
+        print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(charactername))
+        print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(charRace))
+        print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(charJob))
+        print(colors.fg.orange + 'Stats: '+ colors.fg.purple + str(charStats))
+        print(colors.fg.orange + 'Health: '+ colors.fg.green + str(charHealth))
+        break
+
+    print(colors.reset , end = '')
+    currentChar = newCharacter(charactername, currentPlayer.username, charRace, charJob, charStats, charHealth)
+    print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
+    wait = input()
+    return currentChar
