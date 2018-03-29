@@ -93,7 +93,6 @@ def onstart():
                 print(colors.reset , end = '')
             charRace = race.chooseRace(currentPlayer)
             charJob = job.chooseJob(currentPlayer)
-            #print('\n'+charJob+'\n')
             while True:
                 print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.\n")
                 strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
@@ -744,7 +743,7 @@ while True:
             for c in npcL:
                 npc.loadNpc(c, "mob")
             roomL = room.loadRooms()
-                
+
         #========= Smite ==========#
 
         elif command in ["smite", "punish", "execute", "behead", 'kill']:
