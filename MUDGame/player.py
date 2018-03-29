@@ -3,23 +3,10 @@ from pickle import Pickler
 from pickle import Unpickler
 
 class Player:
-    def __init__(self):
-        self.username = input("Please enter your desired username: " + colors.fg.orange)
-        print(colors.reset , end = '')
-        self.setPw()
+    def __init__(self, name, pw):
+        self.username = name
         self.admin = False
-
-    def setPw(self):
-        pw = input("Please enter a password: " + colors.invisible)
-        print(colors.reset , end = '')
-        pwCheck = input("Please enter the password again: " + colors.invisible)
-        print(colors.reset , end = '')
-        if pw == pwCheck:
-            self.passwd = pw
-        else:
-            print("Passwords don't match. Please try again...")
-            print()
-            setPw(self)
+        self.passwd = pw
 
     def save(self):
         try:
@@ -66,12 +53,6 @@ def login():
         print("You are already logged in...")
 
 
-def newPlayer():
-    player = Player()
-    username = player.username
-    player.save()
-    return loadPlayer(username)
-
 #-------------------------------------------------------------------------
 
 def loadPlayer(username):
@@ -90,10 +71,10 @@ def loadPlayer(username):
     return player
 
 class colors:
-    '''Colors class:reset all colors with colors.reset; two 
-    sub classes fg for foreground 
+    '''Colors class:reset all colors with colors.reset; two
+    sub classes fg for foreground
     and bg for background; use as colors.subclass.colorname.
-    i.e. colors.fg.red or colors.bg.greenalso, the generic bold, disable, 
+    i.e. colors.fg.red or colors.bg.greenalso, the generic bold, disable,
     underline, reverse, strike through,
     and invisible work with the main class i.e. colors.bold'''
     reset='\033[0m'

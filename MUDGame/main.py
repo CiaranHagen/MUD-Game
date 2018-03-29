@@ -2,46 +2,6 @@ import character, room, npc, player, attack, os, operator, random, item, job, ra
 from admin import adminer
 import sys,tty,termios
 
-class colors:
-    '''Colors class:reset all colors with colors.reset; two
-    sub classes fg for foregroun
-    and bg for background; use as colors.subclass.colorname.
-    i.e. colors.fg.red or colors.bg.green also, the generic bold, disable,
-    underline, reverse, strike through,
-    and invisible work with the main class i.e. colors.bold'''
-    reset='\033[0m'
-    bold='\033[01m'
-    disable='\033[02m'
-    underline='\033[04m'
-    reverse='\033[07m'
-    strikethrough='\033[09m'
-    invisible='\033[08m'
-    class fg:
-        black='\033[30m'
-        red='\033[31m'
-        green='\033[32m'
-        orange='\033[33m'
-        blue='\033[34m'
-        purple='\033[35m'
-        cyan='\033[36m'
-        lightgrey='\033[37m'
-        darkgrey='\033[90m'
-        lightred='\033[91m'
-        lightgreen='\033[92m'
-        yellow='\033[93m'
-        lightblue='\033[94m'
-        pink='\033[95m'
-        lightcyan='\033[96m'
-    class bg:
-        black='\033[40m'
-        red='\033[41m'
-        green='\033[42m'
-        orange='\033[43m'
-        blue='\033[44m'
-        purple='\033[45m'
-        cyan='\033[46m'
-        lightgrey='\033[47m'
-
 class BreakIt(Exception): pass
 
 class _Getch:
@@ -66,167 +26,28 @@ def getKey():
 ##===================Interesting stuff starts here========================
 ##========================================================================
 
-def onstart():
-    newPlayer = input("Register (r) or log in (l)." + colors.fg.cyan)
-    print(colors.reset , end = '')
+def onstart(player, pw, char,ask1 = False, ask2 = False):
+    #newPlayer = input("Register (r) or log in (l)." + colors.fg.cyan)
+    #print(colors.reset , end = '')
     charL = []
     for fIterator in os.listdir("../data/characters/"):
         charL.append(fIterator[:-4])
-    if newPlayer == "r":
-        currentPlayer = player.newPlayer(),
-        print("------------------------------------------".center(os.get_terminal_size().columns, "-"))
-        print("Character creation \n")
-
-        #i am lazy and will just copy char creation twice, at clean up we make a function of this in char.py anyway
-        # I am just as lazy and followed in your footsteps xD (Faolin)
-        while True:
-            charactername = input("Character name: " + colors.fg.cyan)
-
-            if charactername in charL:
-                print("This name is already taken.")
-                continue
-            print(colors.reset , end = '')
-            raceList = ['orc', 'dwarf', 'elf', 'troll', 'succubus', 'gelfling', 'gockcobbler', 'shinigami', 'hickdead', 'thraal']
-            while charactername == '':
-                print("Only I am the one without name!!")
-                charactername = input("Character name: \n> " + colors.fg.cyan)
-                print(colors.reset , end = '')
-            charRace = race.chooseRace(currentPlayer)
-            charJob = job.chooseJob(currentPlayer)
-            #print('\n'+charJob+'\n')
-            while True:
-                print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.\n")
-                strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
-                print(colors.reset , end = '')
-                agility = input("How " + colors.fg.cyan + "agile " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
-                print(colors.reset , end = '')
-                wit = input("How would you rate your " + colors.fg.cyan + "intelligence" + colors.reset + "?: \n> "+ colors.fg.cyan)
-                print(colors.reset , end = '')
-                luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.cyan)
-                print(colors.reset , end = '')
-                try:
-                    if (int(strength) >= 0) and (int(agility) >= 0) and (int(wit) >= 0) and (int(luck) >= 0):
-                        if currentPlayer.admin == False:
-                            if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
-                                if int(strength) > 4 or int(agility)>4 or int(wit)>4 or int(luck)>4:
-                                    print("What the hell should this be? Well, I don't really care...")
-                                elif int(wit) < 3:
-                                    print("Go and have fun in the dungeons you dumdum, I bet you will have at least one peer down there.")
-                                else:
-                                    print("Ok, that looks pretty solid. Have fun...")
-                                break
-                            else:
-                                print("Do you even math?")
-                        elif currentPlayer.admin == True:
-                            print("Well I can't really tell you what to do, so I'm not even gonna look at what you wrote...")
-                            break
-                except Exception as e:
-                    print(e)
-                    print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
-                print(colors.reset , end = '')
-
-            charStats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
-
-            charStats['strength'] = int(job.jobStrength(charJob,strength))
-            charStats['agility'] = int(job.jobAgility(charJob,agility))
-            charStats['wit'] = int(job.jobWit(charJob,wit))
-            charStats['luck'] = int(job.jobLuck(charJob,luck))
-            charHealth = int(job.jobHealth(charJob))
-
-            print()
-            print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(charactername))
-            print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(charRace))
-            print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(charJob))
-            print(colors.fg.orange + 'Stats: '+ colors.fg.purple + str(charStats))
-            print(colors.fg.orange + 'Health: '+ colors.fg.green + str(charHealth))
-            break
-
-        print(colors.reset , end = '')
-        currentChar = character.newCharacter(charactername, currentPlayer.username, charRace, charJob, charStats, charHealth)
-        print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
-        wait = input()
+    if ask1:
+        currentPlayer = player.Player(name, pw),
+        currentChar = character.makeChar(charL, currentPlayer)
 
     else:
         currentPlayer = player.login()
         print ("------------------------------------------".center(os.get_terminal_size().columns, "-"))
         newCharacter = input("Create new character (1) or use existing character (2)? " + colors.fg.cyan) #or show list of characters?
         print(colors.reset , end = '')
-        if newCharacter == "1":
-            print("Character creation \n")
-            while True:
-                charactername = input("Character name: " + colors.fg.cyan)
-                if charactername in charL:
-                    if character.characterOwn:
-                        checker = input("Are you sure you want to delete your character? (y/n)")
-                        if checker == "y":
-                            pass
-                        else:
-                            continue
-                    else:
-                        print("You can only overwrite characters you own.")
-                        continue
-                print(colors.reset , end = '')
-                while charactername == '':
-                    print("Only I am the one without name!!")
-                    charactername = input("Character name: \n> " + colors.fg.cyan)
-                    print(colors.reset , end = '')
-                charRace = race.chooseRace(currentPlayer)
-                charJob = job.chooseJob(currentPlayer)
-                print('\n'+charJob+'\n')
-                while True:
-                    print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.\n")
-                    strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
-                    print(colors.reset , end = '')
-                    agility = input("How " + colors.fg.cyan + "agile " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
-                    print(colors.reset , end = '')
-                    wit = input("How would you rate your " + colors.fg.cyan + "intelligence" + colors.reset + "?: \n> "+ colors.fg.cyan)
-                    print(colors.reset , end = '')
-                    luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.cyan)
-                    print(colors.reset , end = '')
-                    try:
-                        if (int(strength) >= 0) and (int(agility) >= 0) and (int(wit) >= 0) and (int(luck) >= 0):
-                            if currentPlayer.admin == False:
-                                if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
-                                    if int(strength) > 4 or int(agility)>4 or int(wit)>4 or int(luck)>4:
-                                        print("What the hell should this be? Well, I don't really care...")
-                                    elif int(wit) < 3:
-                                        print("Go and have fun in the dungeons you dumdum, I bet you will have at least one peer down there.")
-                                    else:
-                                        print("Ok, that looks pretty solid. Have fun...")
-                                    break
-                                else:
-                                    print("Do you even math?")
-                            elif currentPlayer.admin == True:
-                                print("Well I can't really tell you what to do, so I'm not even gonna look at what you wrote...")
-                                break
-                    except Exception as e:
-                        print(e)
-                        print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
-                print(colors.reset , end = '')
-
-                charStats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
-
-                charStats['strength'] = int(job.jobStrength(charJob,strength))
-                charStats['agility'] = int(job.jobAgility(charJob,agility))
-                charStats['wit'] = int(job.jobWit(charJob,wit))
-                charStats['luck'] = int(job.jobLuck(charJob,luck))
-                charHealth = int(job.jobHealth(charJob))
-
-                print()
-                print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(charactername))
-                print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(charRace))
-                print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(charJob))
-                print(colors.fg.orange + 'Stats: '+ colors.fg.purple + str(charStats))
-                print(colors.fg.orange + 'Health: '+ colors.fg.green + str(charHealth))
-                break
-
-            print(colors.reset , end = '')
-            currentChar = character.newCharacter(charactername, currentPlayer.username, charRace, charJob, charStats, charHealth)
-            print("After you spend almost an eternity in the great nothingness, also called aether, you see an open door and step through... (enter to continue)".center(os.get_terminal_size().columns, " "))
-            wait = input()
+        if ask2:
+            currentChar = character.makeChar(charL, currentPlayer)
         else:
             charactername = input("Which character do you want to load? ")
             currentChar = character.loadCharacter(charactername, currentPlayer.username)
+            if currentChar == "new":
+                currentChar = character.makeChar(charL, currentPlayer)
 
     roomL = room.loadRooms()
 
@@ -287,15 +108,13 @@ def loadCRoom():
     cRoom = room.loadRoom(roomName)
     return cRoom
 
-#just to test
-banner = "===================================================\n                                 ,    ,   __     __                    \n================ |\  /|   |_\   /  _ ==================\n================ | \/ |   | \   \__/ ==================\n                                                             \n==================================================="
 
 # ================ pygame init ====================
 pygame.init()
 pygame.display.quit()
 pygame.display.init()
 print("display initialized")
-pygame.display.set_mode()
+pygame.display.set_mode((800,600))
 pygame.display.set_caption("Most Random Game")
 mainSurf = pygame.display.get_surface()
 bgr = pygame.Rect((0,0),mainSurf.get_size())
