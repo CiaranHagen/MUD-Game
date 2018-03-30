@@ -2,28 +2,45 @@ import character, room, npc, player, attack, os, operator, random, item, job, ra
 from admin import adminer
 import sys,tty,termios
 
-class BreakIt(Exception): pass
 
-class _Getch:
-    def __call__(self):
-            fd = sys.stdin.fileno()
-            old_settings = termios.tcgetattr(fd)
-            try:
-                tty.setraw(sys.stdin.fileno())
-                ch = sys.stdin.read(1)
-            finally:
-                termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-            return ch
+#=======================================================================
+#=====================  VARIABLES  =====================================
 
-def getKey():
-    inkey = _Getch()
-    while(1):
-            k=inkey()
-            if k!='':break
-    return k
+pastText = [] #a list of tuples > (text, color) < right now there is only pc and user color
+pastComms = ["help","me","please"]
+npcCRoom = []
+
+banner =  "==============================================================="
+banner += "\n                       ,    , __   __                          "
+banner += "\n====================== |\  /| |_\ /  _ ========================"
+banner += "\n====================== | \/ | | \ \__/ ========================"
+banner += "\n                                                               "
+banner += "\n==============================================================="
+
+#=======================================================================
+#====================== Pygame Init ====================================
+pygame.init()
+pygame.display.quit()
+pygame.display.init()
+print("display initialized")
+pygame.display.set_mode((800,600))
+pygame.display.set_caption("Most Random Game")
+
+mainSurf = pygame.display.get_surface()
+picsurf = pygame.image.load(os.path.join('../data/graphics/GraphForGame-1.png'))
+
+bgr = pygame.Rect((15,10),(600,500))
+commLine = pygame.Rect((45,mainSurf.get_size()[1]-55),(558, 30))
+
+normfont = pygame.font.SysFont('dejavusansmono',15,True)
+mapfont =  pygame.font.SysFont('dejavusansmono',40,True)
+pygame.key.set_repeat(250)
+
+
+
 
 ##========================================================================
-##===================Interesting stuff starts here========================
+##===================    Functions starts here    ========================
 ##========================================================================
 
 def onstart(player, pw, char,ask1 = False, ask2 = False):
@@ -38,9 +55,9 @@ def onstart(player, pw, char,ask1 = False, ask2 = False):
 
     else:
         currentPlayer = player.login()
-        print ("------------------------------------------".center(os.get_terminal_size().columns, "-"))
+        #print ("------------------------------------------".center(os.get_terminal_size().columns, "-"))
         newCharacter = input("Create new character (1) or use existing character (2)? " + colors.fg.cyan) #or show list of characters?
-        print(colors.reset , end = '')
+        #print(colors.reset , end = '')
         if ask2:
             currentChar = character.makeChar(charL, currentPlayer)
         else:
@@ -102,36 +119,18 @@ def mapper(litX, bigX, litY, bigY, mapL):
     print(colors.reset , end = '')
     print(dis*"=" + " MAP " + dis*"=")
 
-npcCRoom = []
+
 def loadCRoom():
     roomName = "room" + str(cChar.location[0]) + "_" + str(cChar.location[1])
     cRoom = room.loadRoom(roomName)
     return cRoom
 
 
-# ================ pygame init ====================
-pygame.init()
-pygame.display.quit()
-pygame.display.init()
-print("display initialized")
-pygame.display.set_mode((800,600))
-pygame.display.set_caption("Most Random Game")
-mainSurf = pygame.display.get_surface()
-bgr = pygame.Rect((0,0),mainSurf.get_size())
-commLine = pygame.Rect((0,mainSurf.get_size()[1]-100),mainSurf.get_size())
-pygame.draw.rect(mainSurf, pygame.Color(31, 4, 23), bgr, 0)
-pygame.draw.rect(mainSurf, pygame.Color(0, 255, 0), commLine, 0)
-normfont = pygame.font.SysFont(None,25)
-pygame.key.set_repeat()
-#handle this one with care
-#pygame.event.set_grab(True)
 
-pastText = [] #a list of tuples > (text, color) < right now there is only pc and user color
-pastComms = ["help","me","please"]
 
 # ============== new pygame print func ================
-def realprint(text, ppos = [10,10], textList = pastText, who = "pc"):
-    colorDict = {"pc": pygame.Color(255, 255, 255), "user": pygame.Color(100, 0, 0)}
+def realprint(text, ppos = [27,30], textList = pastText, who = "pc"):
+    colorDict = {"pc": pygame.Color(255, 255, 255), "user": pygame.Color(0, 255, 0)}
     x = ppos[0]
     y = ppos[1]
     if not text == "":
@@ -182,29 +181,67 @@ def realinput(pastComms, pastText):
                         comm += pygame.key.name(event.key)
 
                 junk.clear()
-                pygame.draw.rect(mainSurf, pygame.Color(0, 255, 0), commLine, 0)
-                realprint(comm, [10, mainSurf.get_size()[1]-90], junk, "user")
+
+                pygame.draw.rect(mainSurf, pygame.Color(0, 0, 0), commLine, 0)
+                realprint(comm, [45,mainSurf.get_size()[1]-47], junk, "user")
+                pygame.display.flip()
 
     return comm
 
 def updateView(pPastText):
     pygame.draw.rect(mainSurf, pygame.Color(31, 4, 23), bgr, 0)
-    pygame.draw.rect(mainSurf, pygame.Color(0, 255, 0), commLine, 0)
+    pygame.draw.rect(mainSurf, pygame.Color(0, 0, 0), commLine, 0)
+    realprint("")
+    mainSurf.blit(picsurf, (0,0))
+    pygame.display.flip()
+
+def updateText(pPastText):
     realprint("")
     pygame.display.flip()
 
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+#====================================================================================#
+# Here the main game login and loop follow. No function definitions after this point.#
+#====================================================================================#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
 
-print(colors.invisible)
-os.system("clear")
-print(colors.reset)
-print(colors.fg.lightred)
-print("===================================================".center(os.get_terminal_size().columns, "="))
-print("                 ,    , __   __                    ".center(os.get_terminal_size().columns, " "))
-print("================ |\  /| |_\ /  _ ==================".center(os.get_terminal_size().columns, "="))
-print("================ | \/ | | \ \__/ ==================".center(os.get_terminal_size().columns, "="))
-print("                                                   ".center(os.get_terminal_size().columns, " "))
-print("===================================================".center(os.get_terminal_size().columns, "="))
-print(colors.reset)
+realprint(banner)
+updateView(pastText)
+realinput(pastComms,pastText)
+
+while True:
+    print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.\n")
+    strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
+    print(colors.reset , end = '')
+    agility = input("How " + colors.fg.cyan + "agile " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
+    print(colors.reset , end = '')
+    wit = input("How would you rate your " + colors.fg.cyan + "intelligence" + colors.reset + "?: \n> "+ colors.fg.cyan)
+    print(colors.reset , end = '')
+    luck = input("Are you feeling " + colors.fg.cyan + "lucky" + colors.reset + "?: \n> "+ colors.fg.cyan)
+    print(colors.reset , end = '')
+    try:
+        if (int(strength) >= 0) and (int(agility) >= 0) and (int(wit) >= 0) and (int(luck) >= 0):
+            if currentPlayer.admin == False:
+                if (int(strength)+int(agility)+int(wit)+int(luck)) == 10:
+                    if int(strength) > 4 or int(agility)>4 or int(wit)>4 or int(luck)>4:
+                        print("What the hell should this be? Well, I don't really care...")
+                    elif int(wit) < 3:
+                        print("Go and have fun in the dungeons you dumdum, I bet you will have at least one peer down there.")
+                    else:
+                        print("Ok, that looks pretty solid. Have fun...")
+                    break
+                else:
+                    print("Do you even math?")
+            elif currentPlayer.admin == True:
+                print("Well I can't really tell you what to do, so I'm not even gonna look at what you wrote...")
+                break
+    except Exception as e:
+        print(e)
+        print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
+
+
+
+
 
 
 cPlayer, cChar, roomL, npcL = onstart()

@@ -131,30 +131,30 @@ def checkLevel(char):
             char.level += 1
             char.expneed = ((200 * (1 + char.level * 3) * (1 + char.level)))
 
-def makeChar(charL, currentPlayer):
-    print("------------------------------------------".center(os.get_terminal_size().columns, "-"))
-    print("Character creation \n")
+def makeChar(charL, currentPlayer, charname, delete = False):
+    #print("------------------------------------------".center(os.get_terminal_size().columns, "-"))
+    #print("Character creation \n")
     while True:
-        charactername = input("Character name: " + colors.fg.cyan)
+        charactername = charname
         if charactername in charL:
             if characterOwn(charactername, currentPlayer.username):
-                checker = input("Are you sure you want to delete your character? (y/n)")
-                if checker == "y":
+                #checker = input("Are you sure you want to delete your character? (y/n)")
+                if delete:
                     pass
                 else:
                     continue
             else:
-                print("You can only overwrite characters you own.")
+                #print("You can only overwrite characters you own.")
                 continue
-        print(colors.reset , end = '')
-        while charactername == '':
-            print("Only I am the one without name!!")
-            charactername = input("Character name: \n> " + colors.fg.cyan)
-            print(colors.reset , end = '')
+        #print(colors.reset , end = '')
+        #while charactername == '':
+        #    print("Only I am the one without name!!")
+        #    charactername = input("Character name: \n> " + colors.fg.cyan)
+        #    print(colors.reset , end = '')
         charRace = race.chooseRace(currentPlayer)
         charJob = job.chooseJob(currentPlayer)
-        print('\n'+charJob+'\n')
-        while True:
+        #print('\n'+charJob+'\n')
+        """while True:
             print("Set the stats of your character. 4 different stats, 10 points to give, you know the drill.\n")
             strength = input("How " + colors.fg.cyan + "strong " + colors.reset + "are you?: \n> "+ colors.fg.cyan)
             print(colors.reset , end = '')
@@ -183,7 +183,7 @@ def makeChar(charL, currentPlayer):
             except Exception as e:
                 print(e)
                 print("Very clever... C'mon, I need numbers dude! N U M B E R S!")
-        print(colors.reset , end = '')
+        #print(colors.reset , end = '')"""
 
         charStats = {'wit' : 0, 'strength': 0, 'agility': 0, 'luck': 0}
 
