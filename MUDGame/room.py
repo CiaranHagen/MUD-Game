@@ -119,9 +119,3 @@ def loadRoom(name):
     room = Unpickler(f).load()
     f.close()
     return room
-
-#-------------------------------------------------------------------------
-
-
-def specialRooms():
-    

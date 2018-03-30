@@ -1,4 +1,4 @@
-import character, room, npc, player, attack, os, operator, random, item, job, race, time
+import character, room, npc, player, attack, os, operator, random, item, job, race, time, mapmod, look, go
 from admin import adminer
 import sys,tty,termios
 
@@ -94,53 +94,6 @@ def onstart():
     npcL = npc.loadNpcs()
 
     return currentPlayer, currentChar, roomL, npcL
-
-def mapper(litX, bigX, litY, bigY, mapL):
-    drawL = []
-    distX = (-1) * litX
-    distY = (-1) * litY
-    for j in range(litY, bigY+1):
-        drawL.append([])
-        for i in range(litX, bigX+1):
-            if (i,j) in mapL:
-                drawL[j + distY].append("O")
-            else:
-                drawL[j + distY].append(" ")
-    dis = (bigX - litX - 2)//2
-    if dis < 2:
-        dis = 2
-    print(dis*"=" + " MAP " + dis*"=")
-    print()
-    for j in range(bigY, litY-1, -1):
-        spaceLine = " "
-        print(" ", end="")
-        for i in range(litX, bigX+1):
-            if cRoom.location == (i,j):
-                print(colors.fg.red, end='')
-            else:
-                print(colors.fg.cyan, end='')
-            print(drawL[j + distY][i + distX], end='')
-            print(colors.fg.cyan, end='')
-            if (drawL[j + distY][i + distX] == "O") and ((i + distX) != (len(drawL[j+distY])-1)):
-                if "east" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
-                    print(colors.fg.cyan + "--", end='')
-                else:
-                    print("  ", end='')
-            else:
-                print("  ", end='')
-
-            if (drawL[j + distY][i + distX] == "O") and ((j + distY) != 0):
-                if "south" in room.loadRoom("room" + str(i) + "_" + str(j)).possibleDirections.values():
-                    spaceLine += "|  "
-                else:
-                    spaceLine += "   "
-            else:
-                spaceLine += "   "
-
-        print("", end="\n")
-        print(spaceLine)
-    print(colors.reset , end = '')
-    print(dis*"=" + " MAP " + dis*"=")
 
 npcCRoom = []
 def loadCRoom():
@@ -275,244 +228,17 @@ while True:
         #========= Go [direction] ==========#
 
         if command in ["go", "walk", "move", "jump", "hop", "teleport", "translate", "commute"]:
-            if len(splitIn) > 1:
-                if splitIn[1] in cRoom.possibleDirections:
-                    movePerm = True
-                    npcCRoom = []
-                    for c in npcL:
-                        if npc.loadNpc(c, "mob").location == cChar.location:
-                            npcCRoom.append(c)
-                    for c in npcCRoom:
-                        mob = npc.loadNpc(c, "mob")
-                        if mob.angry:
-                            movePerm = False
-                    if movePerm == False:
-                        print("At least one mob is blocking your way. You cannot leave here without defeating him...")
-                    elif movePerm == True:
-                        cChar.move(splitIn[1])
-                        cRoom.save()
-                        cRoom = loadCRoom()
-                        print("You go " + splitIn[1] + ".")
-
-                        # ------- Move mobs -------- #
-
-                        for c in npcL:
-                            moveRan = random.randint(0,2)
-                            if moveRan == 0:
-                                mobber = npc.loadNpc(c, "mob")
-                                mobber.move()
-                                npc.loadNpc(c, "mob")
-                         # -------------------------- #
-                elif (cPlayer.admin == True) and (len(splitIn[1].split(" ")) > 1):
-                    try:
-                        coords = splitIn[1].split(" ")
-                        if ("room" + coords[0] + "_" + coords[1]) in roomL:
-                            print()
-                            print("You've teleported to "+ coords[0] + ", " + coords[1])
-                            print()
-                            cChar.location = [int(coords[0]), int(coords[1])]
-                            cChar.health += 100
-                            cRoom.save()
-                            cRoom = loadCRoom()
-                            for c in npcL:
-                                moveRan = random.randint(0,2)
-                                if moveRan == 0:
-                                    mobber = npc.loadNpc(c, "mob")
-                                    mobber.move()
-                                    npc.loadNpc(c, "mob")
-                        else:
-                            print("Apparently you are too stupid to use coordinates. Do... you... need... help... ? (Tries using sign language...)")
-                    except Exception as e:
-                        print(e)
-                        print("Apparently you are too stupid to use coordinates. Do... you... need... help... ? (Tries using sign language...)")
-                elif ("key" in cChar.inventory) and (cRoom.location == (2,1)) and (splitIn[1] == "east"):
-                    movePerm = True
-                    npcCRoom = []
-                    for c in npcL:
-                        if npc.loadNpc(c, "mob").location == cChar.location:
-                            npcCRoom.append(c)
-                    for c in npcCRoom:
-                        mob = npc.loadNpc(c, "mob")
-                        if mob.angry:
-                            movePerm = False
-                    if movePerm == False:
-                        print("At least one mob is blocking your way. You cannot leave here without defeating him...")
-                    elif movePerm == True:
-                        cChar.location = [3,1]
-                        cRoom.save()
-                        cRoom = loadCRoom()
-                        print("You go " + splitIn[1] + ".")
-                        if cChar.level == 0:
-                            cChar.level = 1
-                            print()
-                            print("Congratulations. You have completed the tutorial dungeon and reached level 1.")
-                            time.sleep(0.5)
-                            job.jobLevelUp(cChar)
-                            time.sleep(0.5)
-                            print('Calculating accumulated EXP ...')
-                            time.sleep(0.5)
-                            character.checkLevel(cChar)
-                            if cChar.level == 2:
-                                job.jobLevelUp(cChar)
-                                time.sleep(0.5)
-                                character.checkLevel(cChar)
-                                if cChar.level == 3:
-                                    job.jobLevelUp(cChar)
-                            else:
-                                print('you do not seem to have accumulated enough EXP to further increase your level')
-                else:
-                    print("You cannot go " + splitIn[1] + ". Possible directions are: ", end = '')
-                    for key in cRoom.possibleDirections:
-                        print(key , end = ' ')
-                    print("")
-            else:
-                print("Where do you want to go? Add a cardinal direction behind 'go'! Possible directions are: ", end = '')
-                for key in cRoom.possibleDirections:
-                    print(key , end = ' ')
-                print("")
-
+            go.go(command,splitIn,cRoom,roomL,cChar,cPlayer,npcL)
+            npcL = npc.loadNpcs()
+            for c in npcL:
+                npc.loadNpc(c, "mob")
+            roomL = room.loadRooms()
+            cChar = character.loadCharacter(cChar.name,cPlayer.username)
+            loadCRoom()
         #========= Look [object] ==========#
 
         elif command in ["look", "watch", "observe", "see", "eye", "regard", "check"]:
-            if len(splitIn) == 1:
-                npcCRoom = []
-                for c in npcL:
-                    if npc.loadNpc(c, "mob").location == cChar.location:
-                        npcCRoom.append(c)
-                print(cRoom.description)
-                if len(npcCRoom) > 0:
-                    print("Also present: ", end="")
-                    for c in npcCRoom:
-                        mob = npc.loadNpc(c, "mob")
-                        if mob.angry:
-                            print(colors.fg.red + mob.name + colors.reset, end = "")
-                        elif not mob.angry:
-                            print(colors.fg.green + mob.name + colors.reset, end = "")
-                        if npcCRoom.index(mob.name) != len(npcCRoom):
-                            print(", ", end = "")
-                    print("")
-            else:
-                if splitIn[1] in cRoom.stuffDescription:
-                    print(cRoom.stuffDescription[splitIn[1]])
-                elif splitIn[1] in cRoom.inventory:
-                    print(splitIn[1][0].upper() + splitIn[1][1:] + "--> " + cRoom.inventory[splitIn[1]])
-                elif splitIn[1] in cChar.inventory:
-                    print(splitIn[1][0].upper() + splitIn[1][1:] + "--> " + cChar.inventory[splitIn[1]])
-                elif splitIn[1] in ["inventory", "inv", "backpack", "sack"]:
-                    if len(cChar.inventory) > 0:
-                        items = cChar.inventory
-                        print(colors.fg.orange + "Inventory: ")
-                        print("-----------"+ colors.fg.cyan)
-                        for key in items:
-                            print(str(key)[0].upper() + str(key)[1:])
-                        print(colors.reset, end='')
-                    else:
-                        print("Your inventory is empty")
-                elif splitIn[1] in [cChar.name.lower(), "self"]:
-                    character.checkLevel(cChar)
-                    print(colors.fg.orange + 'Name: '+ colors.fg.cyan + str(cChar.name))
-                    print(colors.fg.orange + 'Race: ' + colors.fg.cyan + str(cChar.race))
-                    print(colors.fg.orange + 'Job: '+ colors.fg.cyan + str(cChar.job))
-                    print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
-                    print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.expneed) + colors.reset + "]")
-                    print(colors.fg.orange + 'Character Stats: '+ colors.fg.cyan + str(cChar.stats))
-                    weapon = item.loadItem(cChar.onPerson['weapon'],"wpn")
-                    armor = item.loadItem(cChar.onPerson['armor'],"arm")
-                    shield = item.loadItem(cChar.onPerson['shield'],"shd")
-                    print(colors.fg.orange + 'Equipment StatBonus: '+ colors.fg.cyan + '{wit: '+str(weapon.giver['wit']+armor.giver['wit']+shield.giver['wit'])+', strength: '+str(weapon.giver['strength']+armor.giver['strength']+shield.giver['strength'])+
-                          ', agility: '+str(weapon.giver['agility']+armor.giver['agility']+shield.giver['agility'])+', luck: '+str(weapon.giver['luck']+armor.giver['luck']+shield.giver['luck'])+'}')
-                    print(colors.fg.orange + 'Health: ['+ colors.fg.green + str(cChar.health) + colors.reset + ' / ' + colors.fg.green + str(cChar.maxhealth) + colors.reset + ']')
-                    print()
-                    if len(cChar.inventory) > 0:
-                        items = cChar.inventory
-                        print(colors.fg.orange + "Inventory: ")
-                        print("-----------" + colors.fg.cyan)
-                        for key in items:
-                            print(str(key)[0].upper() + str(key)[1:])
-                        print(colors.reset, end='')
-                        print()
-                    else:
-                        print("Your inventory is empty")
-                        print()
-                    print(colors.fg.orange + "Equipment: ")
-                    print("-----------")
-                    for key in cChar.onPerson:
-                        print(colors.fg.orange + key + " --> "+ colors.fg.cyan + cChar.onPerson[key])
-                        if key == 'weapon':
-                            c = 'wpn'
-                        if key == 'armor':
-                            c = 'arm'
-                        if key == 'shield':
-                            c = 'shd'
-                        if not key == 'bag':
-                            equip = item.loadItem(cChar.onPerson[key],c)
-                            print(colors.fg.orange + 'StatBonus: '+ colors.fg.cyan + str(equip.giver))
-                    print()
-                    if cPlayer.admin:
-                        print(colors.fg.orange + "You posess the power of the kitten. Use it in a pawsitive manner.")
-                    print(colors.reset, end='')
-                elif splitIn[1] in ['name']:
-                    character.checkLevel(cChar)
-                    print(colors.fg.orange + 'Name: '+ colors.fg.cyan + cChar.name)
-                    print(colors.reset, end='')
-                elif splitIn[1] in ['race', 'origin']:
-                    print(colors.fg.orange + 'Race: ' + colors.fg.cyan + cChar.race)
-                    print(raceDescriptions[cChar.race])
-                    print(colors.reset, end='')
-                elif splitIn[1] in ['job', 'occupation', 'class']:
-                    print(colors.fg.orange + 'Job: '+ colors.fg.cyan + cChar.job)
-                    print(colors.reset, end='')
-                elif splitIn[1] in ['equipment', 'on person', 'on me', 'worn']:
-                    print(colors.fg.orange + "Equipment: ")
-                    print("-----------")
-                    for key in cChar.onPerson:
-                        print(colors.fg.orange + key + " --> "+ colors.fg.cyan + cChar.onPerson[key])
-                        if key == 'weapon':
-                            c = 'wpn'
-                        if key == 'armor':
-                            c = 'arm'
-                        if key == 'shield':
-                            c = 'shd'
-                        if not key == 'bag':
-                            equip = item.loadItem(cChar.onPerson[key],c)
-                            print(colors.fg.orange + 'StatBonus: '+ colors.fg.cyan + str(equip.giver))
-                    print()
-                    if cPlayer.admin:
-                        print(colors.fg.orange + "You posess the power of the kitten. Use it in a pawsitive manner.")
-                    print(colors.reset, end='')
-                elif splitIn[1] in ['stats']:
-                    print(colors.fg.orange + 'Stats: '+ colors.fg.cyan + str(cChar.stats))
-                    weapon = item.loadItem(cChar.onPerson['weapon'],"wpn")
-                    armor = item.loadItem(cChar.onPerson['armor'],"arm")
-                    shield = item.loadItem(cChar.onPerson['shield'],"shd")
-                    print(colors.fg.orange + 'Equipment StatBonus: '+ colors.fg.cyan + '{wit: '+str(weapon.giver['wit']+armor.giver[wit]+shield.giver['wit'])+', strength: '+str(weapon.giver['strength']+armor.giver['strength']+shield.giver['strength'])+
-                          ', agility: '+str(weapon.giver['agility']+armor.giver['agility']+shield.giver['agility'])+', luck: '+str(weapon.giver['luck']+armor.giver[luck]+shield.giver['luck'])+'}')
-                    print(colors.fg.orange + 'Health: ['+ colors.fg.green + str(cChar.health) + colors.reset + ' / ' + colors.fg.green + str(cChar.maxhealth) + colors.reset + ']')
-                elif splitIn[1] in ['str', 'strength']:
-                    print(colors.fg.orange + 'Strength: '+ colors.fg.cyan + str(cChar.stats['strength']))
-                    print(colors.reset, end='')
-                elif splitIn[1] in ['wits', 'wit', 'intelligence', 'int', 'brains']:
-                    print(colors.fg.orange + 'Wit: '+ colors.fg.cyan + str(cChar.stats['wit']))
-                    print(colors.reset, end='')
-                elif splitIn[1] in ['agi', 'agility']:
-                    print(colors.fg.orange + 'Agility: '+ colors.fg.cyan + str(cChar.stats['agility']))
-                    print(colors.reset, end='')
-                elif splitIn[1] in ['luck']:
-                    print(colors.fg.orange + 'Luck: '+ colors.fg.cyan + str(cChar.stats['luck']))
-                    print(colors.reset, end='')
-                elif splitIn[1] in ['hp', 'health']:
-                    print(colors.fg.orange + 'Health: ['+ colors.fg.green + str(cChar.health) + colors.reset + ' / ' + colors.fg.green + str(cChar.maxhealth) + colors.reset + ']')
-                    print(colors.reset, end='')
-                elif splitIn[1] in ['lvl', 'level']:
-                    print(colors.fg.orange + 'Level: '+ colors.fg.purple + str(cChar.level))
-                    print(colors.reset, end='')
-                elif splitIn[1] in ['exp', 'xp', 'experience']:
-                    print(colors.fg.orange + "Exp: ["+ colors.fg.purple + str(cChar.exp) + colors.reset + " / " + colors.fg.purple + str(cChar.expneed) + colors.reset + "]")
-                    print(colors.reset, end='')
-                elif splitIn[1] in npcL:
-                    print(npc.loadNpc(splitIn[1], "mob").description)
-                else:
-                    print("There is no "+ splitIn[1] + " here.")
+            look.look(command,splitIn,npcL,cRoom,cChar,cPlayer)
         #========= take [object] ==========#
 
         elif command in ["take", "grab", "borrow"]:
@@ -585,7 +311,7 @@ while True:
                 litX = cChar.location[0] - 1
                 bigY = cChar.location[1] + 1
                 litY = cChar.location[1] - 1
-            mapper(litX, bigX, litY, bigY, mapL)
+            mapmod.mapper(litX, bigX, litY, bigY, mapL, cRoom)
 
         #========= Admin part ==========#
 
