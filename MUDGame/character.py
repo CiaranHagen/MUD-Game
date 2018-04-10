@@ -87,6 +87,14 @@ class Character:
                 self.location = [self.location[0] + 1, self.location[1]]
             elif direction == ('west' or 'w'):
                 self.location = [self.location[0] - 1, self.location[1]]
+            elif direction == 'northwest':
+                self.location = [self.location[0] - 1, self.location[1] + 1]
+            elif direction == 'southwest':
+                self.location = [self.location[0] - 1, self.location[1] - 1]
+            elif direction == 'northeast':
+                self.location = [self.location[0] + 1, self.location[1] + 1]
+            elif direction == 'southeast':
+                self.location = [self.location[0] + 1, self.location[1] - 1]
             elif direction == "":
                 return
             else:
