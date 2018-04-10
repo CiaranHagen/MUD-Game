@@ -112,6 +112,7 @@ def adminer(cPlayer, cChar, cRoom, roomL):
                 """
             elif commAdmin == "map":
                 mapL = []
+                print(cChar.location)
                 for o in roomL:
                     oCoord = o[4:]
                     x = oCoord.split("_")[0]
@@ -131,7 +132,7 @@ def adminer(cPlayer, cChar, cRoom, roomL):
                     item.newShield()
                 elif kind == "armor":
                     item.newArmor()
-
+                
             elif commAdmin == "changestats":
                 changestats = 1
                 while changestats == 1:

@@ -71,6 +71,14 @@ class Npc:
                 self.location = [self.location[0] + 1, self.location[1]]
             elif direction == ('west' or 'w'):
                 self.location = [self.location[0] - 1, self.location[1]]
+            elif direction == 'northwest':
+                self.location = [self.location[0] - 1, self.location[1] + 1]
+            elif direction == 'southwest':
+                self.location = [self.location[0] - 1, self.location[1] - 1]
+            elif direction == 'northeast':
+                self.location = [self.location[0] + 1, self.location[1] + 1]
+            elif direction == 'southeast':
+                self.location = [self.location[0] + 1, self.location[1] - 1]
         self.save()
         return
 
@@ -135,7 +143,7 @@ def newMob():
     mob.race = race
     mob.description = descriptions[race]
     roomCoord = random.choice(os.listdir('../data/rooms/'))[4:-4]
-    mob.location = [int(roomCoord[: len(roomCoord)//2]), int(roomCoord[(len(roomCoord)//2) + 1 :])]
+    mob.location = [int(roomCoord[: len(roomCoord)//2].strip("_")), int(roomCoord[(len(roomCoord)//2) + 1 :].strip("_"))]
     mob.level = random.randint(1, 5)
     mob.health = 100 * mob.level
     mob.angry = random.choice([True, False])
