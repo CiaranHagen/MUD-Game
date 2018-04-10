@@ -51,7 +51,7 @@ def chooseRace(currentPlayer):
                 break
             else:
                 print("This race is not known to me.. Try again.")
-    if currentPlayer.admin == True:
+    elif currentPlayer.admin == True:
         answer = ''
         while not answer in ['yes', 'y']:
             charRace = input("What is your race?\nYou can choose from: " + colors.fg.cyan + "orc, dwarf, elf, troll, succubus, gelfling, gockcobbler, shinigami and hickdead" + colors.fg.purple + " or something else entirely " + colors.reset + ".\n> " + colors.fg.cyan)

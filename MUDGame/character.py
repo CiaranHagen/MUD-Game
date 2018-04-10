@@ -199,6 +199,7 @@ def makeChar(charL, currentPlayer):
             print("Only I am the one without name!!")
             charactername = input("Character name: \n> " + colors.fg.cyan)
             print(colors.reset , end = '')
+        print(currentPlayer.admin)
         charRace = race.chooseRace(currentPlayer)
         charJob = job.chooseJob(currentPlayer)
         print('\n'+charJob+'\n')

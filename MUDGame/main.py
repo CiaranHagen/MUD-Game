@@ -73,7 +73,7 @@ def onstart():
     for fIterator in os.listdir("../data/characters/"):
         charL.append(fIterator[:-4])
     if newPlayer == "r":
-        currentPlayer = player.newPlayer(),
+        currentPlayer = player.newPlayer()
         currentChar = character.makeChar(charL, currentPlayer)
 
     else:
@@ -228,13 +228,14 @@ while True:
         #========= Go [direction] ==========#
 
         if command in ["go", "walk", "move", "jump", "hop", "teleport", "translate", "commute"]:
-            go.go(command,splitIn,cRoom,roomL,cChar,cPlayer,npcL)
+            go.go(command, splitIn, cRoom, roomL, cChar, cPlayer, npcL)
+            cChar.save()
             npcL = npc.loadNpcs()
             for c in npcL:
                 npc.loadNpc(c, "mob")
             roomL = room.loadRooms()
             cChar = character.loadCharacter(cChar.name,cPlayer.username)
-            loadCRoom()
+            cRoom = loadCRoom()
         #========= Look [object] ==========#
 
         elif command in ["look", "watch", "observe", "see", "eye", "regard", "check"]:
@@ -429,22 +430,25 @@ while True:
         #need to display remaining player HP after getting dmg
         elif command in ["attack", "strike", "engage", "challenge", 'fight']:
             if len(splitIn) > 1:
-                if (splitIn[1][0].upper() + splitIn[1][1:]) in npcL:
+                if ((splitIn[1][0].upper() + splitIn[1][1:]) in npcL):
                     attackMob = npc.loadNpc((splitIn[1][0].upper() + splitIn[1][1:]), "mob")
-                    print(colors.invisible)
-                    os.system("clear")
-                    print(colors.reset)
-                    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
-                    loser = attack.fight(cChar, attackMob)
-                    if loser == "mob":
-                        newMob = npc.newMob()
-                        npcL = npc.loadNpcs()
-                        for c in npcL:
-                            npc.loadNpc(c, "mob")
-                    elif loser == "char":
-                        cRoom.inventory.update(cChar.inventory)
-                        cChar.inventory = {}
-                        cRoom = loadCRoom()
+                    if attackMob.location == cChar.location:
+                        print(colors.invisible)
+                        os.system("clear")
+                        print(colors.reset)
+                        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!!!")
+                        loser = attack.fight(cChar, attackMob)
+                        if loser == "mob":
+                            newMob = npc.newMob()
+                            npcL = npc.loadNpcs()
+                            for c in npcL:
+                                npc.loadNpc(c, "mob")
+                        elif loser == "char":
+                            cRoom.inventory.update(cChar.inventory)
+                            cChar.inventory = {}
+                            cRoom = loadCRoom()
+                    else:
+                        print("Far away in the distance, the foe laughs at you while you try to hit him from afar. (This mob is not in the same room as you...)")
                 else:
                     print("You let loose a war-cry, incoherently screaming random names. Anyone present looks at you in confusion. No-one here seems to go by that name.")
             else:

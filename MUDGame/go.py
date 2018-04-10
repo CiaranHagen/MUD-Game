@@ -1,4 +1,4 @@
-import character, room, npc, player, attack, os, operator, random, item, job, race, time, mapmod, look, go
+import character, room, npc, player, attack, os, operator, random, item, job, race, time, mapmod, look
 from admin import adminer
 
 
@@ -48,29 +48,24 @@ def loadCRoom(cChar):
     return cRoom
 
 
-def go(command,splitIn,cRoom,roomL,cChar,cPlayer,npcL):
+def go(command, splitIn, cRoom, roomL, cChar, cPlayer, npcL):
     if len(splitIn) > 1:
         if splitIn[1] in cRoom.possibleDirections:
             movePerm = True
             npcCRoom = []
             for c in npcL:
                 if npc.loadNpc(c, "mob").location == cChar.location:
-                    print('a')
                     npcCRoom.append(c)
             for c in npcCRoom:
                 mob = npc.loadNpc(c, "mob")
-                print('b')
                 if mob.angry:
                     movePerm = False
             if movePerm == False:
                 print("At least one mob is blocking your way. You cannot leave here without defeating him...")
             elif movePerm == True:
-                cChar.move(splitIn[1])
-                print('c')
+                cChar.move(cRoom.possibleDirections[splitIn[1]])
+                
                 cRoom.save()
-                print('d')
-                cRoom = loadCRoom(cChar)
-                print('e')
                 print("You go " + splitIn[1] + ".")
 
                 # ------- Move mobs -------- #
@@ -79,32 +74,24 @@ def go(command,splitIn,cRoom,roomL,cChar,cPlayer,npcL):
                     moveRan = random.randint(0,2)
                     if moveRan == 0:
                         mobber = npc.loadNpc(c, "mob")
-                        print('f')
                         mobber.move()
-                        print('g')
                  # -------------------------- #
         elif (cPlayer.admin == True) and (len(splitIn[1].split(" ")) > 1):
             try:
                 coords = splitIn[1].split(" ")
-                print('h')
                 if ("room" + coords[0] + "_" + coords[1]) in roomL:
                     cChar.location = [int(coords[0]), int(coords[1])]
                     print()
                     print("You've teleported to "+ coords[0] + ", " + coords[1])
                     print()
                     cRoom.save()
-                    print('i')
                     cRoom = loadCRoom(cChar)
-                    print('j')
                     for c in npcL:
                         moveRan = random.randint(0,2)
                         if moveRan == 0:
                             mobber = npc.loadNpc(c, "mob")
-                            print('k')
                             mobber.move()
-                            print('l')
                             npc.loadNpc(c, "mob")
-                            print('m')
                 else:
                     print("Apparently you are too stupid to use coordinates. Do... you... need... help... ? (Tries using sign language...)")
             except Exception as e:

@@ -1,4 +1,4 @@
-import character, room, npc, player, attack, os, operator, random, item, job, race, time, mapmod, look, go
+import character, room, npc, player, attack, os, operator, random, item, job, race, time, look, go
 from admin import adminer
 
 class colors:
